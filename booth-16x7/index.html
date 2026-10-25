@@ -1,0 +1,354 @@
+<title>Maxsen Booth Kit 16 × 7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: a fabrication brief on porcelain paper. Drawings first, drawn 1 unit = 1 mm,
+   then the face schedule, the build spec and what to confirm. Maxsen palette: porcelain, ink, rose. */
+:root{
+  --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
+  --rose:#CFA594; --rose-text:#7E5643;
+  --solid:#29221F; --fa:#CFA594; --fb:#7E5643; --plate:#EDE3D7; --lock:#DCCBBB; --counter:#F4EEE6;
+  --cass:#EADFD2; --sw:#FBF8F4; --sw-line:#8C7B70; --glow:rgba(255,206,150,.28); --lat:rgba(126,86,67,.16);
+  --serif:"EB Garamond",Garamond,Georgia,serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
+  --cass:#3A2F29; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
+  --cass:#3A2F29; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 72px;display:grid;gap:64px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1.08}
+h1{font-size:clamp(38px,6vw,62px)}
+h1 em,h2 em{font-style:italic;color:var(--rose-text)}
+h2{font-size:clamp(28px,3.6vw,40px)}
+h3{font-size:22px}
+p{margin:0;max-width:68ch}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-text)}
+.lede{font-size:18px;font-weight:300;color:var(--ink-2)}
+section{display:grid;gap:22px;min-width:0}
+.head{display:grid;gap:14px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);margin-top:8px}
+.facts div{padding:16px 16px 0 0;display:grid;gap:4px}
+.facts b{font:400 30px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:13px;color:var(--muted);line-height:1.4}
+@media (max-width:720px){.facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+.note{font-size:14px;color:var(--muted)}
+.callout{border-left:2px solid var(--rose);padding:4px 0 4px 16px;font-size:15px;color:var(--ink-2);max-width:72ch}
+
+/* drawings */
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:4px;display:grid;gap:12px;padding:20px 18px 16px;min-width:0}
+.sheet-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sheet-h b{font:400 21px/1.2 var(--serif)}
+.sheet-h span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dwg{display:block;width:100%;min-width:640px;height:auto}
+.dwg.mod{min-width:520px;max-width:620px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-2);list-style:none;margin:0;padding:0}
+.legend li{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:22px;height:12px;border-radius:2px;display:inline-block}
+.k-body{background:var(--solid)} .k-a{background:var(--fa)} .k-b{background:var(--fb)} .k-plate{background:var(--plate);box-shadow:inset 0 0 0 1px var(--rule)}
+.k-can{border:1.5px dashed var(--ink-2)} .k-lock{background:var(--lock)} .k-ctr{background:var(--counter);box-shadow:inset 0 0 0 1.5px var(--solid)}
+.pair{display:grid;gap:16px}
+
+/* svg classes */
+.booth{fill:none;stroke:var(--muted);stroke-width:8;stroke-dasharray:44 28}
+.wall{stroke:var(--fg);stroke-width:44}
+.plate{fill:var(--plate)}
+.canopy{fill:none;stroke:var(--ink-2);stroke-width:8;stroke-dasharray:30 20}
+.body{fill:var(--solid)}
+.joint{stroke:var(--surface);stroke-width:12}
+.fa{fill:var(--fa)} .fb{fill:var(--fb)}
+.lock{fill:var(--lock);stroke:var(--fg);stroke-width:6}
+.counter{fill:var(--counter);stroke:var(--solid);stroke-width:8}
+.cap{fill:var(--rose)}
+.dim line{stroke:var(--muted);stroke-width:5}
+text{font-family:var(--sans)}
+.t-dim{fill:var(--muted);font-size:62px;font-variant-numeric:tabular-nums}
+.t-zone{fill:var(--rose-text);font-size:58px;font-weight:700;letter-spacing:10px}
+.t-in{fill:var(--surface);font-size:78px;font-weight:700;letter-spacing:4px}
+.t-on{fill:var(--fg);font-size:70px;font-weight:700}
+.t-lab{fill:var(--fg);font-family:var(--serif);font-size:86px}
+.t-sub{fill:var(--muted);font-size:56px}
+.t-bay{fill:var(--rose-text);font-size:54px;font-weight:700;letter-spacing:6px}
+.t-sub2{fill:var(--fg);font-size:64px}
+.f-bg{fill:var(--surface)}
+.seam{stroke:var(--rule);stroke-width:6}
+.beam{fill:var(--glow)}
+.dl{fill:var(--rose)}
+.cass{fill:var(--cass)}
+.sw{fill:var(--sw);stroke:var(--sw-line);stroke-width:4}
+.pnl{fill:var(--solid)}
+.card{fill:none;stroke:var(--sw-line);stroke-width:4;stroke-dasharray:14 10}
+.lk{fill:var(--fb)}
+.halo{fill:var(--sw);stroke:var(--rose);stroke-width:12}
+.ln{fill:var(--rule)}
+.qr{fill:none;stroke:var(--fg);stroke-width:8}
+.door{fill:var(--lock);stroke:var(--fg);stroke-width:6}
+.ctr{fill:var(--counter);stroke:var(--solid);stroke-width:8}
+.floor{fill:var(--muted)}
+.latp{fill:none;stroke:var(--lat);stroke-width:4}
+.e-name{fill:var(--fg);font-family:var(--serif);font-size:96px}
+.e-sub{fill:var(--muted);font-size:50px;letter-spacing:2px}
+.plate-s{fill:var(--muted)}
+.box{fill:none;stroke:var(--sw-line);stroke-width:4}
+.z-hdr{fill:var(--bg)} .z-inf{fill:var(--plate)} .z-low{fill:var(--bg)} .z-band{fill:var(--plate)} .zl{stroke:var(--sw-line);stroke-width:4}
+.callout{fill:var(--rose)}
+.t-call{fill:#29221F;font-size:62px;font-weight:700}
+.lead{stroke:var(--rose);stroke-width:6}
+
+/* module block */
+.mod-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:820px){.mod-grid{grid-template-columns:minmax(0,1fr)}}
+ol.zones{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:z}
+ol.zones li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;counter-increment:z}
+ol.zones li::before{content:counter(z);width:28px;height:28px;border-radius:50%;background:var(--rose);color:#29221F;font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:2px}
+ol.zones b{font-weight:700}
+ol.zones span{display:block;color:var(--ink-2);font-size:15px}
+
+/* tables */
+.tbl{overflow-x:auto;border-top:1px solid var(--fg)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+th{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+td b{font-weight:700}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td em{font-style:italic;font-family:var(--serif);font-size:17px;color:var(--rose-text)}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.chip.a{background:var(--fa);color:#29221F}
+.chip.b{background:var(--fb);color:#FBF8F4}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>div{display:grid;gap:10px;align-content:start;min-width:0}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
+ul.plain li::marker{color:var(--rose)}
+.confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;counter-reset:q}
+@media (max-width:760px){.confirm{grid-template-columns:minmax(0,1fr)}}
+.confirm div{border:1px solid var(--rule);border-radius:4px;padding:16px 18px;display:grid;gap:6px;background:var(--surface)}
+.confirm b{font:400 19px/1.2 var(--serif)}
+.confirm span{font-size:14.5px;color:var(--ink-2)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">Maxsen · event booth · 16 ft × 7 ft</span>
+    <h1>One reusable kit, <em>two sides to every stand.</em></h1>
+    <p class="lede">Three identical two-sided display modules, one consult counter and your digital lock stands. Every face holds live, touchable products from the Maxsen range, and every module packs flat for the next show.</p>
+    <div class="facts">
+      <div><b>4,877 × 2,134</b><span>booth in mm (16 × 7 ft)</span></div>
+      <div><b>3 + 1</b><span>two-sided modules, plus one counter</span></div>
+      <div><b>6 faces</b><span>each with a swappable product cassette</span></div>
+      <div><b>2.4 m</b><span>overall height, under most venue limits</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="p1">
+    <div class="head">
+      <span class="eyebrow">Plan 1 · recommended</span>
+      <h2 id="p1">Open on both long sides: a centre spine</h2>
+      <p>The three modules bolt into one 3 m wall down the middle of the booth. Side A carries the headline products; Side B carries the rest of the range, so both aisles get a complete story. Your lock stand closes one end, with the outside of the lock to Side A and the inside screen to Side B. The counter closes the other end.</p>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="sheet-h"><b>Top view</b><span>drawn to scale · mm</span></div>
+      <div class="scroll"><svg viewBox="-460 -520 5800 2960" class="dwg" role="img" aria-label="Plan 1, top view: a centre spine of three two-sided modules with your lock stand at one end and the counter at the other"><text x="2438.5" y="-150" class="t-zone" text-anchor="middle">SIDE A · OPEN TO THE AISLE</text><text x="2438.5" y="2330" class="t-zone" text-anchor="middle">SIDE B · OPEN TO THE AISLE</text><g class="dim"><line x1="0" y1="-400" x2="4877" y2="-400"/><line x1="0" y1="-440" x2="0" y2="-360"/><line x1="4877" y1="-440" x2="4877" y2="-360"/></g><text x="2438.5" y="-430" class="t-dim" text-anchor="middle">16 ft · 4,877 mm</text><g class="dim"><line x1="-200" y1="0" x2="-200" y2="2134"/><line x1="-240" y1="0" x2="-160" y2="0"/><line x1="-240" y1="2134" x2="-160" y2="2134"/></g><text x="-240" y="1087.0" class="t-dim" text-anchor="end">7 ft</text><g class="dim"><line x1="5000" y1="0" x2="5000" y2="967"/><line x1="4960" y1="0" x2="5040" y2="0"/><line x1="4960" y1="967" x2="5040" y2="967"/></g><text x="5050" y="503.5" class="t-dim" text-anchor="start">967</text><g class="dim"><line x1="5000" y1="967" x2="5000" y2="1167"/><line x1="4960" y1="967" x2="5040" y2="967"/><line x1="4960" y1="1167" x2="5040" y2="1167"/></g><text x="5050" y="1087.0" class="t-dim" text-anchor="start">200</text><g class="dim"><line x1="5000" y1="1167" x2="5000" y2="2134"/><line x1="4960" y1="1167" x2="5040" y2="1167"/><line x1="4960" y1="2134" x2="5040" y2="2134"/></g><text x="5050" y="1670.5" class="t-dim" text-anchor="start">967</text><rect x="0" y="0" width="4877" height="2134" class="booth"/><rect x="1206" y="667" width="988" height="800" class="plate"/><rect x="2206" y="667" width="988" height="800" class="plate"/><rect x="3206" y="667" width="988" height="800" class="plate"/><rect x="1200" y="767" width="3000" height="600" class="canopy"/><rect x="1200" y="967" width="3000" height="200" class="body"/><line x1="2200" y1="967" x2="2200" y2="1167" class="joint"/><line x1="3200" y1="967" x2="3200" y2="1167" class="joint"/><rect x="1215" y="937" width="970" height="30" class="fa"/><rect x="1215" y="1167" width="970" height="30" class="fb"/><text x="1700" y="1098" class="t-in" text-anchor="middle">M1</text><text x="1700" y="470" class="t-lab" text-anchor="middle">Lusano Prestige</text><text x="1700" y="565" class="t-sub" text-anchor="middle">9 switches</text><text x="1700" y="1735" class="t-lab" text-anchor="middle">Smart locks + S1</text><text x="1700" y="1830" class="t-sub" text-anchor="middle">S1 panel · sensors</text><rect x="2215" y="937" width="970" height="30" class="fa"/><rect x="2215" y="1167" width="970" height="30" class="fb"/><text x="2700" y="1098" class="t-in" text-anchor="middle">M2</text><text x="2700" y="470" class="t-lab" text-anchor="middle">Nova+ Pro + S8</text><text x="2700" y="565" class="t-sub" text-anchor="middle">8 switches · S8 panel</text><text x="2700" y="1735" class="t-lab" text-anchor="middle">Lusano Noble + Halo</text><text x="2700" y="1830" class="t-sub" text-anchor="middle">3 switches · Halo dimmer</text><rect x="3215" y="937" width="970" height="30" class="fa"/><rect x="3215" y="1167" width="970" height="30" class="fb"/><text x="3700" y="1098" class="t-in" text-anchor="middle">M3</text><text x="3700" y="470" class="t-lab" text-anchor="middle">Control panels</text><text x="3700" y="565" class="t-sub" text-anchor="middle">S10 · S7 · packages</text><text x="3700" y="1735" class="t-lab" text-anchor="middle">Folio + Ark</text><text x="3700" y="1830" class="t-sub" text-anchor="middle">8 switches</text><rect x="150" y="917" width="900" height="300" class="lock"/><text x="600" y="1095" class="t-on" text-anchor="middle">Lock stand</text><text x="600" y="470" class="t-lab" text-anchor="middle">Lock · outside</text><text x="600" y="565" class="t-sub" text-anchor="middle">keypad side</text><text x="600" y="1735" class="t-lab" text-anchor="middle">Lock · inside</text><text x="600" y="1830" class="t-sub" text-anchor="middle">inner screen side</text><rect x="4250" y="567" width="500" height="1000" class="counter"/><text x="4500" y="1095" class="t-on" text-anchor="middle">Counter</text><text x="4500" y="470" class="t-lab" text-anchor="middle">Consult</text><text x="4500" y="1735" class="t-sub" text-anchor="middle">iPad · QR</text></svg></div>
+      <ul class="legend">
+        <li><i class="k-body"></i>Module body, 200 mm</li>
+        <li><i class="k-a"></i>Side A face</li>
+        <li><i class="k-b"></i>Side B face</li>
+        <li><i class="k-can"></i>Canopy overhead at 2.25 m</li>
+        <li><i class="k-plate"></i>Steel floor plate, flush and walkable</li>
+        <li><i class="k-lock"></i>Your lock stand (size to confirm)</li>
+        <li><i class="k-ctr"></i>Counter</li>
+      </ul>
+    </figure>
+    <div class="pair">
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Side A, as seen from the aisle</b><span>headline side</span></div>
+        <div class="scroll"><svg viewBox="-460 -40 5437 2520" class="dwg elev" role="img" aria-label="Side A elevation as seen from the aisle"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern></defs><rect x="3827" y="300" width="900" height="2100" class="door"/><rect x="4527" y="1050" width="80" height="320" class="lk"/><text x="4277" y="600" class="e-sub" text-anchor="middle">Your lock stand</text><rect x="2677" y="0" width="1000" height="2400" class="f-bg"/><rect x="2677" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="2867,150 2987,150 3097,1400 2757,1400" class="beam"/><polygon points="3367,150 3487,150 3597,1400 3257,1400" class="beam"/><rect x="2677" y="0" width="1000" height="150" class="body"/><rect x="2892" y="150" width="70" height="14" class="dl"/><rect x="3392" y="150" width="70" height="14" class="dl"/><text x="3177" y="370" class="e-name" text-anchor="middle">Lusano Prestige</text><text x="3177" y="455" class="e-sub" text-anchor="middle">Swarovski crystals</text><rect x="2777" y="700" width="800" height="700" class="cass"/><rect x="2934.0" y="807.0" width="86" height="86" class="sw"/><rect x="3134.0" y="807.0" width="86" height="86" class="sw"/><rect x="3334.0" y="807.0" width="86" height="86" class="sw"/><rect x="2934.0" y="1007.0" width="86" height="86" class="sw"/><rect x="3134.0" y="1007.0" width="86" height="86" class="sw"/><rect x="3334.0" y="1007.0" width="86" height="86" class="sw"/><rect x="2934.0" y="1207.0" width="86" height="86" class="sw"/><rect x="3134.0" y="1207.0" width="86" height="86" class="sw"/><rect x="3334.0" y="1207.0" width="86" height="86" class="sw"/><rect x="2807" y="1470" width="420" height="22" class="ln"/><rect x="2807" y="1520" width="300" height="22" class="ln"/><rect x="2807" y="1570" width="360" height="22" class="ln"/><rect x="3447" y="1440" width="110" height="110" class="qr"/><line x1="2677" y1="0" x2="2677" y2="2400" class="seam"/><rect x="1677" y="0" width="1000" height="2400" class="f-bg"/><rect x="1677" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="1867,150 1987,150 2097,1400 1757,1400" class="beam"/><polygon points="2367,150 2487,150 2597,1400 2257,1400" class="beam"/><rect x="1677" y="0" width="1000" height="150" class="body"/><rect x="1892" y="150" width="70" height="14" class="dl"/><rect x="2392" y="150" width="70" height="14" class="dl"/><text x="2177" y="370" class="e-name" text-anchor="middle">Nova+ Pro</text><text x="2177" y="455" class="e-sub" text-anchor="middle">a name on every key</text><rect x="1777" y="700" width="800" height="700" class="cass"/><rect x="1909.0" y="767.0" width="86" height="86" class="sw"/><rect x="2059.0" y="767.0" width="86" height="86" class="sw"/><rect x="2209.0" y="767.0" width="86" height="86" class="sw"/><rect x="2359.0" y="767.0" width="86" height="86" class="sw"/><rect x="1909.0" y="937.0" width="86" height="86" class="sw"/><rect x="2059.0" y="937.0" width="86" height="86" class="sw"/><rect x="2209.0" y="937.0" width="86" height="86" class="sw"/><rect x="2359.0" y="937.0" width="86" height="86" class="sw"/><rect x="2060.0" y="1146.0" width="234" height="128" class="pnl"/><rect x="1807" y="1470" width="420" height="22" class="ln"/><rect x="1807" y="1520" width="300" height="22" class="ln"/><rect x="1807" y="1570" width="360" height="22" class="ln"/><rect x="2447" y="1440" width="110" height="110" class="qr"/><line x1="1677" y1="0" x2="1677" y2="2400" class="seam"/><rect x="677" y="0" width="1000" height="2400" class="f-bg"/><rect x="677" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="867,150 987,150 1097,1400 757,1400" class="beam"/><polygon points="1367,150 1487,150 1597,1400 1257,1400" class="beam"/><rect x="677" y="0" width="1000" height="150" class="body"/><rect x="892" y="150" width="70" height="14" class="dl"/><rect x="1392" y="150" width="70" height="14" class="dl"/><text x="1177" y="370" class="e-name" text-anchor="middle">Control panels</text><text x="1177" y="455" class="e-sub" text-anchor="middle">every room, one screen</text><rect x="777" y="700" width="800" height="700" class="cass"/><rect x="827.0" y="932.5" width="280" height="175" class="pnl"/><rect x="1207.0" y="935.0" width="220" height="130" class="pnl"/><rect x="917.0" y="1215.0" width="520" height="90" class="card"/><rect x="807" y="1470" width="420" height="22" class="ln"/><rect x="807" y="1520" width="300" height="22" class="ln"/><rect x="807" y="1570" width="360" height="22" class="ln"/><rect x="1447" y="1440" width="110" height="110" class="qr"/><line x1="677" y1="0" x2="677" y2="2400" class="seam"/><rect x="127" y="1400" width="500" height="1000" class="ctr"/><text x="377" y="1880" class="e-sub" text-anchor="middle">Counter</text><rect x="-100" y="2400" width="5077" height="16" class="floor"/><g class="dim"><line x1="-60" y1="0" x2="-60" y2="2400"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="2400" x2="-20" y2="2400"/></g><text x="-100" y="1220.0" class="t-dim" text-anchor="end">2.4 m</text></svg></div>
+      </figure>
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Side B, as seen from the aisle</b><span>range side</span></div>
+        <div class="scroll"><svg viewBox="-460 -40 5437 2520" class="dwg elev" role="img" aria-label="Side B elevation as seen from the aisle"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern></defs><rect x="150" y="300" width="900" height="2100" class="door"/><rect x="850" y="1050" width="80" height="320" class="lk"/><text x="600" y="600" class="e-sub" text-anchor="middle">Your lock stand</text><rect x="1200" y="0" width="1000" height="2400" class="f-bg"/><rect x="1200" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="1390,150 1510,150 1620,1400 1280,1400" class="beam"/><polygon points="1890,150 2010,150 2120,1400 1780,1400" class="beam"/><rect x="1200" y="0" width="1000" height="150" class="body"/><rect x="1415" y="150" width="70" height="14" class="dl"/><rect x="1915" y="150" width="70" height="14" class="dl"/><text x="1700" y="370" class="e-name" text-anchor="middle">Smart locks</text><text x="1700" y="455" class="e-sub" text-anchor="middle">Lenovo · MyDigitalLock</text><rect x="1300" y="700" width="800" height="700" class="cass"/><rect x="1390.0" y="940.0" width="120" height="120" class="pnl"/><rect x="1605.0" y="960.0" width="30" height="80" class="sw"/><rect x="1651.0" y="970.0" width="18" height="60" class="sw"/><circle cx="1450" cy="1230" r="34" class="sw"/><rect x="1743.0" y="1040.0" width="34" height="120" class="lk"/><rect x="1799.0" y="1040.0" width="34" height="120" class="lk"/><rect x="1855.0" y="1040.0" width="34" height="120" class="lk"/><rect x="1911.0" y="1040.0" width="34" height="120" class="lk"/><rect x="1967.0" y="1040.0" width="34" height="120" class="lk"/><rect x="2023.0" y="1040.0" width="34" height="120" class="lk"/><rect x="1330" y="1470" width="420" height="22" class="ln"/><rect x="1330" y="1520" width="300" height="22" class="ln"/><rect x="1330" y="1570" width="360" height="22" class="ln"/><rect x="1970" y="1440" width="110" height="110" class="qr"/><line x1="1200" y1="0" x2="1200" y2="2400" class="seam"/><rect x="2200" y="0" width="1000" height="2400" class="f-bg"/><rect x="2200" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="2390,150 2510,150 2620,1400 2280,1400" class="beam"/><polygon points="2890,150 3010,150 3120,1400 2780,1400" class="beam"/><rect x="2200" y="0" width="1000" height="150" class="body"/><rect x="2415" y="150" width="70" height="14" class="dl"/><rect x="2915" y="150" width="70" height="14" class="dl"/><text x="2700" y="370" class="e-name" text-anchor="middle">Lusano Noble</text><text x="2700" y="455" class="e-sub" text-anchor="middle">with the Halo dimmer</text><rect x="2300" y="700" width="800" height="700" class="cass"/><rect x="2457.0" y="877.0" width="86" height="86" class="sw"/><rect x="2657.0" y="877.0" width="86" height="86" class="sw"/><rect x="2857.0" y="877.0" width="86" height="86" class="sw"/><circle cx="2700" cy="1200" r="52" class="halo"/><rect x="2330" y="1470" width="420" height="22" class="ln"/><rect x="2330" y="1520" width="300" height="22" class="ln"/><rect x="2330" y="1570" width="360" height="22" class="ln"/><rect x="2970" y="1440" width="110" height="110" class="qr"/><line x1="2200" y1="0" x2="2200" y2="2400" class="seam"/><rect x="3200" y="0" width="1000" height="2400" class="f-bg"/><rect x="3200" y="1750" width="1000" height="600" fill="url(#lat)"/><polygon points="3390,150 3510,150 3620,1400 3280,1400" class="beam"/><polygon points="3890,150 4010,150 4120,1400 3780,1400" class="beam"/><rect x="3200" y="0" width="1000" height="150" class="body"/><rect x="3415" y="150" width="70" height="14" class="dl"/><rect x="3915" y="150" width="70" height="14" class="dl"/><text x="3700" y="370" class="e-name" text-anchor="middle">Folio + Ark</text><text x="3700" y="455" class="e-sub" text-anchor="middle">slim and simple</text><rect x="3300" y="700" width="800" height="700" class="cass"/><rect x="3432.0" y="817.0" width="86" height="86" class="sw"/><rect x="3582.0" y="817.0" width="86" height="86" class="sw"/><rect x="3732.0" y="805.0" width="86" height="110" class="sw"/><rect x="3882.0" y="805.0" width="86" height="110" class="sw"/><rect x="3432.0" y="1097.0" width="86" height="86" class="sw"/><rect x="3582.0" y="1097.0" width="86" height="86" class="sw"/><rect x="3732.0" y="1097.0" width="86" height="86" class="sw"/><rect x="3882.0" y="1097.0" width="86" height="86" class="sw"/><rect x="3330" y="1470" width="420" height="22" class="ln"/><rect x="3330" y="1520" width="300" height="22" class="ln"/><rect x="3330" y="1570" width="360" height="22" class="ln"/><rect x="3970" y="1440" width="110" height="110" class="qr"/><line x1="3200" y1="0" x2="3200" y2="2400" class="seam"/><rect x="4250" y="1400" width="500" height="1000" class="ctr"/><text x="4500" y="1880" class="e-sub" text-anchor="middle">Counter</text><rect x="-100" y="2400" width="5077" height="16" class="floor"/><g class="dim"><line x1="-60" y1="0" x2="-60" y2="2400"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="2400" x2="-20" y2="2400"/></g><text x="-100" y="1220.0" class="t-dim" text-anchor="end">2.4 m</text></svg></div>
+      </figure>
+    </div>
+    <p class="callout">Each side has 967 mm of booth floor in front of the faces, and visitors also stand in the public aisle. The 300 mm of floor plate that reaches into each side is flush steel with a bevelled edge, so people stand on it rather than around it.</p>
+  </section>
+
+  <section aria-labelledby="p2">
+    <div class="head">
+      <span class="eyebrow">Plan 2 · same kit</span>
+      <h2 id="p2">One long side against a wall: three fins, four bays</h2>
+      <p>If the back of the booth is a wall or a neighbour, turn the modules 90° so they stand as fins from the back. Every face then looks sideways into a bay about 1.1 m wide, and the lit end caps face the aisle as signposts. Nothing is built twice: the modules, cassettes and fabric are the same as Plan 1.</p>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="sheet-h"><b>Top view</b><span>drawn to scale · mm</span></div>
+      <div class="scroll"><svg viewBox="-460 -560 5800 3000" class="dwg" role="img" aria-label="Plan 2, top view: three two-sided modules stand as fins from the back wall, making four bays, with your lock stand at the front left and the counter at the front right"><g class="dim"><line x1="0" y1="-430" x2="4877" y2="-430"/><line x1="0" y1="-470" x2="0" y2="-390"/><line x1="4877" y1="-470" x2="4877" y2="-390"/></g><text x="2438.5" y="-460" class="t-dim" text-anchor="middle">16 ft · 4,877 mm</text><text x="2438.5" y="-80" class="t-zone" text-anchor="middle">BACK WALL OR NEIGHBOUR</text><text x="2438.5" y="2330" class="t-zone" text-anchor="middle">AISLE · OPEN SIDE</text><g class="dim"><line x1="-200" y1="0" x2="-200" y2="2134"/><line x1="-240" y1="0" x2="-160" y2="0"/><line x1="-240" y1="2134" x2="-160" y2="2134"/></g><text x="-240" y="1087.0" class="t-dim" text-anchor="end">7 ft</text><g class="dim"><line x1="5000" y1="0" x2="5000" y2="1000"/><line x1="4960" y1="0" x2="5040" y2="0"/><line x1="4960" y1="1000" x2="5040" y2="1000"/></g><text x="5050" y="520.0" class="t-dim" text-anchor="start">1,000</text><g class="dim"><line x1="5000" y1="1000" x2="5000" y2="2134"/><line x1="4960" y1="1000" x2="5040" y2="1000"/><line x1="4960" y1="2134" x2="5040" y2="2134"/></g><text x="5050" y="1587.0" class="t-dim" text-anchor="start">1,134</text><g class="dim"><line x1="0" y1="-250" x2="1150" y2="-250"/><line x1="0" y1="-290" x2="0" y2="-210"/><line x1="1150" y1="-290" x2="1150" y2="-210"/></g><text x="575.0" y="-280" class="t-dim" text-anchor="middle">1,150</text><g class="dim"><line x1="1350" y1="-250" x2="2450" y2="-250"/><line x1="1350" y1="-290" x2="1350" y2="-210"/><line x1="2450" y1="-290" x2="2450" y2="-210"/></g><text x="1900.0" y="-280" class="t-dim" text-anchor="middle">1,100</text><g class="dim"><line x1="2650" y1="-250" x2="3750" y2="-250"/><line x1="2650" y1="-290" x2="2650" y2="-210"/><line x1="3750" y1="-290" x2="3750" y2="-210"/></g><text x="3200.0" y="-280" class="t-dim" text-anchor="middle">1,100</text><g class="dim"><line x1="3950" y1="-250" x2="4877" y2="-250"/><line x1="3950" y1="-290" x2="3950" y2="-210"/><line x1="4877" y1="-290" x2="4877" y2="-210"/></g><text x="4413.5" y="-280" class="t-dim" text-anchor="middle">927</text><rect x="0" y="0" width="4877" height="2134" class="booth"/><line x1="0" y1="0" x2="4877" y2="0" class="wall"/><rect x="850" y="25" width="800" height="975" class="plate"/><rect x="2150" y="25" width="800" height="975" class="plate"/><rect x="3450" y="25" width="800" height="975" class="plate"/><rect x="950" y="25" width="600" height="975" class="canopy"/><rect x="2250" y="25" width="600" height="975" class="canopy"/><rect x="3550" y="25" width="600" height="975" class="canopy"/><rect x="1150" y="20" width="200" height="980" class="body"/><rect x="1120" y="40" width="30" height="945" class="fb"/><rect x="1350" y="40" width="30" height="945" class="fa"/><text x="1250" y="520" class="t-in" text-anchor="middle" transform="rotate(-90 1250 520)" dy="28">M1</text><rect x="1150" y="985" width="200" height="15" class="cap"/><rect x="2450" y="20" width="200" height="980" class="body"/><rect x="2420" y="40" width="30" height="945" class="fb"/><rect x="2650" y="40" width="30" height="945" class="fa"/><text x="2550" y="520" class="t-in" text-anchor="middle" transform="rotate(-90 2550 520)" dy="28">M2</text><rect x="2450" y="985" width="200" height="15" class="cap"/><rect x="3750" y="20" width="200" height="980" class="body"/><rect x="3720" y="40" width="30" height="945" class="fb"/><rect x="3950" y="40" width="30" height="945" class="fa"/><text x="3850" y="520" class="t-in" text-anchor="middle" transform="rotate(-90 3850 520)" dy="28">M3</text><rect x="3750" y="985" width="200" height="15" class="cap"/><text x="575" y="1130" class="t-bay" text-anchor="middle">BAY 1 · ENTRY</text><text x="575" y="1240" class="t-sub2" text-anchor="middle">Lock, inside face</text><text x="575" y="1330" class="t-sub2" text-anchor="middle">Smart locks + S1</text><text x="1900" y="1130" class="t-bay" text-anchor="middle">BAY 2 · LUSANO</text><text x="1900" y="1240" class="t-sub2" text-anchor="middle">Prestige (left)</text><text x="1900" y="1330" class="t-sub2" text-anchor="middle">Noble + Halo (right)</text><text x="3200" y="1130" class="t-bay" text-anchor="middle">BAY 3 · NOVA & FOLIO</text><text x="3200" y="1240" class="t-sub2" text-anchor="middle">Nova+ Pro + S8 (left)</text><text x="3200" y="1330" class="t-sub2" text-anchor="middle">Folio + Ark (right)</text><text x="4413" y="1130" class="t-bay" text-anchor="middle">BAY 4 · CONSULT</text><text x="4413" y="1240" class="t-sub2" text-anchor="middle">Control panels</text><text x="4413" y="1330" class="t-sub2" text-anchor="middle">staff side</text><rect x="125" y="1734" width="900" height="300" class="lock"/><text x="575" y="1912" class="t-on" text-anchor="middle">Lock stand</text><text x="575" y="1660" class="t-sub" text-anchor="middle">outside faces the aisle</text><rect x="4027" y="1634" width="800" height="500" class="counter"/><text x="4427" y="1912" class="t-on" text-anchor="middle">Counter</text><text x="2440" y="1560" class="t-sub" text-anchor="middle">Front zone · lit end caps face the aisle</text></svg></div>
+    </figure>
+    <p class="callout">Bay 1 is the entry: visitors read the outside of the lock from the aisle, then step behind it to see the inside screen next to the smart lock face and the live S1 panel. Staff reach the counter by walking past the front of M3.</p>
+  </section>
+
+  <section aria-labelledby="mod">
+    <div class="head">
+      <span class="eyebrow">The module · build 3</span>
+      <h2 id="mod">1,000 × 2,400 × 200 mm, finished on both faces</h2>
+      <p>An I-shaped profile: a slim body, a canopy that lights both faces from above, and a floor plate that keeps it standing without drilling the venue floor.</p>
+    </div>
+    <div class="mod-grid">
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Section and face zones</b><span>mm above floor</span></div>
+        <div class="scroll"><svg viewBox="-160 0 2860 3000" class="dwg mod" role="img" aria-label="The module: side section and the zones of one face"><rect x="200" y="2644" width="800" height="16" class="plate-s"/><rect x="500" y="410" width="200" height="2242" class="body"/><rect x="300" y="260" width="600" height="150" class="body"/><polygon points="370,410 430,410 460,1660 250,1660" class="beam"/><rect x="365" y="410" width="70" height="14" class="dl"/><polygon points="770,410 830,410 950,1660 740,1660" class="beam"/><rect x="765" y="410" width="70" height="14" class="dl"/><rect x="500" y="960" width="18" height="700" class="cass"/><rect x="682" y="960" width="18" height="700" class="cass"/><rect x="518" y="1067" width="50" height="86" class="box"/><rect x="632" y="1067" width="50" height="86" class="box"/><rect x="518" y="1267" width="50" height="86" class="box"/><rect x="632" y="1267" width="50" height="86" class="box"/><rect x="518" y="1467" width="50" height="86" class="box"/><rect x="632" y="1467" width="50" height="86" class="box"/><text x="600" y="70" class="t-zone" text-anchor="middle">SECTION</text><g class="dim"><line x1="300" y1="190" x2="900" y2="190"/><line x1="300" y1="150" x2="300" y2="230"/><line x1="900" y1="150" x2="900" y2="230"/></g><text x="600.0" y="160" class="t-dim" text-anchor="middle">600 canopy</text><g class="dim"><line x1="200" y1="2750" x2="1000" y2="2750"/><line x1="200" y1="2710" x2="200" y2="2790"/><line x1="1000" y1="2710" x2="1000" y2="2790"/></g><text x="600.0" y="2830" class="t-dim" text-anchor="middle">800 floor plate</text><g class="dim"><line x1="130" y1="260" x2="130" y2="2660"/><line x1="90" y1="260" x2="170" y2="260"/><line x1="90" y1="2660" x2="170" y2="2660"/></g><text x="90" y="1480.0" class="t-dim" text-anchor="end">2,400</text><text x="600" y="2920" class="t-dim" text-anchor="middle">body 200</text><text x="1900" y="70" class="t-zone" text-anchor="middle">ONE FACE</text><rect x="1400" y="260" width="1000" height="2400" class="f-bg"/><rect x="1400" y="960" width="1000" height="700" class="z-band"/><rect x="1400" y="260" width="1000" height="150" class="body"/><circle cx="2500" cy="335.0" r="55" class="callout"/><text x="2500" y="357.0" class="t-call" text-anchor="middle">1</text><line x1="2400" y1="335.0" x2="2445" y2="335.0" class="lead"/><rect x="1400" y="410" width="1000" height="450" class="z-hdr zl"/><circle cx="2500" cy="635.0" r="55" class="callout"/><text x="2500" y="657.0" class="t-call" text-anchor="middle">2</text><line x1="2400" y1="635.0" x2="2445" y2="635.0" class="lead"/><rect x="1500" y="960" width="800" height="700" class="cass"/><circle cx="2500" cy="1310.0" r="55" class="callout"/><text x="2500" y="1332.0" class="t-call" text-anchor="middle">3</text><line x1="2400" y1="1310.0" x2="2445" y2="1310.0" class="lead"/><rect x="1400" y="1660" width="1000" height="350" class="z-inf zl"/><circle cx="2500" cy="1835.0" r="55" class="callout"/><text x="2500" y="1857.0" class="t-call" text-anchor="middle">4</text><line x1="2400" y1="1835.0" x2="2445" y2="1835.0" class="lead"/><rect x="1400" y="2010" width="1000" height="600" class="z-low zl"/><circle cx="2500" cy="2310.0" r="55" class="callout"/><text x="2500" y="2332.0" class="t-call" text-anchor="middle">5</text><line x1="2400" y1="2310.0" x2="2445" y2="2310.0" class="lead"/><g class="dim"><line x1="1400" y1="2750" x2="2400" y2="2750"/><line x1="1400" y1="2710" x2="1400" y2="2790"/><line x1="2400" y1="2710" x2="2400" y2="2790"/></g><text x="1900.0" y="2830" class="t-dim" text-anchor="middle">1,000</text><text x="1370" y="280" class="t-dim" text-anchor="end">2,400</text><text x="1370" y="430" class="t-dim" text-anchor="end">2,250</text><text x="1370" y="880" class="t-dim" text-anchor="end">1,800</text><text x="1370" y="980" class="t-dim" text-anchor="end">1,700</text><text x="1370" y="1680" class="t-dim" text-anchor="end">1,000</text><text x="1370" y="2030" class="t-dim" text-anchor="end">650</text><rect x="1350" y="2644" width="1100" height="16" class="plate-s"/></svg></div>
+      </figure>
+      <ol class="zones">
+        <li><div><b>Canopy, 2,250–2,400</b><span>600 × 150 aluminium tray, 200 mm over each face, with two Luna smart downlights per face. The modules light their own products with your own lights.</span></div></li>
+        <li><div><b>Header, 1,800–2,250</b><span>Product name in the Maxsen serif, readable over a crowd. Printed fabric (SEG) skin.</span></div></li>
+        <li><div><b>Product cassette, 1,000–1,700</b><span>800 × 700 board, 18 mm ply with a laminate face, cut for 86-type back boxes. It lifts out with four thumb screws, so a new range means a new cassette, not a new stand.</span></div></li>
+        <li><div><b>Info strip, 650–1,000</b><span>Finishes, two or three specs and a QR to pricing and packages.</span></div></li>
+        <li><div><b>Lower skin, 50–650</b><span>The Maxsen lattice on fabric. It zips off to reach the service hatch, power strip and cables.</span></div></li>
+      </ol>
+    </div>
+    <div class="two">
+      <div>
+        <h3>Why it lasts more than one show</h3>
+        <ul class="plain">
+          <li>Knock-down aluminium frame with corner connectors. No glue, no screws into the venue.</li>
+          <li>Fabric skins fold into a bag and reprint cheaply when a campaign changes.</li>
+          <li>Cassettes travel in their own foam-lined case, so switches never carry the frame's weight.</li>
+          <li>End caps are frosted acrylic over Lumi LED strip, removable when modules bolt side by side.</li>
+          <li>The 200 mm body leaves 64 mm clear for wiring between two 50 mm back boxes.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Standing it up safely</h3>
+        <ul class="plain">
+          <li>Floor plate 1,000 × 800 × 8 mm steel with levelling feet, so the base is four times the body depth.</li>
+          <li>In Plan 1 the three modules bolt into one spine. In Plan 2 a rear tie beam joins the three canopies.</li>
+          <li>Ask the fabricator for a push test at the top of each module before the first show.</li>
+          <li>All 230 V wiring by a licensed electrical worker, on RCD-protected strips inside each module.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="faces">
+    <div class="head">
+      <span class="eyebrow">Face schedule</span>
+      <h2 id="faces">What goes on each of the six faces</h2>
+      <p>Each module carries a matched pair, so its two faces work in either plan. Products are the live samples to mount on the cassette.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Module</th><th>Plan 1</th><th>Plan 2</th><th>Live on the cassette</th><th>Header line</th></tr></thead>
+        <tbody>
+          <tr><td><b>M1</b> face a</td><td><span class="chip a">Side A</span></td><td>Bay 2, left</td><td><b>Lusano Prestige</b> × 9: Onyx, Champagne and Midnight, each in 1-, 2- and 3-gang</td><td><em>A jewel on your wall.</em></td></tr>
+          <tr><td><b>M1</b> face b</td><td><span class="chip b">Side B</span></td><td>Bay 1</td><td><b>Nova S1 panel</b> running Leave and Home modes, a door and window sensor and a motion sensor. Graphic of the six Lenovo locks and the home each one suits, supplied with MyDigitalLock</td><td><em>Door and gate, secured with a touch.</em></td></tr>
+          <tr><td><b>M2</b> face a</td><td><span class="chip a">Side A</span></td><td>Bay 3, left</td><td><b>Nova+ Pro</b> × 8: Champagne, Black, White and Silver in 2- and 4-gang, plus a live <b>Nova S8</b> panel</td><td><em>A name on every key.</em></td></tr>
+          <tr><td><b>M2</b> face b</td><td><span class="chip b">Side B</span></td><td>Bay 2, right</td><td><b>Lusano Noble</b> × 3: Champagne, Ivory and Onyx, plus the <b>Halo</b> dimmer driving this module's canopy lights</td><td><em>A statement of art.</em></td></tr>
+          <tr><td><b>M3</b> face a</td><td><span class="chip a">Side A</span></td><td>Bay 4</td><td><b>Nova S10</b> 10-inch and <b>Nova S7</b> with Alexa built in, plus a packages card and QR</td><td><em>Every room, composed on one quiet screen.</em></td></tr>
+          <tr><td><b>M3</b> face b</td><td><span class="chip b">Side B</span></td><td>Bay 3, right</td><td><b>Folio Ultra Slim</b> in White and Black marble, <b>Folio Ultra Slim Pro</b> in White and Grey, <b>Ark</b> in White, Gold, Silver and Black</td><td><em>So slim, it all but disappears.</em></td></tr>
+          <tr><td><b>Counter</b></td><td>East end</td><td>Front right</td><td>iPad with the Smart Life app, brochures, the WhatsApp number +65 8988 1882 and a QR to packages</td><td><em>See it, touch it, then decide.</em></td></tr>
+          <tr><td><b>Lock stand</b></td><td>West end</td><td>Front left</td><td>Your existing design. Outside of the lock to the aisle, inside screen toward the S1 face, so Air View is easy to explain</td><td>Keep your current artwork</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">One switch on each face switches that face's two downlights, so every visitor can press something real. Everything else runs through scenes on the gateway.</p>
+  </section>
+
+  <section aria-labelledby="bom">
+    <div class="head">
+      <span class="eyebrow">Bill of materials</span>
+      <h2 id="bom">What to build, and what to pull from stock</h2>
+    </div>
+    <div class="two">
+      <div>
+        <h3>Build once</h3>
+        <div class="tbl">
+          <table style="min-width:0">
+            <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr><td>Two-sided module frame, 1,000 × 2,400 × 200, with canopy and floor plate</td><td class="n">3</td></tr>
+              <tr><td>Product cassette, 800 × 700</td><td class="n">6</td></tr>
+              <tr><td>Fabric skins: header and lower, per face</td><td class="n">12</td></tr>
+              <tr><td>Frosted acrylic end cap, 200 wide</td><td class="n">6</td></tr>
+              <tr><td>Counter, 1,000 × 500 × 1,000, lockable store, cable port</td><td class="n">1</td></tr>
+              <tr><td>Rear tie beam for Plan 2</td><td class="n">1 set</td></tr>
+              <tr><td>Padded frame crates, cassette case, skin bag</td><td class="n">3 + 1 + 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3>Pull from stock</h3>
+        <div class="tbl">
+          <table style="min-width:0">
+            <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr><td>Lusano Prestige switches</td><td class="n">9</td></tr>
+              <tr><td>Lusano Noble switches</td><td class="n">3</td></tr>
+              <tr><td>Nova+ Pro switches</td><td class="n">8</td></tr>
+              <tr><td>Folio, Folio Pro and Ark switches</td><td class="n">2 + 2 + 4</td></tr>
+              <tr><td>Halo dimmer</td><td class="n">1</td></tr>
+              <tr><td>Nova panels: S1, S7, S8, S10</td><td class="n">1 each</td></tr>
+              <tr><td>Luna smart downlights</td><td class="n">12</td></tr>
+              <tr><td>Lumi LED strip for end caps</td><td class="n">about 14 m</td></tr>
+              <tr><td>Door and window sensor, motion sensor</td><td class="n">1 each</td></tr>
+              <tr><td>Ultra Gateway and a Reyee router, inside the counter</td><td class="n">1 each</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="reuse">
+    <div class="head">
+      <span class="eyebrow">Reuse</span>
+      <h2 id="reuse">The same kit at the next venue</h2>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Space</th><th>Set-up</th></tr></thead>
+        <tbody>
+          <tr><td><b>16 × 7 ft</b>, open both sides</td><td>Plan 1: spine of three, lock stand and counter at the ends</td></tr>
+          <tr><td><b>16 × 7 ft</b>, wall at the back</td><td>Plan 2: three fins, four bays</td></tr>
+          <tr><td><b>10 × 10 ft</b> shell booth</td><td>M1 and M2 as two fins, counter at the front. M3 stays packed, or replaces M2 when panels are the focus</td></tr>
+          <tr><td><b>20 × 10 ft</b> or larger</td><td>Plan 1 spine with a seated consult table on one side, lock stands at both ends</td></tr>
+          <tr><td><b>Showroom</b></td><td>The three modules bolt into a 3 m feature wall, or stand in the window with both faces live</td></tr>
+          <tr><td><b>New launch</b></td><td>Make one new cassette and two new skins. The frame does not change</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="conf">
+    <div class="head">
+      <span class="eyebrow">Before fabrication</span>
+      <h2 id="conf">Five things to confirm</h2>
+    </div>
+    <div class="confirm">
+      <div><b>Which sides are open</b><span>Both long sides open means Plan 1. A wall or neighbour behind means Plan 2.</span></div>
+      <div><b>Your lock stands</b><span>Size and how many. They are drawn here as one stand of 900 × 300 mm; send the real size and the plans get redrawn around it.</span></div>
+      <div><b>Height limit</b><span>The kit is 2.4 m. Some malls cap roadshow booths lower, so check the organiser's manual.</span></div>
+      <div><b>Power</b><span>Four 13 A points are ideal, one per module and one for the counter. One point can work with a distribution board run by a licensed electrical worker.</span></div>
+      <div><b>Offers at the event</b><span>The site lists a free S8 panel with qualifying packages at the showroom, and a free S1 with any F3 Ultra and a Premium Core package. Confirm both apply at the booth before printing.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Products from the Maxsen collection, October 2026. Drawn 1 unit = 1 mm.</span>
+    <span>Sales and WhatsApp +65 8988 1882</span>
+  </footer>
+</div>
