@@ -1,0 +1,658 @@
+<title>Maxsen Booth Kit 16 × 7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: a fabrication brief on porcelain paper. Drawings first, drawn 1 unit = 1 mm,
+   then the face schedule, the build spec and what to confirm. Maxsen palette: porcelain, ink, rose. */
+:root{
+  --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
+  --rose:#CFA594; --rose-text:#7E5643;
+  --solid:#29221F; --fa:#CFA594; --fb:#7E5643; --plate:#EDE3D7; --lock:#DCCBBB; --counter:#F4EEE6;
+  --cass:#EADFD2; --cw:#C9B29A; --lbx:#F6EBDD; --lface:#F2B872; --chair:#DCCBBB; --sw:#FBF8F4; --sw-line:#8C7B70; --glow:rgba(255,206,150,.28); --lat:rgba(126,86,67,.16);
+  --serif:"EB Garamond",Garamond,Georgia,serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
+  --cass:#3A2F29; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
+  --cass:#3A2F29; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 72px;display:grid;gap:64px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1.08}
+h1{font-size:clamp(38px,6vw,62px)}
+h1 em,h2 em{font-style:italic;color:var(--rose-text)}
+h2{font-size:clamp(28px,3.6vw,40px)}
+h3{font-size:22px}
+p{margin:0;max-width:68ch}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-text)}
+.lede{font-size:18px;font-weight:300;color:var(--ink-2)}
+section{display:grid;gap:22px;min-width:0}
+.head{display:grid;gap:14px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);margin-top:8px}
+.facts div{padding:16px 16px 0 0;display:grid;gap:4px}
+.facts b{font:400 30px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:13px;color:var(--muted);line-height:1.4}
+@media (max-width:720px){.facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+.note{font-size:14px;color:var(--muted)}
+.callout{border-left:2px solid var(--rose);padding:4px 0 4px 16px;font-size:15px;color:var(--ink-2);max-width:72ch}
+
+/* drawings */
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:4px;display:grid;gap:12px;padding:20px 18px 16px;min-width:0}
+.sheet-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sheet-h b{font:400 21px/1.2 var(--serif)}
+.sheet-h span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dwg{display:block;width:100%;min-width:640px;height:auto}
+.dwg.mod{min-width:520px;max-width:620px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-2);list-style:none;margin:0;padding:0}
+.legend li{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:22px;height:12px;border-radius:2px;display:inline-block}
+.k-body{background:var(--solid)} .k-a{background:var(--fa)} .k-b{background:var(--fb)} .k-plate{background:var(--plate);box-shadow:inset 0 0 0 1px var(--rule)}
+.k-can{border:1.5px dashed var(--ink-2)} .k-lock{background:var(--lock)} .k-ctr{background:var(--counter);box-shadow:inset 0 0 0 1.5px var(--solid)}
+.pair{display:grid;gap:16px}
+
+/* svg classes */
+.booth{fill:none;stroke:var(--muted);stroke-width:8;stroke-dasharray:44 28}
+.wall{stroke:var(--fg);stroke-width:44}
+.plate{fill:var(--plate)}
+.canopy{fill:none;stroke:var(--ink-2);stroke-width:8;stroke-dasharray:30 20}
+.body{fill:var(--solid)}
+.joint{stroke:var(--surface);stroke-width:12}
+.fa{fill:var(--fa)} .fb{fill:var(--fb)}
+.lock{fill:var(--lock);stroke:var(--fg);stroke-width:6}
+.counter{fill:var(--counter);stroke:var(--solid);stroke-width:8}
+.cap{fill:var(--rose)}
+.dim line{stroke:var(--muted);stroke-width:5}
+text{font-family:var(--sans)}
+.t-dim{fill:var(--muted);font-size:62px;font-variant-numeric:tabular-nums}
+.t-zone{fill:var(--rose-text);font-size:58px;font-weight:700;letter-spacing:10px}
+.t-in{fill:var(--surface);font-size:78px;font-weight:700;letter-spacing:4px}
+.t-on{fill:var(--fg);font-size:70px;font-weight:700}
+.t-lab{fill:var(--fg);font-family:var(--serif);font-size:86px}
+.t-sub{fill:var(--muted);font-size:56px}
+.t-bay{fill:var(--rose-text);font-size:54px;font-weight:700;letter-spacing:6px}
+.t-sub2{fill:var(--fg);font-size:64px}
+.f-bg{fill:var(--surface)}
+.seam{stroke:var(--rule);stroke-width:6}
+.beam{fill:var(--glow)}
+.dl{fill:var(--rose)}
+.cass{fill:var(--cass)}
+.sw{fill:var(--sw);stroke:var(--sw-line);stroke-width:4}
+.pnl{fill:var(--solid)}
+.card{fill:none;stroke:var(--sw-line);stroke-width:4;stroke-dasharray:14 10}
+.lk{fill:var(--fb)}
+.halo{fill:var(--sw);stroke:var(--rose);stroke-width:12}
+.ln{fill:var(--rule)}
+.qr{fill:none;stroke:var(--fg);stroke-width:8}
+.door{fill:var(--lock);stroke:var(--fg);stroke-width:6}
+.ctr{fill:var(--counter);stroke:var(--solid);stroke-width:8}
+.floor{fill:var(--muted)}
+.latp{fill:none;stroke:var(--lat);stroke-width:4}
+.e-name{fill:var(--fg);font-family:var(--serif);font-size:96px}
+.e-sub{fill:var(--muted);font-size:50px;letter-spacing:2px}
+.plate-s{fill:var(--muted)}
+.box{fill:none;stroke:var(--sw-line);stroke-width:4}
+.z-hdr{fill:var(--bg)} .z-inf{fill:var(--plate)} .z-low{fill:var(--bg)} .z-band{fill:var(--plate)} .zl{stroke:var(--sw-line);stroke-width:4}
+.callout{fill:var(--rose)}
+.t-call{fill:#29221F;font-size:62px;font-weight:700}
+.lead{stroke:var(--rose);stroke-width:6}
+
+/* module block */
+.mod-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:820px){.mod-grid{grid-template-columns:minmax(0,1fr)}}
+ol.zones{margin:0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:z}
+ol.zones li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;counter-increment:z}
+ol.zones li::before{content:counter(z);width:28px;height:28px;border-radius:50%;background:var(--rose);color:#29221F;font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:2px}
+ol.zones b{font-weight:700}
+ol.zones span{display:block;color:var(--ink-2);font-size:15px}
+
+/* tables */
+.tbl{overflow-x:auto;border-top:1px solid var(--fg)}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--rule)}
+th{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+td b{font-weight:700}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+td em{font-style:italic;font-family:var(--serif);font-size:17px;color:var(--rose-text)}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.chip.a{background:var(--fa);color:#29221F}
+.chip.b{background:var(--fb);color:#FBF8F4}
+
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>div{display:grid;gap:10px;align-content:start;min-width:0}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
+ul.plain li::marker{color:var(--rose)}
+.confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;counter-reset:q}
+@media (max-width:760px){.confirm{grid-template-columns:minmax(0,1fr)}}
+.confirm div{border:1px solid var(--rule);border-radius:4px;padding:16px 18px;display:grid;gap:6px;background:var(--surface)}
+.confirm b{font:400 19px/1.2 var(--serif)}
+.confirm span{font-size:14.5px;color:var(--ink-2)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+.cw{fill:var(--cw)}
+.lbx{fill:var(--lbx);stroke:var(--fg);stroke-width:6}
+.lface{fill:var(--lface)}
+.chair{fill:var(--chair);stroke:var(--fg);stroke-width:5}
+.table{fill:var(--surface);stroke:var(--fg);stroke-width:8}
+.t-in2{fill:var(--fg);font-size:58px;font-weight:700;letter-spacing:4px}
+.lbx-e{fill:#FFF4E6;stroke:#C9A27E;stroke-width:6}
+.g0{stop-color:#FFE7C2;stop-opacity:.9} .g1{stop-color:#FFF4E6;stop-opacity:0}
+.lb-mark{fill:#29221F;font-size:64px;font-weight:700;letter-spacing:26px}
+.lb-big{fill:#29221F;font-family:var(--serif);font-size:170px}
+.lb-it{font-style:italic;fill:#7E5643}
+.lb-small{fill:#5B4E47;font-size:52px;letter-spacing:12px}
+.lb-halo{fill:none;stroke:#CFA594;stroke-width:16}
+.fold{stroke:var(--rose);stroke-width:8;stroke-dasharray:24 18}
+.k-cw{background:var(--cw)} .k-lbx{background:var(--lface)} .k-chair{background:var(--chair);box-shadow:inset 0 0 0 1.5px var(--fg)}
+.elev-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.elev-row{grid-template-columns:minmax(0,1fr)}}
+.elev-row .dwg,.mod-grid .dwg.elev{min-width:420px}
+
+.kick{fill:var(--solid)}
+.fas{fill:var(--solid)}
+.limit{stroke:var(--rose-text);stroke-width:6;stroke-dasharray:28 18}
+.t-lim{fill:var(--rose-text);font-size:52px;font-weight:700;letter-spacing:4px}
+.shot{margin:0;display:grid;gap:10px;min-width:0}
+.shot img{width:100%;height:auto;border-radius:4px;border:1px solid var(--rule);background:var(--surface);display:block}
+.shot figcaption{font-size:14px;color:var(--ink-2)}
+.shot figcaption b{color:var(--fg)}
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:700px){.shots{grid-template-columns:minmax(0,1fr)}}
+.viewer{display:grid;gap:12px}
+.stage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule);background:var(--surface)}
+.stage img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.92)}
+.stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:none}
+.stage .btn{position:absolute;left:50%;top:50%;translate:-50% -50%;box-shadow:0 18px 40px -16px rgba(0,0,0,.5)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:15px 26px;border-radius:999px;border:0;font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;background:var(--fg);color:var(--bg)}
+.btn:disabled{opacity:.7;cursor:progress}
+.btn:focus-visible,.views button:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.views{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.views button{border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.views span{font-size:13px;color:var(--muted);margin-left:6px}
+.swatches{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.swatches li{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:12px;align-items:start}
+.swatches i{grid-row:span 2;width:44px;height:44px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(41,34,31,.18)}
+.swatches b{font:400 18px/1.2 var(--serif)}
+.swatches span{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;gap:6px;align-content:start;padding-top:14px;border-top:2px solid var(--rose)}
+ol.steps li b{font:400 21px/1.2 var(--serif)}
+ol.steps li b::before{content:counter(s) ". ";color:var(--rose-text)}
+ol.steps li span{font-size:14.5px;color:var(--ink-2)}
+ol.steps.timeline{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+ol.steps.timeline li b::before{content:none}
+@media (max-width:760px){ol.steps{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">Maxsen · corner booth · 16 ft × 7 ft · build plan</span>
+    <h1>A lit corner, a product wall, <em>and a place to sit.</em></h1>
+    <p class="lede">The complete plan for the booth: renders, a 3D model you can turn, drawings to scale, what goes on every face, lighting, power, print, build day and timeline. Nothing in the booth stands taller than 1.8 m.</p>
+    <div class="facts">
+      <div><b>1.8 m</b><span>tallest object: lightbox, wall and stands</span></div>
+      <div><b>4,877 × 2,134</b><span>booth in mm (16 × 7 ft)</span></div>
+      <div><b>8 faces</b><span>of live products: 4 wall panels, 4 stand faces</span></div>
+      <div><b>2 + 4</b><span>consult tables and chairs</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="renders">
+    <div class="head">
+      <span class="eyebrow">Renders</span>
+      <h2 id="renders">How the booth looks</h2>
+      <p>Rendered from the 3D model below, with the real dimensions and the face artwork from this plan. The grey figures are 1.7 m tall, for scale.</p>
+    </div>
+    <figure class="shot hero">
+      <img src="renders/corner.jpg" alt="Render from the aisle corner: the small L of two stands showing control panels and smart locks in front, the carpentry product wall along the back and the fabric lightbox on the left, with two tables in the middle" width="1600" height="1000">
+      <figcaption><b>Aisle corner.</b> The view most visitors get first: the small L catches both aisles, with the lit back L behind it.</figcaption>
+    </figure>
+    <div class="shots">
+      <figure class="shot"><img src="renders/front.jpg" alt="Render from the front aisle, straight on, showing the four carpentry panels, both tables and the S1 stand" width="1600" height="1000" loading="lazy"><figcaption><b>Front aisle.</b> All four product panels, seen past the two consult tables.</figcaption></figure>
+      <figure class="shot"><img src="renders/side.jpg" alt="Render from the side aisle showing the smart locks face of S2 and the product wall beyond" width="1600" height="1000" loading="lazy"><figcaption><b>Side aisle.</b> The Lenovo lock line-up faces the second aisle.</figcaption></figure>
+      <figure class="shot"><img src="renders/inside.jpg" alt="Render from inside the booth near the tables, looking toward the lightbox and along the product wall" width="1600" height="1000" loading="lazy"><figcaption><b>From the tables.</b> The product wall, each panel lit by its own light channel, with the lightbox at the end.</figcaption></figure>
+      <figure class="shot"><img src="renders/top.jpg" alt="Render from above showing the two L shapes facing each other and the tables between them" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> Two L shapes facing each other, with the seating between.</figcaption></figure>
+    </div>
+    <div class="viewer">
+      <div class="stage" id="stage">
+        <img src="renders/corner.jpg" alt="" width="1600" height="1000">
+        <button class="btn" id="open3d" type="button">Open the 3D model</button>
+      </div>
+      <div class="views" id="views" hidden role="toolbar" aria-label="Camera views">
+        <button type="button" data-v="corner" aria-pressed="true">Aisle corner</button>
+        <button type="button" data-v="front" aria-pressed="false">Front aisle</button>
+        <button type="button" data-v="side" aria-pressed="false">Side aisle</button>
+        <button type="button" data-v="inside" aria-pressed="false">From the tables</button>
+        <button type="button" data-v="top" aria-pressed="false">From above</button>
+        <span>Drag to turn, pinch or scroll to zoom</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="plan">
+    <div class="head">
+      <span class="eyebrow">Layout</span>
+      <h2 id="plan">Top view and zones</h2>
+      <p>Drawn for a corner booth with a neighbour at the back and on the left, and aisles at the front and on the right. The lightbox and the carpentry wall meet in the back corner. The two stands bolt together into an L in the front right corner, diagonally opposite.</p>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="sheet-h"><b>Plan</b><span>drawn to scale · mm</span></div>
+      <div class="scroll">{{PLAN}}</div>
+      <ul class="legend">
+        <li><i class="k-lbx"></i>Fabric lightbox, lit face</li>
+        <li><i class="k-cw"></i>Carpentry wall, C1 to C4</li>
+        <li><i class="k-body"></i>Two-sided stand, S1 and S2</li>
+        <li><i class="k-a"></i>Product face toward visitors or the aisle</li>
+        <li><i class="k-b"></i>Stand face inside the L</li>
+        <li><i class="k-chair"></i>Chair, with a 600 mm round table</li>
+      </ul>
+    </figure>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Zone</th><th>Size</th><th>What happens there</th></tr></thead>
+        <tbody>
+          <tr><td><b>Product strip</b></td><td class="n">4,757 × 900</td><td>Visitors stand in front of the carpentry wall and press real switches</td></tr>
+          <tr><td><b>Consult zone</b></td><td class="n">3,557 × 600</td><td>Two tables, each with a consultant and a visitor, facing each other across the table</td></tr>
+          <tr><td><b>Centre path</b></td><td class="n">800 wide</td><td>Straight route from the front aisle to the Lusano and Nova panels</td></tr>
+          <tr><td><b>Inside the L</b></td><td class="n">800 × 1,000</td><td>Quiet pocket facing the tables: the S1 panel and the package cards</td></tr>
+          <tr><td><b>Side entry</b></td><td class="n">734 wide</td><td>Second way in, from the side aisle, above the small L</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="heights">
+    <div class="head">
+      <span class="eyebrow">Heights</span>
+      <h2 id="heights">Everything at or under 1.8 m</h2>
+      <p>At 1.8 m the walls stop just above eye level. People in the aisle see over the small L to the lit product wall, and the booth feels open rather than boxed in.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Object</th><th>Height</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><b>Fabric lightbox</b></td><td class="n">1,800</td><td>The full lit face, floor to top</td></tr>
+          <tr><td><b>Carpentry wall</b></td><td class="n">1,800</td><td>One flat face to the top. No fascia, roof or overhang</td></tr>
+          <tr><td><b>Two-sided stands</b></td><td class="n">1,800</td><td>One flat body to the top. No canopy, roof or overhang</td></tr>
+          <tr><td>Product name header</td><td class="n">1,400–1,800</td><td>Above the crowd's heads at the back of the strip</td></tr>
+          <tr><td>LED light channel</td><td class="n">1,360–1,390</td><td>Lights the products from just above, with no roof</td></tr>
+          <tr><td>Live products</td><td class="n">850–1,350</td><td>Hand height for standing visitors, eye height for seated ones</td></tr>
+          <tr><td>Info strip and QR</td><td class="n">550–850</td><td>Readable at a glance, easy to scan from a phone</td></tr>
+          <tr><td>Tables</td><td class="n">760</td><td>600 mm round tops</td></tr>
+          <tr><td>Chairs</td><td class="n">450 seat · 860 back</td><td>Upholstered in a rose fabric</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="walls">
+    <div class="head">
+      <span class="eyebrow">The big L</span>
+      <h2 id="walls">Carpentry wall and fabric lightbox</h2>
+      <p>The carpentry wall is one-sided: the products face into the booth and the back faces the neighbour. It is built as four panels of about 1,190 mm so it breaks down for the next show. The lightbox gives the booth its glow and carries the brand line.</p>
+    </div>
+    <figure class="sheet" style="margin:0">
+      <div class="sheet-h"><b>Carpentry wall, seen from inside the booth</b><span>4 panels · lightbox edge at left</span></div>
+      <div class="scroll">{{BACK}}</div>
+    </figure>
+    <div class="mod-grid">
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Fabric lightbox, seen from inside</b><span>front of booth at left</span></div>
+        <div class="scroll">{{LB}}</div>
+      </figure>
+      <div class="two" style="grid-template-columns:minmax(0,1fr)">
+        <div>
+          <h3>Fabric lightbox</h3>
+          <ul class="plain">
+            <li>2,134 × 1,800 × 120 mm aluminium frame along the full 7 ft side. About 1,980 mm of lit face shows beside the carpentry wall.</li>
+            <li>Printed fabric with a silicone edge (SEG) pushed into the frame, lit from behind by LED modules. A new graphic is a new print; the frame stays.</li>
+            <li>Artwork: the Maxsen wordmark, "The art of a single touch." and the Halo ring.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Carpentry wall</h3>
+          <ul class="plain">
+            <li>Four panels, about 1,190 × 1,800 × 150 mm, plywood on a timber frame with a champagne laminate face. They bolt to each other and to the lightbox frame, which keeps the L standing.</li>
+            <li>A slim bronze LED light channel runs across each panel just above the cassette and washes the products with warm light. Nothing overhangs the visitors.</li>
+            <li>Each panel takes an 800 × 500 mm product cassette that lifts out for transport.</li>
+            <li>Service hatch behind each lower panel for wiring, power strip, gateway and router.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="small">
+    <div class="head">
+      <span class="eyebrow">The small L</span>
+      <h2 id="small">Two two-sided stands at the front corner</h2>
+      <p>S1 runs along the front aisle and S2 along the side aisle. Bolted at the corner, the L braces itself, so each stand needs only a 400 mm steel base. There are no canopies and nothing reaches past the booth line. Outside faces pull people in from both aisles. Inside faces are what visitors see from the tables.</p>
+    </div>
+    <div class="elev-row">
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Outside faces</b><span>S1 front · S2 side</span></div>
+        <div class="scroll">{{LOUT}}</div>
+      </figure>
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Inside faces</b><span>S2 · S1, from the tables</span></div>
+        <div class="scroll">{{LIN}}</div>
+      </figure>
+    </div>
+    <div class="mod-grid">
+      <figure class="sheet" style="margin:0">
+        <div class="sheet-h"><b>Stand section and face zones</b><span>mm above floor</span></div>
+        <div class="scroll">{{MODULE}}</div>
+      </figure>
+      <ol class="zones">
+        <li><div><b>Header, 1,400–1,800</b><span>Product name in the Maxsen serif, to the top of the stand. Printed fabric (SEG) skin.</span></div></li>
+        <li><div><b>Light channel, 1,360–1,390</b><span>A 30 mm bronze channel with Lumi LED strip, standing 30 mm off the face. It lights the cassette below, so the stand needs no canopy.</span></div></li>
+        <li><div><b>Product cassette, 850–1,350</b><span>800 × 500 board, 18 mm ply with a laminate face, cut for 86-type back boxes. It lifts out with four thumb screws.</span></div></li>
+        <li><div><b>Info strip, 550–850</b><span>Finishes, a line of specs and a QR to pricing and packages.</span></div></li>
+        <li><div><b>Lower skin, 50–550</b><span>The Maxsen lattice on fabric. It zips off to reach the power strip and cables.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="faces">
+    <div class="head">
+      <span class="eyebrow">Face schedule</span>
+      <h2 id="faces">What goes where</h2>
+      <p>Products are the live samples to mount. One switch on every panel and face switches its own light channel, so every visitor can press something real.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Where</th><th>Faces</th><th>Live products</th><th>Header line</th></tr></thead>
+        <tbody>
+          <tr><td><b>C1</b> carpentry</td><td>Into booth</td><td><b>Lusano Prestige</b> × 9: Onyx, Champagne and Midnight, each in 1-, 2- and 3-gang</td><td><em>A jewel on your wall.</em></td></tr>
+          <tr><td><b>C2</b> carpentry</td><td>Into booth</td><td><b>Lusano Noble</b> × 3: Champagne, Ivory and Onyx, plus the <b>Halo</b> dimmer</td><td><em>A statement of art.</em></td></tr>
+          <tr><td><b>C3</b> carpentry</td><td>Into booth</td><td><b>Nova+ Pro</b> × 8: Champagne, Black, White and Silver in 2- and 4-gang, plus a <b>Nova S8</b> panel</td><td><em>A name on every key.</em></td></tr>
+          <tr><td><b>C4</b> carpentry</td><td>Into booth</td><td><b>Folio Ultra Slim</b> in White and Black marble, <b>Folio Ultra Slim Pro</b> in White and Grey, <b>Ark</b> in White, Gold, Silver and Black</td><td><em>So slim, it all but disappears.</em></td></tr>
+          <tr><td><b>S1</b> outside</td><td><span class="chip a">Front aisle</span></td><td><b>Nova S10</b> 10-inch and <b>Nova S7</b> with Alexa built in, both live</td><td><em>Every room, composed on one quiet screen.</em></td></tr>
+          <tr><td><b>S2</b> outside</td><td><span class="chip a">Side aisle</span></td><td>The six <b>Lenovo</b> smart locks and the home each one suits, supplied with MyDigitalLock. Room for a live lock if you want one here</td><td><em>Door and gate, secured with a touch.</em></td></tr>
+          <tr><td><b>S2</b> inside</td><td><span class="chip b">Inside the L</span></td><td><b>Nova S1</b> panel running Leave and Home modes, a door and window sensor and a motion sensor</td><td><em>Leave and Home, at the door.</em></td></tr>
+          <tr><td><b>S1</b> inside</td><td><span class="chip b">Inside the L</span></td><td>Cards for Ark Core, Nova+ Pro 10 and Lusano+ Premium Core, with a QR to this month's offers</td><td><em>Start with a package, add what you love.</em></td></tr>
+          <tr><td><b>Lightbox</b></td><td>Into booth</td><td>Backlit brand graphic</td><td><em>The art of a single touch.</em></td></tr>
+          <tr><td><b>Tables</b></td><td>Centre</td><td>iPad with the Smart Life app, a tray of loose finish plates, table tents with the WhatsApp QR (+65 8988 1882)</td><td>No header</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="light">
+    <div class="head">
+      <span class="eyebrow">Lighting</span>
+      <h2 id="light">Lit by your own products, with no roof</h2>
+      <p>There are no canopies, so the product lighting sits in the faces themselves: eight LED light channels with Lumi LED strip, one above each cassette. The lightbox lights the seating. Programme these scenes on the gateway and put them on the S8 and S10 panels.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Scene</th><th>When</th><th>Setting</th></tr></thead>
+        <tbody>
+          <tr><td><b>Welcome</b></td><td>Doors open</td><td>All light channels warm, 80%. Lightbox on</td></tr>
+          <tr><td><b>Showcase</b></td><td>Product detail and photos</td><td>Wall channels cooler, 100%. Stands at 80%</td></tr>
+          <tr><td><b>Consult</b></td><td>A visitor sits down</td><td>Wall channels warmest, 70%. Stands at 60%, so the tables feel calmer</td></tr>
+          <tr><td><b>Halo demo</b></td><td>Any time</td><td>C2's light channel follows the Halo ring for brightness and the face for warmth</td></tr>
+          <tr><td><b>Close</b></td><td>End of day</td><td>All light channels off, lightbox on until the hall closes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="power">
+    <div class="head">
+      <span class="eyebrow">Power and data</span>
+      <h2 id="power">Three power points and one network</h2>
+      <p>All 230 V wiring by a licensed electrical worker, on RCD-protected strips inside the hatches. Cables run behind the wall and under flat floor covers to the small L, never across the centre path.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Point</th><th>Feeds</th><th>Where it lands</th></tr></thead>
+        <tbody>
+          <tr><td><b>P1</b> 13 A</td><td>Lightbox LED drivers</td><td>Behind the lightbox, back corner</td></tr>
+          <tr><td><b>P2</b> 13 A</td><td>4 wall light channels, 20 live switches, Halo, S8, Ultra Gateway, router</td><td>C2 service hatch</td></tr>
+          <tr><td><b>P3</b> 13 A</td><td>4 stand light channels, S10, S7, S1, sensors</td><td>Inside S1, at the corner joint</td></tr>
+          <tr><td><b>Network</b></td><td>Ultra Gateway for Zigbee devices; a Reyee router on a mobile data SIM or the venue's wired line, for the iPads, S7 and the app demo</td><td>C4 service hatch</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Ask the fabricator to put the total load on their drawings and check it against the organiser's power order before you book points.</p>
+  </section>
+
+  <section aria-labelledby="print">
+    <div class="head">
+      <span class="eyebrow">Graphics</span>
+      <h2 id="print">Print schedule</h2>
+      <p>Visible sizes in mm. The printer adds bleed and silicone edging to suit the frames.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th><th>Size</th><th>Material</th><th>Content</th></tr></thead>
+        <tbody>
+          <tr><td><b>Lightbox face</b></td><td class="n">1</td><td class="n">2,134 × 1,800</td><td>Backlit SEG fabric</td><td>Wordmark, "The art of a single touch.", Halo ring</td></tr>
+          <tr><td><b>Wall headers</b></td><td class="n">4</td><td class="n">1,189 × 280</td><td>Printed vinyl on laminate</td><td>Product name and one line</td></tr>
+          <tr><td><b>Wall info strips</b></td><td class="n">4</td><td class="n">1,189 × 300</td><td>Printed vinyl on laminate</td><td>Finishes, specs, QR</td></tr>
+          <tr><td><b>Wall lower panels</b></td><td class="n">4</td><td class="n">1,189 × 500</td><td>Fabric on a removable frame</td><td>Maxsen lattice</td></tr>
+          <tr><td><b>Stand headers</b></td><td class="n">4</td><td class="n">1,000 × 280</td><td>SEG fabric</td><td>Product name and one line</td></tr>
+          <tr><td><b>Stand info strips</b></td><td class="n">4</td><td class="n">1,000 × 300</td><td>SEG fabric</td><td>Finishes, specs, QR</td></tr>
+          <tr><td><b>Stand lower skins</b></td><td class="n">4</td><td class="n">1,000 × 500</td><td>SEG fabric</td><td>Maxsen lattice</td></tr>
+          <tr><td><b>Lock line-up</b></td><td class="n">1</td><td class="n">800 × 500</td><td>Print on the S2 cassette</td><td>Six Lenovo locks and the home each suits</td></tr>
+          <tr><td><b>Package cards</b></td><td class="n">3</td><td class="n">225 × 460</td><td>Rigid board</td><td>Ark Core, Nova+ Pro 10, Lusano+ Premium Core, with QR</td></tr>
+          <tr><td><b>Table tents</b></td><td class="n">2</td><td class="n">A5</td><td>Card</td><td>WhatsApp QR and showroom booking</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="finish">
+    <div class="head">
+      <span class="eyebrow">Materials and finishes</span>
+      <h2 id="finish">One palette, from the Maxsen brand</h2>
+    </div>
+    <ul class="swatches">
+      <li><i style="background:#2B231F"></i><b>Midnight bronze</b><span>Light channels, stand ends and table legs. Powder-coated aluminium</span></li>
+      <li><i style="background:#D8C6AE"></i><b>Champagne laminate</b><span>Carpentry wall faces</span></li>
+      <li><i style="background:#F4EEE6"></i><b>Porcelain fabric</b><span>Stand skins and wall lower panels</span></li>
+      <li><i style="background:#F7E3C8"></i><b>Warm white light</b><span>Lightbox fabric, lit from behind</span></li>
+      <li><i style="background:#CFA594"></i><b>Rose</b><span>Chair fabric and graphic accents</span></li>
+      <li><i style="background:#B3A291"></i><b>Taupe carpet</b><span>Booth floor, so the white tables stand out</span></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="journey">
+    <div class="head">
+      <span class="eyebrow">Visitor journey</span>
+      <h2 id="journey">From the aisle to a booked visit</h2>
+    </div>
+    <ol class="steps">
+      <li><b>Notice</b><span>The lit screens on S1 and the lock line-up on S2 catch both aisles. The lightbox glows behind.</span></li>
+      <li><b>Touch</b><span>On the product wall, visitors press a Lusano key and the light above it answers. They turn Halo and watch C2 warm up.</span></li>
+      <li><b>Sit</b><span>A consultant takes them to a table, opens the Smart Life app on the iPad and picks finishes from the tray.</span></li>
+      <li><b>Leave with a plan</b><span>The package cards face the tables. Visitors scan the QR or save the WhatsApp number to book a showroom visit or a site check.</span></li>
+    </ol>
+    <div class="two">
+      <div>
+        <h3>Two people on the booth</h3>
+        <ul class="plain">
+          <li><b>Host</b> at the small L: greets from both aisles, demos the panels and the locks, brings people in.</li>
+          <li><b>Consultant</b> at the tables: walks the product wall with visitors, then sits down to price a package.</li>
+          <li>At busy times, a third person stays on the product wall.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Keep on hand</h3>
+        <ul class="plain">
+          <li>Spare switches for each finish on the wall, in case one is knocked.</li>
+          <li>A charged power bank for each iPad.</li>
+          <li>Microfibre cloths: crystal and glass faces show fingerprints.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="build">
+    <div class="head">
+      <span class="eyebrow">Build day</span>
+      <h2 id="build">Set-up in about four and a half hours</h2>
+      <p>Target times with a crew of three, to confirm with the fabricator after the workshop test build. Dismantling takes about two hours.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Step</th><th>Task</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td>Mark the booth, lay and tape the carpet</td><td class="n">30 min</td></tr>
+          <tr><td class="n">2</td><td>Stand the lightbox frame, fit the fabric</td><td class="n">30 min</td></tr>
+          <tr><td class="n">3</td><td>Stand the four carpentry panels, level and bolt them to each other and the lightbox</td><td class="n">60 min</td></tr>
+          <tr><td class="n">4</td><td>Stand S1 and S2 on their base plates, bolt the corner</td><td class="n">30 min</td></tr>
+          <tr><td class="n">5</td><td>Fit the cassettes, connect power, gateway and router</td><td class="n">45 min</td></tr>
+          <tr><td class="n">6</td><td>Fit headers, info strips and lower skins</td><td class="n">30 min</td></tr>
+          <tr><td class="n">7</td><td>Tables, chairs, iPads, finish tray, table tents</td><td class="n">15 min</td></tr>
+          <tr><td class="n">8</td><td>Run every scene, press every switch, clean the faces</td><td class="n">30 min</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="time">
+    <div class="head">
+      <span class="eyebrow">Timeline</span>
+      <h2 id="time">Eight weeks to show day</h2>
+    </div>
+    <ol class="steps timeline">
+      <li><b>8 weeks before</b><span>Confirm the venue rules: open sides, height, power points. Decide where your lock stands go.</span></li>
+      <li><b>7 weeks</b><span>Brief the fabricator with this plan. Ask for shop drawings and a quote.</span></li>
+      <li><b>6 weeks</b><span>Sign off drawings and finishes. Start the artwork.</span></li>
+      <li><b>4 weeks</b><span>Fabrication starts. Artwork final and sent to print.</span></li>
+      <li><b>2 weeks</b><span>Test build in the workshop. Programme the scenes. Push-test the small L.</span></li>
+      <li><b>1 week</b><span>Pack and label the crates, with a spare parts kit.</span></li>
+      <li><b>Day before</b><span>Build at the venue, following the build day steps.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="bom">
+    <div class="head">
+      <span class="eyebrow">Bill of materials</span>
+      <h2 id="bom">What to build, and what to pull from stock</h2>
+    </div>
+    <div class="two">
+      <div>
+        <h3>Build once</h3>
+        <div class="tbl">
+          <table style="min-width:0">
+            <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr><td>Fabric lightbox, 2,134 × 1,800 × 120, with LED backlight and printed fabric</td><td class="n">1</td></tr>
+              <tr><td>Carpentry wall panel, about 1,190 × 1,800 × 150, with an LED light channel</td><td class="n">4</td></tr>
+              <tr><td>Two-sided stand, 1,000 × 1,800 × 200, with two LED light channels, 400 base and corner bolts</td><td class="n">2</td></tr>
+              <tr><td>Product cassette, 800 × 500</td><td class="n">8</td></tr>
+              <tr><td>Round table, 600 mm, 760 high</td><td class="n">2</td></tr>
+              <tr><td>Chair, rose upholstery</td><td class="n">4</td></tr>
+              <tr><td>Padded crates for panels and stands, cassette case, fabric bag</td><td class="n">1 set</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3>Pull from stock</h3>
+        <div class="tbl">
+          <table style="min-width:0">
+            <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr><td>Lusano Prestige switches</td><td class="n">9</td></tr>
+              <tr><td>Lusano Noble switches</td><td class="n">3</td></tr>
+              <tr><td>Nova+ Pro switches</td><td class="n">8</td></tr>
+              <tr><td>Folio, Folio Pro and Ark switches</td><td class="n">2 + 2 + 4</td></tr>
+              <tr><td>Halo dimmer</td><td class="n">1</td></tr>
+              <tr><td>Nova panels: S1, S7, S8, S10</td><td class="n">1 each</td></tr>
+              <tr><td>Lumi LED strip, for 8 light channels</td><td class="n">about 7 m</td></tr>
+              <tr><td>Door and window sensor, motion sensor</td><td class="n">1 each</td></tr>
+              <tr><td>Ultra Gateway and a Reyee router</td><td class="n">1 each</td></tr>
+              <tr><td>iPads with the Smart Life app</td><td class="n">2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="reuse">
+    <div class="head">
+      <span class="eyebrow">Reuse</span>
+      <h2 id="reuse">The same pieces at the next venue</h2>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Space</th><th>Set-up</th></tr></thead>
+        <tbody>
+          <tr><td><b>Corner on the other side</b></td><td>Mirror the plan: the lightbox moves to the right, the small L to the front left. Every piece works either way round</td></tr>
+          <tr><td><b>Inline booth, aisle at the front only</b></td><td>Carpentry wall along the back, lightbox on one side, the two stands as one fin each side of the entrance</td></tr>
+          <tr><td><b>10 × 10 ft</b> shell booth</td><td>Lightbox on one side and two carpentry panels along the back, with one stand and one table</td></tr>
+          <tr><td><b>20 × 10 ft</b> or island</td><td>Carpentry wall and lightbox as a back L, with both stands bolted into a 2 m spine in the middle</td></tr>
+          <tr><td><b>Showroom</b></td><td>The carpentry panels become a 4.8 m product wall; the lightbox goes in the window</td></tr>
+          <tr><td><b>New launch</b></td><td>Make a new cassette and new graphics for one panel or face, and reprint the lightbox fabric</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="conf">
+    <div class="head">
+      <span class="eyebrow">Before fabrication</span>
+      <h2 id="conf">Four things to confirm</h2>
+    </div>
+    <div class="confirm">
+      <div><b>Your digital lock stands</b><span>There's no room for separate lock stands in this layout. Either they become S1 and S2 in the small L, or a live lock goes on the S2 outside face. Tell me which, and the size of your stands.</span></div>
+      <div><b>Which corner is open</b><span>Drawn with aisles at the front and on the right. If the open side is the left, mirror the plan.</span></div>
+      <div><b>Power</b><span>Three 13 A points: lightbox, carpentry wall and the small L. Book them with the organiser once the fabricator confirms the load.</span></div>
+      <div><b>Offers at the event</b><span>The site lists a free S8 with qualifying packages at the showroom, and a free S1 with any F3 Ultra and a Premium Core package. Confirm both apply at the booth before the package cards are printed.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Products from the Maxsen collection, October 2026. Drawings 1 unit = 1 mm. Renders are illustrative.</span>
+    <span>Sales and WhatsApp +65 8988 1882</span>
+  </footer>
+</div>
+
+<script>
+{{SCENE}}
+(() => {
+  const btn = document.getElementById('open3d'), stage = document.getElementById('stage'), bar = document.getElementById('views');
+  let viewer = null;
+  const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; btn.textContent = 'Loading the model';
+    try {
+      if (!window.THREE) await load('https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js');
+      if (!THREE.OrbitControls) await load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js');
+      try { await document.fonts.ready; } catch (e) {}
+      stage.querySelector('img').hidden = true; btn.hidden = true;
+      stage.classList.add('live');
+      viewer = MaxsenBooth.mount(THREE, stage, { view: 'corner' });
+      bar.hidden = false;
+    } catch (e) {
+      btn.disabled = false; btn.textContent = 'The model did not load. Try again';
+    }
+  });
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button[data-v]');
+    if (!b || !viewer) return;
+    viewer.view(b.dataset.v);
+    bar.querySelectorAll('button[data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  });
+})();
+</script>
