@@ -111,6 +111,17 @@ window.MaxsenBooth = (function () {
         g.fillStyle = i % 3 === 1 ? '#b48a4a' : '#9aa0a6'; g.fillRect(x - 22, y + 180, 44, 8);
       }
     } },
+    secure: { name: 'Smart locks', sub: 'LENOVO · WITH MYDIGITALLOCK', info: ['F3 Ultra · The Sun solar · gate locks', 'Nova S1: Leave and Home at the door'], draw(g, cx) {
+      const f = ['#5a2a1b', '#2a2622', '#3a3d42', '#5a2a1b', '#2a2622', '#3a3d42'];
+      for (let i = 0; i < 6; i++) {
+        const x = cx - 340 + i * 90, y = Y(1330);
+        g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 10; g.shadowOffsetY = 5;
+        g.fillStyle = f[i]; rr(g, x - 28, y, 56, 290, 12); g.fill(); g.restore();
+        g.fillStyle = '#111'; rr(g, x - 19, y + 28, 38, 54, 5); g.fill();
+        g.fillStyle = i % 3 === 1 ? '#b48a4a' : '#9aa0a6'; g.fillRect(x - 19, y + 170, 38, 7);
+      }
+      screen(g, cx + 270, 1100, 130, 130, 2);
+    } },
     s1: { name: 'Nova S1', sub: 'LEAVE AND HOME, AT THE DOOR', info: ['Door and window sensor', 'Motion sensor'], draw(g, cx) {
       screen(g, cx - 150, 1100, 130, 130, 2);
       g.fillStyle = '#f4f2ee'; rr(g, cx + 40, Y(1160), 36, 90, 6); g.fill(); rr(g, cx + 84, Y(1150), 18, 70, 5); g.fill();
@@ -250,18 +261,22 @@ window.MaxsenBooth = (function () {
       channel(x, CW, 0, 1);
     });
 
-    // the small L of two two-sided stands at the front right corner
+    // one two-sided stand set at 45° across the front right corner:
+    // the outer face looks at both aisles, the inner face looks at the tables
     const dark = bronze;
-    const s1out = std({ map: faceTexture(THREE, 1000, 'panels', 'stand'), roughness: .85 });
-    const s1in = std({ map: faceTexture(THREE, 1000, 'packages', 'stand'), roughness: .85 });
-    add(new THREE.BoxGeometry(1, H, .2), [dark, dark, dark, dark, s1out, s1in], 4.177, H / 2, 1.834);
-    const s2out = std({ map: faceTexture(THREE, 1000, 'locks', 'stand'), roughness: .85 });
-    const s2in = std({ map: faceTexture(THREE, 1000, 's1', 'stand'), roughness: .85 });
-    add(new THREE.BoxGeometry(.2, H, 1), [s2out, s2in, dark, dark, dark, dark], 4.577, H / 2, 1.234);
-    add(new THREE.BoxGeometry(1, .012, .4), bronze, 4.177, .006, 1.834, { cast: false });
-    add(new THREE.BoxGeometry(.4, .012, 1), bronze, 4.577, .006, 1.234, { cast: false });
-    channel(4.177, 1.934, 0, 1); channel(3.977, 1.734, 0, -1);
-    channel(4.677, 1.234, 1, 0); channel(4.477, 1.234, -1, 0);
+    const outer = std({ map: faceTexture(THREE, 1000, 'panels', 'stand'), roughness: .85 });
+    const inner = std({ map: faceTexture(THREE, 1000, 'secure', 'stand'), roughness: .85 });
+    const stand = new THREE.Group(); stand.position.set(4.277, 0, 1.534); stand.rotation.y = Math.PI / 4; scene.add(stand);
+    const sm = (geo, mat, x, y, z) => { const o = new THREE.Mesh(geo, mat); o.position.set(x, y, z); o.castShadow = true; o.receiveShadow = true; stand.add(o); return o; };
+    sm(new THREE.BoxGeometry(1, H, .2), [dark, dark, dark, dark, outer, inner], 0, H / 2, 0);
+    sm(new THREE.BoxGeometry(1, .012, .6), bronze, 0, .006, 0);
+    [1, -1].forEach(n => {
+      sm(new THREE.BoxGeometry(.84, .03, .03), bronze, 0, 1.375, n * .115);
+      sm(new THREE.BoxGeometry(.8, .006, .006), barMat, 0, 1.362, n * .131);
+      const sp = new THREE.SpotLight(0xffdcb0, .8, 1.6, 1.0, .9, 1.8);
+      sp.position.set(0, 1.42, n * .32); sp.target.position.set(0, 1.0, n * .1);
+      stand.add(sp); stand.add(sp.target);
+    });
 
     // two consult tables with two chairs each
     const top = std({ color: 0xFBF8F4, roughness: .35 });
@@ -285,6 +300,8 @@ window.MaxsenBooth = (function () {
     // an iPad and a finish tray on the tables
     add(new THREE.BoxGeometry(.25, .008, .18), std({ color: 0x1b1b1d, roughness: .3 }), .85, .764, 1.32);
     add(new THREE.BoxGeometry(.3, .02, .2), std({ color: 0xCBB79C, roughness: .5 }), 2.95, .77, 1.34);
+    const menu = std({ color: 0x29221F, roughness: .6 });
+    [.85, 2.95].forEach(x => { const m = add(new THREE.BoxGeometry(.15, .21, .012), menu, x + .12, .865, 1.55); m.rotation.x = -.15; });
 
     // two visitors for scale, 1.7 m
     const skin = std({ color: 0x9E968D, roughness: .9 });
@@ -305,6 +322,7 @@ window.MaxsenBooth = (function () {
     front:  { pos: [2.44, 1.6, 6.2], at: [2.44, .85, .95], fov: 40, label: 'Front aisle', people: true },
     inside: { pos: [3.95, 1.6, 1.3], at: [.8, .85, .45], fov: 54, label: 'From the tables', people: false },
     side:   { pos: [7.4, 1.6, 0.9], at: [3.3, .85, 1.1], fov: 40, label: 'Side aisle', people: false },
+    stand:  { pos: [3.0, 1.55, 0.27], at: [4.2, 1.0, 1.46], fov: 50, label: 'Corner stand, inside', people: false },
     top:    { pos: [5.6, 6.4, 5.6], at: [2.3, 0, 1.0], fov: 36, label: 'From above', people: false }
   };
 

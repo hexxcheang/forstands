@@ -55,21 +55,17 @@ for cx, chairs in ((850, (200, 1100)), (2950, (2300, 3200))):
 p.append(t(850, 1365, "T1", "t-on"))
 p.append(t(2950, 1365, "T2", "t-on"))
 p.append(hdim(1500, 2300, 1760, "800 path", ty=1850))
-# front corner L of two two-sided stands
-p.append('<rect x="3677" y="1734" width="1000" height="200" class="body"/>')
-p.append('<rect x="4477" y="734" width="200" height="1000" class="body"/>')
-p.append('<rect x="3692" y="1934" width="970" height="30" class="fa"/>')
-p.append('<rect x="3692" y="1704" width="770" height="30" class="fb"/>')
-p.append('<rect x="4677" y="749" width="30" height="1185" class="fa"/>')
-p.append('<rect x="4447" y="749" width="30" height="955" class="fb"/>')
-p.append(t(4177, 1862, "S1", "t-in"))
-p.append(t(4577, 1234, "S2", "t-in", extra=' transform="rotate(-90 4577 1234)" dy="28"'))
-p.append(t(3990, 1010, "INSIDE THE L", "t-bay"))
-p.append(t(3990, 1120, "S2: S1 panel", "t-sub2"))
-p.append(t(3990, 1210, "S1: packages", "t-sub2"))
-p.append(t(4177, 2240, "Aisle: control panels", "t-sub"))
-p.append(t(4990, 1234, "Aisle: smart locks", "t-sub", extra=' transform="rotate(90 4990 1234)"'))
-plan = f'<svg viewBox="-460 -520 5860 2940" class="dwg" role="img" aria-label="Top view: a fabric lightbox on the left 7 ft side, a one-sided carpentry product wall along the 16 ft back, two tables with chairs in the centre, and an L of two two-sided stands at the front right corner">{"".join(p)}</svg>'
+# one two-sided stand at 45 degrees across the front right corner
+p.append('<g transform="translate(4277 1534) rotate(-45)">'
+         '<rect x="-500" y="-300" width="1000" height="600" class="plate"/>'
+         '<rect x="-500" y="-100" width="1000" height="200" class="body"/>'
+         '<rect x="-485" y="100" width="970" height="30" class="fa"/>'
+         '<rect x="-485" y="-130" width="970" height="30" class="fb"/>'
+         + t(0, 26, "STAND", "t-in") + '</g>')
+p.append(t(4560, 2250, "Aisle face: control panels", "t-sub"))
+p.append(t(3900, 930, "Inside face: smart locks", "t-sub"))
+p.append(t(3900, 1010, "faces the tables", "t-sub"))
+plan = f'<svg viewBox="-460 -520 5860 2940" class="dwg" role="img" aria-label="Top view: a fabric lightbox on the left 7 ft side, a one-sided carpentry product wall along the 16 ft back, two tables with chairs in the centre, and one two-sided stand set at 45 degrees across the front right corner">{"".join(p)}</svg>'
 
 # ---------------- Elevation pieces (1.8 m, same layout as the 3D artwork) ----------------
 H = 1800
@@ -102,6 +98,9 @@ def products(c, kind):
         g.append(sq(c-150, 1100, 130, 130, "pnl"))
         g.append(top(c+58, 1160, 36, 90, "sw")); g.append(top(c+93, 1150, 18, 70, "sw"))
         g.append(f'<circle cx="{c+210:.0f}" cy="{sv(1110)}" r="40" class="sw"/>')
+    elif kind == "secure":
+        for k in range(6): g.append(top(c-340+k*90, 1330, 56, 290, "lk"))
+        g.append(sq(c+270, 1100, 130, 130, "pnl"))
     elif kind == "packages":
         for k in range(3): g.append(top(c-247.5+k*245, 1330, 225, 460, "card"))
     return "".join(g)
@@ -151,20 +150,14 @@ for i in range(4):
 elevBack = elev(parts, W, "Carpentry wall as seen from inside the booth, with the lightbox edge on the left")
 parts = [lightbox(0, D - CW), f'<rect x="{D-CW}" y="0" width="{CW}" height="{H}" class="cw"/>']
 elevLB = elev(parts, D, "Fabric lightbox as seen from inside the booth")
-parts = [face(0, 1000, "Control panels", "ONE QUIET SCREEN", "panels"),
-         f'<line x1="1000" y1="0" x2="1000" y2="{H}" class="fold"/>',
-         face(1000, 1000, "Smart locks", "LENOVO · MYDIGITALLOCK", "locks")]
-elevLout = elev(parts, 2000, "Front corner L, outside faces unfolded")
-parts = [face(0, 1000, "Nova S1", "LEAVE AND HOME", "s1"),
-         f'<line x1="1000" y1="0" x2="1000" y2="{H}" class="fold"/>',
-         face(1000, 1000, "Packages", "THIS MONTH'S OFFERS", "packages")]
-elevLin = elev(parts, 2000, "Front corner L, inside faces unfolded")
+elevLout = elev([face(0, 1000, "Control panels", "ONE QUIET SCREEN", "panels")], 1000, "Corner stand, aisle face: control panels")
+elevLin = elev([face(0, 1000, "Smart locks", "LENOVO · MYDIGITALLOCK", "secure")], 1000, "Corner stand, inside face: smart locks and the S1 panel")
 
 # ---------------- Stand section + face zones (1.8 m) ----------------
 F = 2060
 def sh(h): return F - h
 m = []
-m.append(f'<rect x="400" y="{sh(8)-8}" width="400" height="16" class="plate-s"/>')
+m.append(f'<rect x="300" y="{sh(8)-8}" width="600" height="16" class="plate-s"/>')
 m.append(f'<rect x="500" y="{sh(1800)}" width="200" height="{1800-8}" class="body"/>')
 m.append(f'<rect x="500" y="{sh(1350)}" width="18" height="500" class="cass"/><rect x="682" y="{sh(1350)}" width="18" height="500" class="cass"/>')
 for xx in (470, 700):
@@ -174,7 +167,7 @@ for hh in (1250, 1100, 950):
     m.append(f'<rect x="518" y="{sh(hh)-43}" width="50" height="86" class="box"/><rect x="632" y="{sh(hh)-43}" width="50" height="86" class="box"/>')
 m.append(t(600, 70, "SECTION", "t-zone"))
 m.append(hdim(500, 700, 190, "200 body", ty=160))
-m.append(hdim(400, 800, F+90, "400 base", ty=F+170))
+m.append(hdim(300, 900, F+90, "600 base", ty=F+170))
 m.append(vdim(250, sh(1800), sh(0), "1,800", "left"))
 x0 = 1400
 m.append(t(x0+500, 70, "ONE FACE", "t-zone"))
