@@ -10,7 +10,7 @@
   --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
   --rose:#CFA594; --rose-text:#7E5643;
   --solid:#29221F; --fa:#CFA594; --fb:#7E5643; --plate:#EDE3D7; --lock:#DCCBBB; --counter:#F4EEE6;
-  --cass:#EADFD2; --cw:#C9B29A; --lbx:#F6EBDD; --lface:#F2B872; --chair:#DCCBBB; --sw:#FBF8F4; --sw-line:#8C7B70; --glow:rgba(255,206,150,.28); --lat:rgba(126,86,67,.16);
+  --cass:#EADFD2; --rugc:#8A7563; --leaf:#6F7A5C; --cw:#C9B29A; --lbx:#F6EBDD; --lface:#F2B872; --chair:#DCCBBB; --sw:#FBF8F4; --sw-line:#8C7B70; --glow:rgba(255,206,150,.28); --lat:rgba(126,86,67,.16);
   --serif:"EB Garamond",Garamond,Georgia,serif;
   --sans:"Lato","Helvetica Neue",Arial,sans-serif;
 }
@@ -18,13 +18,13 @@
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
   --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
-  --cass:#3A2F29; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  --cass:#3A2F29; --rugc:#6E5C4D; --leaf:#93A07E; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
   --solid:#E9DED2; --fa:#CFA594; --fb:#8A5E49; --plate:#2A221E; --lock:#4A3A31; --counter:#241D19;
-  --cass:#3A2F29; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
+  --cass:#3A2F29; --rugc:#6E5C4D; --leaf:#93A07E; --cw:#6E5747; --lbx:#3A2F29; --lface:#E8A85C; --chair:#4A3A31; --sw:#F4EEE6; --sw-line:#B3A69C; --glow:rgba(255,206,150,.16); --lat:rgba(221,184,166,.14);
   color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
@@ -183,6 +183,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 .views button{border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .views button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .views span{font-size:13px;color:var(--muted);margin-left:6px}
+.views[hidden]{display:none}
 .swatches{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media (max-width:760px){.swatches{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .swatches li{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:12px;align-items:start}
@@ -197,17 +198,34 @@ ol.steps li span{font-size:14.5px;color:var(--ink-2)}
 ol.steps.timeline{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 ol.steps.timeline li b::before{content:none}
 @media (max-width:760px){ol.steps{grid-template-columns:minmax(0,1fr)}}
+
+.rug{fill:var(--rugc);opacity:.28}
+.tree{fill:none;stroke:var(--leaf);stroke-width:10;stroke-dasharray:18 14}
+.pot{fill:var(--solid)}
+.niche{fill:var(--plate);stroke:var(--sw-line);stroke-width:3}
+.lip{fill:var(--fg)}
+.door{fill:none;stroke:var(--sw-line);stroke-width:4}
+.doorl{stroke:var(--sw-line);stroke-width:4}
+.gap{stroke:var(--solid);stroke-width:10}
+.gapbg{fill:var(--solid)}
+.lbx-frame{fill:none;stroke:#C9A27E;stroke-width:6}
+.lb-mark2{fill:#FBF3E8;font-size:54px;font-weight:700;letter-spacing:24px}
+.ba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+.ba .shot{position:relative}
+.tag{position:absolute;left:10px;top:10px;z-index:1;font:700 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:7px 10px;border-radius:999px;background:var(--bg);color:var(--muted);border:1px solid var(--rule)}
+.k-rug{background:var(--rugc);opacity:.5;border-radius:50%!important;width:14px!important;height:14px!important} .k-tree{border:1.5px dashed var(--leaf);border-radius:50%!important;width:14px!important;height:14px!important}
+.tag.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 </style>
 
 <div class="wrap">
   <header class="head">
     <span class="eyebrow">Maxsen · corner booth · 16 ft × 7 ft · build plan</span>
     <h1>A lit corner, a product wall, <em>and a place to sit.</em></h1>
-    <p class="lede">The complete plan for the booth: renders, a 3D model you can turn, drawings to scale, what goes on every face, lighting, power, print, build day and timeline. Nothing in the booth stands taller than 1.8 m.</p>
+    <p class="lede">The complete plan for the booth, refined to feel simple and warm: fewer products with room to breathe, lit niches, a wall that floats on light, and a seating corner that feels like a living room. Nothing stands taller than 1.8 m.</p>
     <div class="facts">
       <div><b>1.8 m</b><span>tallest object: lightbox, wall and stands</span></div>
       <div><b>4,877 × 2,134</b><span>booth in mm (16 × 7 ft)</span></div>
-      <div><b>6 faces</b><span>of live products: 4 wall panels, 2 stand faces</span></div>
+      <div><b>20 products</b><span>on show, down from 39, each in its own lit niche</span></div>
       <div><b>2 + 4</b><span>consult tables and chairs</span></div>
     </div>
   </header>
@@ -216,16 +234,16 @@ ol.steps.timeline li b::before{content:none}
     <div class="head">
       <span class="eyebrow">Renders</span>
       <h2 id="renders">How the booth looks</h2>
-      <p>Rendered from the 3D model below, with the real dimensions and the face artwork from this plan. The grey figures are 1.7 m tall, for scale.</p>
+      <p>Rendered from the 3D model below, with the real dimensions and the face artwork from this plan. The lightbox shows one of your own Maxsen homes. The grey figures are 1.7 m tall, for scale.</p>
     </div>
     <figure class="shot hero">
       <img src="renders/corner.jpg" alt="Render from the aisle corner: one two-sided stand set at 45° across the corner showing control panels, the carpentry product wall along the back and the fabric lightbox on the left, with two tables in the middle" width="1600" height="1000">
-      <figcaption><b>Aisle corner.</b> The view most visitors get first: the corner stand, angled across the corner, faces both aisles at once, with the lit back L behind it.</figcaption>
+      <figcaption><b>Aisle corner.</b> The view most visitors get first: the corner stand faces both aisles, with the warm lightbox, the olive tree and the seating behind.</figcaption>
     </figure>
     <div class="shots">
-      <figure class="shot"><img src="renders/front.jpg" alt="Render from the front aisle, straight on, showing the four carpentry panels, both tables and the corner stand" width="1600" height="1000" loading="lazy"><figcaption><b>Front aisle.</b> All four product panels, seen past the two consult tables.</figcaption></figure>
-      <figure class="shot"><img src="renders/stand.jpg" alt="Render of the inside face of the corner stand, seen from the tables: six Lenovo smart locks and the Nova S1 panel" width="1600" height="1000" loading="lazy"><figcaption><b>Corner stand, inside.</b> The smart lock face looks back at the tables.</figcaption></figure>
-      <figure class="shot"><img src="renders/inside.jpg" alt="Render from inside the booth near the tables, looking toward the lightbox and along the product wall" width="1600" height="1000" loading="lazy"><figcaption><b>From the tables.</b> The product wall, each panel lit by its own light channel, with the lightbox at the end.</figcaption></figure>
+      <figure class="shot"><img src="renders/front.jpg" alt="Render from the front aisle, straight on, showing the four carpentry panels, both tables and the corner stand" width="1600" height="1000" loading="lazy"><figcaption><b>Front aisle.</b> Four calm niches, a line of light along the floor, and the seating on its rugs.</figcaption></figure>
+      <figure class="shot"><img src="renders/stand.jpg" alt="Render of the inside face of the corner stand, seen from the tables: three Lenovo smart locks and the Nova S1 panel in a lit niche" width="1600" height="1000" loading="lazy"><figcaption><b>Corner stand, inside.</b> Three locks and the S1 panel, in one niche, facing the tables.</figcaption></figure>
+      <figure class="shot"><img src="renders/inside.jpg" alt="Render from inside the booth near the tables, looking toward the lightbox and along the product wall" width="1600" height="1000" loading="lazy"><figcaption><b>From the tables.</b> Each niche lit from its hidden top edge, with the lightbox photograph at the end.</figcaption></figure>
       <figure class="shot"><img src="renders/top.jpg" alt="Render from above showing the back L, the two tables and the corner stand" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> The back L, the seating, and the corner stand closing the front corner.</figcaption></figure>
     </div>
     <div class="viewer">
@@ -245,6 +263,38 @@ ol.steps.timeline li b::before{content:none}
     </div>
   </section>
 
+  <section aria-labelledby="ba">
+    <div class="head">
+      <span class="eyebrow">Before and after</span>
+      <h2 id="ba">Simpler, warmer, more like a home</h2>
+      <p>The same booth, the same footprint and the same 1.8 m limit. What changed is how much is on show and how it is lit.</p>
+    </div>
+    <div class="ba">
+      <figure class="shot"><span class="tag">Before</span><img src="renders/before-corner.jpg" alt="The first version from the aisle corner, with busier faces and a text lightbox" width="1600" height="1000" loading="lazy"></figure>
+      <figure class="shot"><span class="tag on">After</span><img src="renders/corner.jpg" alt="The refined version from the aisle corner, with lit niches, a photo lightbox, rugs and an olive tree" width="1600" height="1000" loading="lazy"></figure>
+      <figure class="shot"><span class="tag">Before</span><img src="renders/before-front.jpg" alt="The first version from the front aisle" width="1600" height="1000" loading="lazy"></figure>
+      <figure class="shot"><span class="tag on">After</span><img src="renders/front.jpg" alt="The refined version from the front aisle" width="1600" height="1000" loading="lazy"></figure>
+      <figure class="shot"><span class="tag">Before</span><img src="renders/before-inside.jpg" alt="The first version from the tables" width="1600" height="1000" loading="lazy"></figure>
+      <figure class="shot"><span class="tag on">After</span><img src="renders/inside.jpg" alt="The refined version from the tables" width="1600" height="1000" loading="lazy"></figure>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Change</th><th>Before</th><th>After</th></tr></thead>
+        <tbody>
+          <tr><td><b>Products</b></td><td>39 on show, in grids</td><td>20, one line per face, with room around them</td></tr>
+          <tr><td><b>Text</b></td><td>Name, subtitle, specs and a QR on every face</td><td>The product name only. One QR, on the table menus</td></tr>
+          <tr><td><b>Product light</b></td><td>A visible bronze light bar on each face</td><td>A 40 mm niche, lit from a strip hidden in its top edge</td></tr>
+          <tr><td><b>Base</b></td><td>Faces down to the floor</td><td>Floating 50 mm up, on a warm line of light</td></tr>
+          <tr><td><b>Lightbox</b></td><td>Words on a cream background, full brightness</td><td>One photograph of a Maxsen home at dusk, dimmed to about 65%</td></tr>
+          <tr><td><b>Lower faces</b></td><td>Lattice pattern</td><td>Plain. The lattice is kept for the brand, not repeated on every panel</td></tr>
+          <tr><td><b>Seating</b></td><td>Tables and chairs on the carpet</td><td>Round wool rugs, marble-look tops, flowers, and an olive tree by the lightbox</td></tr>
+          <tr><td><b>Joints</b></td><td>Panels butted together</td><td>10 mm dark shadow gaps, so the joins read as a rhythm</td></tr>
+          <tr><td><b>Clutter</b></td><td>No storage</td><td>A flush, lockable cupboard in C4 for bags, boxes and spares</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section aria-labelledby="plan">
     <div class="head">
       <span class="eyebrow">Layout</span>
@@ -253,7 +303,7 @@ ol.steps.timeline li b::before{content:none}
     </div>
     <figure class="sheet" style="margin:0">
       <div class="sheet-h"><b>Plan</b><span>drawn to scale · mm</span></div>
-      <div class="scroll"><svg viewBox="-460 -520 5860 2940" class="dwg" role="img" aria-label="Top view: a fabric lightbox on the left 7 ft side, a one-sided carpentry product wall along the 16 ft back, two tables with chairs in the centre, and one two-sided stand set at 45 degrees across the front right corner"><g class="dim"><line x1="0" y1="-420" x2="4877" y2="-420"/><line x1="0" y1="-460" x2="0" y2="-380"/><line x1="4877" y1="-460" x2="4877" y2="-380"/></g><text x="2438.5" y="-450" class="t-dim" text-anchor="middle">16 ft · 4,877 mm</text><text x="2438.5" y="-110" class="t-zone" text-anchor="middle">BACK · NEIGHBOUR</text><text x="1900" y="2330" class="t-zone" text-anchor="middle">FRONT · OPEN TO THE AISLE</text><text x="5150" y="1067.0" class="t-zone" text-anchor="middle" transform="rotate(90 5150 1067.0)">SIDE · OPEN</text><g class="dim"><line x1="-200" y1="0" x2="-200" y2="2134"/><line x1="-240" y1="0" x2="-160" y2="0"/><line x1="-240" y1="2134" x2="-160" y2="2134"/></g><text x="-240" y="1087.0" class="t-dim" text-anchor="end">7 ft</text><rect x="0" y="0" width="4877" height="2134" class="booth"/><rect x="120" y="0" width="4757" height="150" class="cw"/><line x1="1309" y1="0" x2="1309" y2="150" class="joint"/><line x1="2498" y1="0" x2="2498" y2="150" class="joint"/><line x1="3688" y1="0" x2="3688" y2="150" class="joint"/><rect x="135" y="150" width="1159" height="30" class="fa"/><text x="715" y="100" class="t-in2" text-anchor="middle">C1</text><text x="715" y="580" class="t-lab" text-anchor="middle">Lusano Prestige</text><text x="715" y="670" class="t-sub" text-anchor="middle">9 switches</text><rect x="1324" y="150" width="1159" height="30" class="fa"/><text x="1904" y="100" class="t-in2" text-anchor="middle">C2</text><text x="1904" y="580" class="t-lab" text-anchor="middle">Lusano Noble + Halo</text><text x="1904" y="670" class="t-sub" text-anchor="middle">3 switches · Halo</text><rect x="2514" y="150" width="1159" height="30" class="fa"/><text x="3093" y="100" class="t-in2" text-anchor="middle">C3</text><text x="3093" y="580" class="t-lab" text-anchor="middle">Nova+ Pro + S8</text><text x="3093" y="670" class="t-sub" text-anchor="middle">8 switches · S8 panel</text><rect x="3703" y="150" width="1159" height="30" class="fa"/><text x="4282" y="100" class="t-in2" text-anchor="middle">C4</text><text x="4282" y="580" class="t-lab" text-anchor="middle">Folio + Ark</text><text x="4282" y="670" class="t-sub" text-anchor="middle">8 switches</text><rect x="0" y="0" width="120" height="2134" class="lbx"/><rect x="120" y="180" width="30" height="1924" class="lface"/><text x="78" y="1067.0" class="t-bay" text-anchor="middle" transform="rotate(-90 78 1067.0)">FABRIC LIGHTBOX</text><rect x="200" y="1150" width="400" height="400" rx="70" class="chair"/><rect x="1100" y="1150" width="400" height="400" rx="70" class="chair"/><circle cx="850" cy="1350" r="300" class="table"/><rect x="2300" y="1150" width="400" height="400" rx="70" class="chair"/><rect x="3200" y="1150" width="400" height="400" rx="70" class="chair"/><circle cx="2950" cy="1350" r="300" class="table"/><text x="850" y="1365" class="t-on" text-anchor="middle">T1</text><text x="2950" y="1365" class="t-on" text-anchor="middle">T2</text><g class="dim"><line x1="1500" y1="1760" x2="2300" y2="1760"/><line x1="1500" y1="1720" x2="1500" y2="1800"/><line x1="2300" y1="1720" x2="2300" y2="1800"/></g><text x="1900.0" y="1850" class="t-dim" text-anchor="middle">800 path</text><g transform="translate(4277 1534) rotate(-45)"><rect x="-500" y="-300" width="1000" height="600" class="plate"/><rect x="-500" y="-100" width="1000" height="200" class="body"/><rect x="-485" y="100" width="970" height="30" class="fa"/><rect x="-485" y="-130" width="970" height="30" class="fb"/><text x="0" y="26" class="t-in" text-anchor="middle">STAND</text></g><text x="4560" y="2250" class="t-sub" text-anchor="middle">Aisle face: control panels</text><text x="3900" y="930" class="t-sub" text-anchor="middle">Inside face: smart locks</text><text x="3900" y="1010" class="t-sub" text-anchor="middle">faces the tables</text></svg></div>
+      <div class="scroll"><svg viewBox="-460 -520 5860 2940" class="dwg" role="img" aria-label="Top view: a fabric lightbox on the left 7 ft side, a one-sided carpentry product wall along the 16 ft back, two tables with chairs in the centre, and one two-sided stand set at 45 degrees across the front right corner"><g class="dim"><line x1="0" y1="-420" x2="4877" y2="-420"/><line x1="0" y1="-460" x2="0" y2="-380"/><line x1="4877" y1="-460" x2="4877" y2="-380"/></g><text x="2438.5" y="-450" class="t-dim" text-anchor="middle">16 ft · 4,877 mm</text><text x="2438.5" y="-110" class="t-zone" text-anchor="middle">BACK · NEIGHBOUR</text><text x="1900" y="2330" class="t-zone" text-anchor="middle">FRONT · OPEN TO THE AISLE</text><text x="5150" y="1067.0" class="t-zone" text-anchor="middle" transform="rotate(90 5150 1067.0)">SIDE · OPEN</text><g class="dim"><line x1="-200" y1="0" x2="-200" y2="2134"/><line x1="-240" y1="0" x2="-160" y2="0"/><line x1="-240" y1="2134" x2="-160" y2="2134"/></g><text x="-240" y="1087.0" class="t-dim" text-anchor="end">7 ft</text><rect x="0" y="0" width="4877" height="2134" class="booth"/><circle cx="850" cy="1350" r="700" class="rug"/><circle cx="2950" cy="1350" r="700" class="rug"/><rect x="120" y="0" width="4757" height="150" class="cw"/><line x1="1309" y1="0" x2="1309" y2="150" class="joint"/><line x1="2498" y1="0" x2="2498" y2="150" class="joint"/><line x1="3688" y1="0" x2="3688" y2="150" class="joint"/><rect x="135" y="150" width="1159" height="30" class="fa"/><text x="715" y="100" class="t-in2" text-anchor="middle">C1</text><text x="715" y="580" class="t-lab" text-anchor="middle">Lusano Prestige</text><text x="715" y="670" class="t-sub" text-anchor="middle">3 switches</text><rect x="1324" y="150" width="1159" height="30" class="fa"/><text x="1904" y="100" class="t-in2" text-anchor="middle">C2</text><text x="1904" y="580" class="t-lab" text-anchor="middle">Lusano Noble + Halo</text><text x="1904" y="670" class="t-sub" text-anchor="middle">2 switches · Halo</text><rect x="2514" y="150" width="1159" height="30" class="fa"/><text x="3093" y="100" class="t-in2" text-anchor="middle">C3</text><text x="3093" y="580" class="t-lab" text-anchor="middle">Nova+ Pro + S8</text><text x="3093" y="670" class="t-sub" text-anchor="middle">3 switches · S8 panel</text><rect x="3703" y="150" width="1159" height="30" class="fa"/><text x="4282" y="100" class="t-in2" text-anchor="middle">C4</text><text x="4282" y="580" class="t-lab" text-anchor="middle">Folio + Ark</text><text x="4282" y="670" class="t-sub" text-anchor="middle">4 switches</text><rect x="0" y="0" width="120" height="2134" class="lbx"/><rect x="120" y="180" width="30" height="1924" class="lface"/><text x="78" y="1067.0" class="t-bay" text-anchor="middle" transform="rotate(-90 78 1067.0)">FABRIC LIGHTBOX</text><circle cx="420" cy="1860" r="300" class="tree"/><circle cx="420" cy="1860" r="200" class="pot"/><text x="420" y="2250" class="t-sub" text-anchor="middle">Olive tree</text><rect x="200" y="1150" width="400" height="400" rx="70" class="chair"/><rect x="1100" y="1150" width="400" height="400" rx="70" class="chair"/><circle cx="850" cy="1350" r="300" class="table"/><rect x="2300" y="1150" width="400" height="400" rx="70" class="chair"/><rect x="3200" y="1150" width="400" height="400" rx="70" class="chair"/><circle cx="2950" cy="1350" r="300" class="table"/><text x="850" y="1365" class="t-on" text-anchor="middle">T1</text><text x="2950" y="1365" class="t-on" text-anchor="middle">T2</text><g class="dim"><line x1="1500" y1="1760" x2="2300" y2="1760"/><line x1="1500" y1="1720" x2="1500" y2="1800"/><line x1="2300" y1="1720" x2="2300" y2="1800"/></g><text x="1900.0" y="1850" class="t-dim" text-anchor="middle">800 path</text><g transform="translate(4277 1534) rotate(-45)"><rect x="-500" y="-300" width="1000" height="600" class="plate"/><rect x="-500" y="-100" width="1000" height="200" class="body"/><rect x="-485" y="100" width="970" height="30" class="fa"/><rect x="-485" y="-130" width="970" height="30" class="fb"/><text x="0" y="26" class="t-in" text-anchor="middle">STAND</text></g><text x="4560" y="2250" class="t-sub" text-anchor="middle">Aisle face: control panels</text><text x="3900" y="930" class="t-sub" text-anchor="middle">Inside face: smart locks</text><text x="3900" y="1010" class="t-sub" text-anchor="middle">faces the tables</text></svg></div>
       <ul class="legend">
         <li><i class="k-lbx"></i>Fabric lightbox, lit face</li>
         <li><i class="k-cw"></i>Carpentry wall, C1 to C4</li>
@@ -261,6 +311,8 @@ ol.steps.timeline li b::before{content:none}
         <li><i class="k-a"></i>Product face toward visitors or the aisle</li>
         <li><i class="k-b"></i>Stand face toward the tables</li>
         <li><i class="k-chair"></i>Chair, with a 600 mm round table</li>
+        <li><i class="k-rug"></i>Wool rug, 1.4 m</li>
+        <li><i class="k-tree"></i>Olive tree</li>
       </ul>
     </figure>
     <div class="tbl">
@@ -290,12 +342,13 @@ ol.steps.timeline li b::before{content:none}
           <tr><td><b>Fabric lightbox</b></td><td class="n">1,800</td><td>The full lit face, floor to top</td></tr>
           <tr><td><b>Carpentry wall</b></td><td class="n">1,800</td><td>One flat face to the top. No fascia, roof or overhang</td></tr>
           <tr><td><b>Corner stand</b></td><td class="n">1,800</td><td>One flat body to the top. No canopy, roof or overhang</td></tr>
-          <tr><td>Product name header</td><td class="n">1,400–1,800</td><td>Above the crowd's heads at the back of the strip</td></tr>
-          <tr><td>LED light channel</td><td class="n">1,360–1,390</td><td>Lights the products from just above, with no roof</td></tr>
-          <tr><td>Live products</td><td class="n">850–1,350</td><td>Hand height for standing visitors, eye height for seated ones</td></tr>
-          <tr><td>Info strip and QR</td><td class="n">550–850</td><td>Readable at a glance, easy to scan from a phone</td></tr>
+          <tr><td>Product name</td><td class="n">1,500–1,600</td><td>The only text on each face</td></tr>
+          <tr><td>Lit niche</td><td class="n">850–1,350</td><td>40 mm deep, with the LED strip hidden in its top edge</td></tr>
+          <tr><td>Live products</td><td class="n">1,100</td><td>One line, at hand height standing and eye height seated</td></tr>
+          <tr><td>Floating base</td><td class="n">0–50</td><td>Set back, with a warm LED line that lights the floor</td></tr>
+          <tr><td>Olive tree</td><td class="n">about 1,750</td><td>In a dark ceramic pot beside the lightbox</td></tr>
           <tr><td>Tables</td><td class="n">760</td><td>600 mm round tops</td></tr>
-          <tr><td>Chairs</td><td class="n">450 seat · 860 back</td><td>Upholstered in a rose fabric</td></tr>
+          <tr><td>Chairs</td><td class="n">450 seat · 860 back</td><td>Upholstered in a rose fabric, on round wool rugs</td></tr>
         </tbody>
       </table>
     </div>
@@ -309,29 +362,29 @@ ol.steps.timeline li b::before{content:none}
     </div>
     <figure class="sheet" style="margin:0">
       <div class="sheet-h"><b>Carpentry wall, seen from inside the booth</b><span>4 panels · lightbox edge at left</span></div>
-      <div class="scroll"><svg viewBox="-460 -110 5437 1990" class="dwg elev" role="img" aria-label="Carpentry wall as seen from inside the booth, with the lightbox edge on the left"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="120" height="1800" class="lbx-e"/><rect x="120" y="0" width="1189" height="1800" class="f-bg"/><rect x="120" y="1250" width="1189" height="500" fill="url(#lat)"/><rect x="120" y="1750" width="1189" height="50" class="kick"/><text x="715" y="210" class="e-name" text-anchor="middle">Lusano Prestige</text><text x="715" y="285" class="e-sub" text-anchor="middle">SWAROVSKI CRYSTALS</text><rect x="315" y="450" width="800" height="500" class="cass"/><polygon points="315,440 1115,440 1115,620 315,620" class="beam"/><rect x="295" y="410" width="840" height="30" class="body"/><rect x="315" y="436" width="800" height="5" class="dl"/><rect x="522" y="507" width="86" height="86" class="sw"/><rect x="672" y="507" width="86" height="86" class="sw"/><rect x="822" y="507" width="86" height="86" class="sw"/><rect x="522" y="657" width="86" height="86" class="sw"/><rect x="672" y="657" width="86" height="86" class="sw"/><rect x="822" y="657" width="86" height="86" class="sw"/><rect x="522" y="807" width="86" height="86" class="sw"/><rect x="672" y="807" width="86" height="86" class="sw"/><rect x="822" y="807" width="86" height="86" class="sw"/><rect x="315" y="1000" width="420" height="24" class="ln"/><rect x="315" y="1045" width="300" height="20" class="ln"/><rect x="315" y="1105" width="360" height="16" class="ln"/><rect x="1005" y="960" width="110" height="110" class="qr"/><line x1="120" y1="0" x2="120" y2="1800" class="seam"/><rect x="1309" y="0" width="1189" height="1800" class="f-bg"/><rect x="1309" y="1250" width="1189" height="500" fill="url(#lat)"/><rect x="1309" y="1750" width="1189" height="50" class="kick"/><text x="1904" y="210" class="e-name" text-anchor="middle">Lusano Noble</text><text x="1904" y="285" class="e-sub" text-anchor="middle">WITH THE HALO DIMMER</text><rect x="1504" y="450" width="800" height="500" class="cass"/><polygon points="1504,440 2304,440 2304,620 1504,620" class="beam"/><rect x="1484" y="410" width="840" height="30" class="body"/><rect x="1504" y="436" width="800" height="5" class="dl"/><rect x="1659" y="515" width="90" height="90" class="sw"/><rect x="1859" y="515" width="90" height="90" class="sw"/><rect x="2059" y="515" width="90" height="90" class="sw"/><circle cx="1904" cy="790" r="62" class="halo"/><rect x="1504" y="1000" width="420" height="24" class="ln"/><rect x="1504" y="1045" width="300" height="20" class="ln"/><rect x="1504" y="1105" width="360" height="16" class="ln"/><rect x="2194" y="960" width="110" height="110" class="qr"/><line x1="1309" y1="0" x2="1309" y2="1800" class="seam"/><rect x="2498" y="0" width="1189" height="1800" class="f-bg"/><rect x="2498" y="1250" width="1189" height="500" fill="url(#lat)"/><rect x="2498" y="1750" width="1189" height="50" class="kick"/><text x="3093" y="210" class="e-name" text-anchor="middle">Nova+ Pro</text><text x="3093" y="285" class="e-sub" text-anchor="middle">A NAME ON EVERY KEY</text><rect x="2693" y="450" width="800" height="500" class="cass"/><polygon points="2693,440 3493,440 3493,620 2693,620" class="beam"/><rect x="2673" y="410" width="840" height="30" class="body"/><rect x="2693" y="436" width="800" height="5" class="dl"/><rect x="2825" y="487" width="86" height="86" class="sw"/><rect x="2975" y="487" width="86" height="86" class="sw"/><rect x="3125" y="487" width="86" height="86" class="sw"/><rect x="3275" y="487" width="86" height="86" class="sw"/><rect x="2825" y="627" width="86" height="86" class="sw"/><rect x="2975" y="627" width="86" height="86" class="sw"/><rect x="3125" y="627" width="86" height="86" class="sw"/><rect x="3275" y="627" width="86" height="86" class="sw"/><rect x="2976" y="786" width="234" height="128" class="pnl"/><rect x="2693" y="1000" width="420" height="24" class="ln"/><rect x="2693" y="1045" width="300" height="20" class="ln"/><rect x="2693" y="1105" width="360" height="16" class="ln"/><rect x="3383" y="960" width="110" height="110" class="qr"/><line x1="2498" y1="0" x2="2498" y2="1800" class="seam"/><rect x="3688" y="0" width="1189" height="1800" class="f-bg"/><rect x="3688" y="1250" width="1189" height="500" fill="url(#lat)"/><rect x="3688" y="1750" width="1189" height="50" class="kick"/><text x="4282" y="210" class="e-name" text-anchor="middle">Folio + Ark</text><text x="4282" y="285" class="e-sub" text-anchor="middle">SLIM AND SIMPLE</text><rect x="3882" y="450" width="800" height="500" class="cass"/><polygon points="3882,440 4682,440 4682,620 3882,620" class="beam"/><rect x="3862" y="410" width="840" height="30" class="body"/><rect x="3882" y="436" width="800" height="5" class="dl"/><rect x="4014" y="507" width="86" height="86" class="sw"/><rect x="4164" y="507" width="86" height="86" class="sw"/><rect x="4314" y="507" width="86" height="86" class="sw"/><rect x="4464" y="507" width="86" height="86" class="sw"/><rect x="4014" y="727" width="86" height="86" class="sw"/><rect x="4164" y="727" width="86" height="86" class="sw"/><rect x="4314" y="727" width="86" height="86" class="sw"/><rect x="4464" y="727" width="86" height="86" class="sw"/><rect x="3882" y="1000" width="420" height="24" class="ln"/><rect x="3882" y="1045" width="300" height="20" class="ln"/><rect x="3882" y="1105" width="360" height="16" class="ln"/><rect x="4572" y="960" width="110" height="110" class="qr"/><line x1="3688" y1="0" x2="3688" y2="1800" class="seam"/><rect x="-100" y="1800" width="5077" height="16" class="floor"/><line x1="-100" y1="0" x2="4977" y2="0" class="limit"/><text x="4967" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
+      <div class="scroll"><svg viewBox="-460 -110 5437 1990" class="dwg elev" role="img" aria-label="Carpentry wall as seen from inside the booth, with the lightbox edge on the left"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="120" height="1800" class="lbx-e"/><rect x="120" y="0" width="4757" height="1750" class="gapbg"/><rect x="125" y="0" width="1179" height="1750" class="f-bg"/><rect x="155" y="1750" width="1119" height="50" class="kick"/><rect x="155" y="1782" width="1119" height="6" class="dl"/><text x="715" y="240" class="e-name" text-anchor="middle">Lusano Prestige</text><rect x="315" y="450" width="800" height="500" class="niche"/><polygon points="315,456 1115,456 1115,650 315,650" class="beam"/><rect x="315" y="450" width="800" height="6" class="lip"/><rect x="472" y="657" width="86" height="86" class="sw"/><rect x="672" y="657" width="86" height="86" class="sw"/><rect x="872" y="657" width="86" height="86" class="sw"/><line x1="125" y1="0" x2="125" y2="1750" class="gap"/><rect x="1314" y="0" width="1179" height="1750" class="f-bg"/><rect x="1344" y="1750" width="1119" height="50" class="kick"/><rect x="1344" y="1782" width="1119" height="6" class="dl"/><text x="1904" y="240" class="e-name" text-anchor="middle">Lusano Noble</text><rect x="1504" y="450" width="800" height="500" class="niche"/><polygon points="1504,456 2304,456 2304,650 1504,650" class="beam"/><rect x="1504" y="450" width="800" height="6" class="lip"/><rect x="1649" y="655" width="90" height="90" class="sw"/><rect x="2069" y="655" width="90" height="90" class="sw"/><circle cx="1904" cy="700" r="62" class="halo"/><line x1="1314" y1="0" x2="1314" y2="1750" class="gap"/><rect x="2504" y="0" width="1179" height="1750" class="f-bg"/><rect x="2534" y="1750" width="1119" height="50" class="kick"/><rect x="2534" y="1782" width="1119" height="6" class="dl"/><text x="3093" y="240" class="e-name" text-anchor="middle">Nova+ Pro</text><rect x="2693" y="450" width="800" height="500" class="niche"/><polygon points="2693,456 3493,456 3493,650 2693,650" class="beam"/><rect x="2693" y="450" width="800" height="6" class="lip"/><rect x="2750" y="657" width="86" height="86" class="sw"/><rect x="2890" y="657" width="86" height="86" class="sw"/><rect x="3030" y="657" width="86" height="86" class="sw"/><rect x="3176" y="636" width="234" height="128" class="pnl"/><line x1="2504" y1="0" x2="2504" y2="1750" class="gap"/><rect x="3693" y="0" width="1179" height="1750" class="f-bg"/><rect x="3723" y="1750" width="1119" height="50" class="kick"/><rect x="3723" y="1782" width="1119" height="6" class="dl"/><text x="4282" y="240" class="e-name" text-anchor="middle">Folio + Ark</text><rect x="3882" y="450" width="800" height="500" class="niche"/><polygon points="3882,456 4682,456 4682,650 3882,650" class="beam"/><rect x="3882" y="450" width="800" height="6" class="lip"/><rect x="3999" y="657" width="86" height="86" class="sw"/><rect x="4159" y="657" width="86" height="86" class="sw"/><rect x="4319" y="657" width="86" height="86" class="sw"/><rect x="4479" y="657" width="86" height="86" class="sw"/><rect x="3762" y="1160" width="1040" height="560" class="door"/><line x1="4282" y1="1160" x2="4282" y2="1720" class="doorl"/><text x="4282" y="1420" class="e-sub" text-anchor="middle">staff cupboard</text><line x1="3693" y1="0" x2="3693" y2="1750" class="gap"/><rect x="-100" y="1800" width="5077" height="16" class="floor"/><line x1="-100" y1="0" x2="4977" y2="0" class="limit"/><text x="4967" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
     </figure>
     <div class="mod-grid">
       <figure class="sheet" style="margin:0">
         <div class="sheet-h"><b>Fabric lightbox, seen from inside</b><span>front of booth at left</span></div>
-        <div class="scroll"><svg viewBox="-460 -110 2694 1990" class="dwg elev" role="img" aria-label="Fabric lightbox as seen from inside the booth"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="1984" height="1800" class="lbx-e"/><rect x="0" y="0" width="1984" height="1800" fill="url(#glow)"/><text x="992" y="330" class="lb-mark" text-anchor="middle">MAXSEN</text><text x="992" y="720" class="lb-big" text-anchor="middle">The art of</text><text x="992" y="920" class="lb-big lb-it" text-anchor="middle">a single touch.</text><text x="992" y="1060" class="lb-small" text-anchor="middle">SMART HOME · SINGAPORE</text><circle cx="992" cy="1360" r="150" class="lb-halo"/><rect x="1984" y="0" width="150" height="1800" class="cw"/><rect x="-100" y="1800" width="2334" height="16" class="floor"/><line x1="-100" y1="0" x2="2234" y2="0" class="limit"/><text x="2224" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
+        <div class="scroll"><svg viewBox="-460 -110 2694 1990" class="dwg elev" role="img" aria-label="Fabric lightbox as seen from inside the booth"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><image href="assets/lightbox-photo.jpg" x="0" y="0" width="1984" height="1800" preserveAspectRatio="xMidYMid slice" opacity=".9"/><rect x="0" y="0" width="1984" height="1800" class="lbx-frame"/><text x="992" y="1650" class="lb-mark2" text-anchor="middle">MAXSEN</text><rect x="1984" y="0" width="150" height="1800" class="cw"/><rect x="-100" y="1800" width="2334" height="16" class="floor"/><line x1="-100" y1="0" x2="2234" y2="0" class="limit"/><text x="2224" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
       </figure>
       <div class="two" style="grid-template-columns:minmax(0,1fr)">
         <div>
           <h3>Fabric lightbox</h3>
           <ul class="plain">
             <li>2,134 × 1,800 × 120 mm aluminium frame along the full 7 ft side. About 1,980 mm of lit face shows beside the carpentry wall.</li>
-            <li>Printed fabric with a silicone edge (SEG) pushed into the frame, lit from behind by LED modules. A new graphic is a new print; the frame stays.</li>
-            <li>Artwork: the Maxsen wordmark, "The art of a single touch." and the Halo ring.</li>
+            <li>Printed fabric with a silicone edge (SEG) pushed into the frame, lit from behind by LED modules on a dimmer. Run it at about 65%, so it reads as atmosphere rather than signage.</li>
+            <li>Artwork: one photograph of a Maxsen home at dusk, with the wordmark small at the bottom. Drawn here with your evening living room photo.</li>
           </ul>
         </div>
         <div>
           <h3>Carpentry wall</h3>
           <ul class="plain">
-            <li>Four panels, about 1,190 × 1,800 × 150 mm, plywood on a timber frame with a champagne laminate face. They bolt to each other and to the lightbox frame, which keeps the back L standing.</li>
-            <li>A slim bronze LED light channel runs across each panel just above the cassette and washes the products with warm light. Nothing overhangs the visitors.</li>
-            <li>Each panel takes an 800 × 500 mm product cassette that lifts out for transport.</li>
-            <li>Service hatch behind each lower panel for wiring, power strip, gateway and router.</li>
+            <li>Four panels, about 1,190 × 1,800 × 150 mm, plywood on a timber frame with a champagne laminate face. They bolt to each other and to the lightbox frame, which keeps the back L standing. A 10 mm dark shadow gap between panels makes the joins look intentional.</li>
+            <li>Each panel has one 800 × 500 mm niche, 40 mm deep, with Lumi LED strip hidden in its top edge. You see the glow on the products, never the light fitting. The niche back lifts out for transport.</li>
+            <li>The wall stands on a 50 mm base set back from the face, with an LED line under it, so it seems to float on light.</li>
+            <li>C4's lower face is a flush, lockable cupboard for bags, brochures and spares. The other lower panels open for wiring and the gateway.</li>
           </ul>
         </div>
       </div>
@@ -342,29 +395,28 @@ ol.steps.timeline li b::before{content:none}
     <div class="head">
       <span class="eyebrow">The corner stand</span>
       <h2 id="small">One two-sided stand, angled across the front corner</h2>
-      <p>One 1,000 mm stand at 45° does the work of two: its aisle face looks out at the corner, so people in both aisles see it, and its inside face looks back at the tables. It stands on its own, so it gets a wider 600 mm steel base, set fully inside the booth line. There is no canopy.</p>
+      <p>One 1,000 mm stand at 45° does the work of two: its aisle face looks out at the corner, so people in both aisles see it, and its inside face looks back at the tables. It floats on the same lit base as the wall, over a flush 600 mm steel plate, fully inside the booth line. There is no canopy.</p>
     </div>
     <div class="elev-row">
       <figure class="sheet" style="margin:0">
         <div class="sheet-h"><b>Aisle face</b><span>toward the corner</span></div>
-        <div class="scroll"><svg viewBox="-460 -110 1560 1990" class="dwg elev" role="img" aria-label="Corner stand, aisle face: control panels"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="1000" height="1800" class="f-bg"/><rect x="0" y="1250" width="1000" height="500" fill="url(#lat)"/><rect x="0" y="1750" width="1000" height="50" class="kick"/><text x="500" y="210" class="e-name" text-anchor="middle">Control panels</text><text x="500" y="285" class="e-sub" text-anchor="middle">ONE QUIET SCREEN</text><rect x="100" y="450" width="800" height="500" class="cass"/><polygon points="100,440 900,440 900,620 100,620" class="beam"/><rect x="80" y="410" width="840" height="30" class="body"/><rect x="100" y="436" width="800" height="5" class="dl"/><rect x="180" y="595" width="300" height="190" class="pnl"/><rect x="575" y="620" width="230" height="140" class="pnl"/><rect x="100" y="1000" width="420" height="24" class="ln"/><rect x="100" y="1045" width="300" height="20" class="ln"/><rect x="100" y="1105" width="360" height="16" class="ln"/><rect x="790" y="960" width="110" height="110" class="qr"/><line x1="0" y1="0" x2="0" y2="1800" class="seam"/><rect x="-100" y="1800" width="1200" height="16" class="floor"/><line x1="-100" y1="0" x2="1100" y2="0" class="limit"/><text x="1090" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
+        <div class="scroll"><svg viewBox="-460 -110 1560 1990" class="dwg elev" role="img" aria-label="Corner stand, aisle face: control panels"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="1000" height="1750" class="f-bg"/><rect x="30" y="1750" width="940" height="50" class="kick"/><rect x="30" y="1782" width="940" height="6" class="dl"/><text x="500" y="240" class="e-name" text-anchor="middle">Control panels</text><rect x="100" y="450" width="800" height="500" class="niche"/><polygon points="100,456 900,456 900,650 100,650" class="beam"/><rect x="100" y="450" width="800" height="6" class="lip"/><rect x="210" y="605" width="300" height="190" class="pnl"/><rect x="575" y="630" width="230" height="140" class="pnl"/><line x1="0" y1="0" x2="0" y2="1750" class="gap"/><rect x="-100" y="1800" width="1200" height="16" class="floor"/><line x1="-100" y1="0" x2="1100" y2="0" class="limit"/><text x="1090" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
       </figure>
       <figure class="sheet" style="margin:0">
         <div class="sheet-h"><b>Inside face</b><span>toward the tables</span></div>
-        <div class="scroll"><svg viewBox="-460 -110 1560 1990" class="dwg elev" role="img" aria-label="Corner stand, inside face: smart locks and the S1 panel"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="1000" height="1800" class="f-bg"/><rect x="0" y="1250" width="1000" height="500" fill="url(#lat)"/><rect x="0" y="1750" width="1000" height="50" class="kick"/><text x="500" y="210" class="e-name" text-anchor="middle">Smart locks</text><text x="500" y="285" class="e-sub" text-anchor="middle">LENOVO · MYDIGITALLOCK</text><rect x="100" y="450" width="800" height="500" class="cass"/><polygon points="100,440 900,440 900,620 100,620" class="beam"/><rect x="80" y="410" width="840" height="30" class="body"/><rect x="100" y="436" width="800" height="5" class="dl"/><rect x="132" y="470" width="56" height="290" class="lk"/><rect x="222" y="470" width="56" height="290" class="lk"/><rect x="312" y="470" width="56" height="290" class="lk"/><rect x="402" y="470" width="56" height="290" class="lk"/><rect x="492" y="470" width="56" height="290" class="lk"/><rect x="582" y="470" width="56" height="290" class="lk"/><rect x="705" y="635" width="130" height="130" class="pnl"/><rect x="100" y="1000" width="420" height="24" class="ln"/><rect x="100" y="1045" width="300" height="20" class="ln"/><rect x="100" y="1105" width="360" height="16" class="ln"/><rect x="790" y="960" width="110" height="110" class="qr"/><line x1="0" y1="0" x2="0" y2="1800" class="seam"/><rect x="-100" y="1800" width="1200" height="16" class="floor"/><line x1="-100" y1="0" x2="1100" y2="0" class="limit"/><text x="1090" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
+        <div class="scroll"><svg viewBox="-460 -110 1560 1990" class="dwg elev" role="img" aria-label="Corner stand, inside face: smart locks and the S1 panel"><defs><pattern id="lat" width="120" height="200" patternUnits="userSpaceOnUse"><path d="M0 100 L60 0 L120 100 L60 200 Z" class="latp"/></pattern><radialGradient id="glow" cx="50%" cy="45%" r="70%"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></radialGradient></defs><rect x="0" y="0" width="1000" height="1750" class="f-bg"/><rect x="30" y="1750" width="940" height="50" class="kick"/><rect x="30" y="1782" width="940" height="6" class="dl"/><text x="500" y="240" class="e-name" text-anchor="middle">Smart locks</text><rect x="100" y="450" width="800" height="500" class="niche"/><polygon points="100,456 900,456 900,650 100,650" class="beam"/><rect x="100" y="450" width="800" height="6" class="lip"/><rect x="200" y="550" width="60" height="300" class="lk"/><rect x="320" y="550" width="60" height="300" class="lk"/><rect x="440" y="550" width="60" height="300" class="lk"/><rect x="655" y="635" width="130" height="130" class="pnl"/><line x1="0" y1="0" x2="0" y2="1750" class="gap"/><rect x="-100" y="1800" width="1200" height="16" class="floor"/><line x1="-100" y1="0" x2="1100" y2="0" class="limit"/><text x="1090" y="-22" class="t-lim" text-anchor="end">1.8 m limit</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1800"/><line x1="-100" y1="0" x2="-20" y2="0"/><line x1="-100" y1="1800" x2="-20" y2="1800"/></g><text x="-100" y="920.0" class="t-dim" text-anchor="end">1.8 m</text></svg></div>
       </figure>
     </div>
     <div class="mod-grid">
       <figure class="sheet" style="margin:0">
         <div class="sheet-h"><b>Stand section and face zones</b><span>mm above floor</span></div>
-        <div class="scroll"><svg viewBox="-160 0 2860 2400" class="dwg mod" role="img" aria-label="Two-sided stand: side section and the zones of one face"><rect x="300" y="2044" width="600" height="16" class="plate-s"/><rect x="500" y="260" width="200" height="1792" class="body"/><rect x="500" y="710" width="18" height="500" class="cass"/><rect x="682" y="710" width="18" height="500" class="cass"/><rect x="470" y="670" width="30" height="30" class="body"/><rect x="700" y="670" width="30" height="30" class="body"/><polygon points="470,698 420,910 500,910 500,698" class="beam"/><polygon points="730,698 780,910 700,910 700,698" class="beam"/><rect x="518" y="767" width="50" height="86" class="box"/><rect x="632" y="767" width="50" height="86" class="box"/><rect x="518" y="917" width="50" height="86" class="box"/><rect x="632" y="917" width="50" height="86" class="box"/><rect x="518" y="1067" width="50" height="86" class="box"/><rect x="632" y="1067" width="50" height="86" class="box"/><text x="600" y="70" class="t-zone" text-anchor="middle">SECTION</text><g class="dim"><line x1="500" y1="190" x2="700" y2="190"/><line x1="500" y1="150" x2="500" y2="230"/><line x1="700" y1="150" x2="700" y2="230"/></g><text x="600.0" y="160" class="t-dim" text-anchor="middle">200 body</text><g class="dim"><line x1="300" y1="2150" x2="900" y2="2150"/><line x1="300" y1="2110" x2="300" y2="2190"/><line x1="900" y1="2110" x2="900" y2="2190"/></g><text x="600.0" y="2230" class="t-dim" text-anchor="middle">600 base</text><g class="dim"><line x1="250" y1="260" x2="250" y2="2060"/><line x1="210" y1="260" x2="290" y2="260"/><line x1="210" y1="2060" x2="290" y2="2060"/></g><text x="210" y="1180.0" class="t-dim" text-anchor="end">1,800</text><text x="1900" y="70" class="t-zone" text-anchor="middle">ONE FACE</text><rect x="1400" y="260" width="1000" height="1800" class="f-bg"/><rect x="1400" y="710" width="1000" height="500" class="z-band"/><rect x="1400" y="260" width="1000" height="400" class="z-hdr zl"/><circle cx="2500" cy="460.0" r="55" class="callout"/><text x="2500" y="482.0" class="t-call" text-anchor="middle">1</text><line x1="2400" y1="460.0" x2="2445" y2="460.0" class="lead"/><rect x="1480" y="670" width="840" height="30" class="body"/><circle cx="2500" cy="685.0" r="55" class="callout"/><text x="2500" y="707.0" class="t-call" text-anchor="middle">2</text><line x1="2400" y1="685.0" x2="2445" y2="685.0" class="lead"/><rect x="1500" y="710" width="800" height="500" class="cass"/><circle cx="2500" cy="960.0" r="55" class="callout"/><text x="2500" y="982.0" class="t-call" text-anchor="middle">3</text><line x1="2400" y1="960.0" x2="2445" y2="960.0" class="lead"/><rect x="1400" y="1210" width="1000" height="300" class="z-inf zl"/><circle cx="2500" cy="1360.0" r="55" class="callout"/><text x="2500" y="1382.0" class="t-call" text-anchor="middle">4</text><line x1="2400" y1="1360.0" x2="2445" y2="1360.0" class="lead"/><rect x="1400" y="1510" width="1000" height="500" class="z-low zl"/><circle cx="2500" cy="1760.0" r="55" class="callout"/><text x="2500" y="1782.0" class="t-call" text-anchor="middle">5</text><line x1="2400" y1="1760.0" x2="2445" y2="1760.0" class="lead"/><g class="dim"><line x1="1400" y1="2150" x2="2400" y2="2150"/><line x1="1400" y1="2110" x2="1400" y2="2190"/><line x1="2400" y1="2110" x2="2400" y2="2190"/></g><text x="1900.0" y="2230" class="t-dim" text-anchor="middle">1,000</text><text x="1370" y="280" class="t-dim" text-anchor="end">1,800</text><text x="1370" y="680" class="t-dim" text-anchor="end">1,400</text><text x="1370" y="730" class="t-dim" text-anchor="end">1,350</text><text x="1370" y="1230" class="t-dim" text-anchor="end">850</text><text x="1370" y="1530" class="t-dim" text-anchor="end">550</text><rect x="1350" y="2044" width="1100" height="16" class="plate-s"/></svg></div>
+        <div class="scroll"><svg viewBox="-160 0 2860 2400" class="dwg mod" role="img" aria-label="Two-sided stand: side section and the zones of one face"><rect x="300" y="2044" width="600" height="16" class="plate-s"/><rect x="540" y="2010" width="120" height="42" class="body"/><rect x="500" y="260" width="200" height="1750" class="body"/><rect x="500" y="710" width="40" height="500" class="niche"/><rect x="660" y="710" width="40" height="500" class="niche"/><rect x="500" y="710" width="40" height="8" class="dl"/><rect x="660" y="710" width="40" height="8" class="dl"/><polygon points="500,720 430,910 500,910" class="beam"/><polygon points="700,720 770,910 700,910" class="beam"/><rect x="420" y="2048" width="80" height="8" class="dl"/><rect x="700" y="2048" width="80" height="8" class="dl"/><text x="600" y="70" class="t-zone" text-anchor="middle">SECTION</text><g class="dim"><line x1="500" y1="190" x2="700" y2="190"/><line x1="500" y1="150" x2="500" y2="230"/><line x1="700" y1="150" x2="700" y2="230"/></g><text x="600.0" y="160" class="t-dim" text-anchor="middle">200 body</text><g class="dim"><line x1="300" y1="2150" x2="900" y2="2150"/><line x1="300" y1="2110" x2="300" y2="2190"/><line x1="900" y1="2110" x2="900" y2="2190"/></g><text x="600.0" y="2230" class="t-dim" text-anchor="middle">600 base</text><g class="dim"><line x1="250" y1="260" x2="250" y2="2060"/><line x1="210" y1="260" x2="290" y2="260"/><line x1="210" y1="2060" x2="290" y2="2060"/></g><text x="210" y="1180.0" class="t-dim" text-anchor="end">1,800</text><text x="1900" y="70" class="t-zone" text-anchor="middle">ONE FACE</text><rect x="1400" y="260" width="1000" height="1750" class="f-bg"/><rect x="1400" y="260" width="1000" height="400" class="z-hdr zl"/><circle cx="2500" cy="460.0" r="55" class="callout"/><text x="2500" y="482.0" class="t-call" text-anchor="middle">1</text><line x1="2400" y1="460.0" x2="2445" y2="460.0" class="lead"/><rect x="1500" y="710" width="800" height="500" class="niche"/><rect x="1500" y="710" width="800" height="6" class="lip"/><circle cx="2500" cy="960.0" r="55" class="callout"/><text x="2500" y="982.0" class="t-call" text-anchor="middle">2</text><line x1="2400" y1="960.0" x2="2445" y2="960.0" class="lead"/><rect x="1400" y="1210" width="1000" height="800" class="z-low zl"/><circle cx="2500" cy="1610.0" r="55" class="callout"/><text x="2500" y="1632.0" class="t-call" text-anchor="middle">3</text><line x1="2400" y1="1610.0" x2="2445" y2="1610.0" class="lead"/><rect x="1440" y="2010" width="920" height="42" class="body"/><circle cx="2500" cy="2035.0" r="55" class="callout"/><text x="2500" y="2057.0" class="t-call" text-anchor="middle">4</text><line x1="2400" y1="2035.0" x2="2445" y2="2035.0" class="lead"/><g class="dim"><line x1="1400" y1="2150" x2="2400" y2="2150"/><line x1="1400" y1="2110" x2="1400" y2="2190"/><line x1="2400" y1="2110" x2="2400" y2="2190"/></g><text x="1900.0" y="2230" class="t-dim" text-anchor="middle">1,000</text><text x="1370" y="280" class="t-dim" text-anchor="end">1,800</text><text x="1370" y="680" class="t-dim" text-anchor="end">1,400</text><text x="1370" y="730" class="t-dim" text-anchor="end">1,350</text><text x="1370" y="1230" class="t-dim" text-anchor="end">850</text><text x="1370" y="2030" class="t-dim" text-anchor="end">50</text><rect x="1350" y="2044" width="1100" height="16" class="plate-s"/></svg></div>
       </figure>
       <ol class="zones">
-        <li><div><b>Header, 1,400–1,800</b><span>Product name in the Maxsen serif, to the top of the stand. Printed fabric (SEG) skin.</span></div></li>
-        <li><div><b>Light channel, 1,360–1,390</b><span>A 30 mm bronze channel with Lumi LED strip, standing 30 mm off the face. It lights the cassette below, so the stand needs no canopy.</span></div></li>
-        <li><div><b>Product cassette, 850–1,350</b><span>800 × 500 board, 18 mm ply with a laminate face, cut for 86-type back boxes. It lifts out with four thumb screws.</span></div></li>
-        <li><div><b>Info strip, 550–850</b><span>Finishes, a line of specs and a QR to pricing and packages.</span></div></li>
-        <li><div><b>Lower skin, 50–550</b><span>The Maxsen lattice on fabric. It zips off to reach the power strip and cables.</span></div></li>
+        <li><div><b>Name, 1,400–1,800</b><span>The product name in the Maxsen serif, and no other text on the face.</span></div></li>
+        <li><div><b>Lit niche, 850–1,350</b><span>800 × 500, 40 mm deep, with Lumi LED strip hidden in the top edge. The back is an 18 mm ply board cut for 86-type back boxes; it lifts out with four thumb screws.</span></div></li>
+        <li><div><b>Plain face, 50–850</b><span>Plain porcelain fabric. It zips off to reach the power strip and cables.</span></div></li>
+        <li><div><b>Floating base, 0–50</b><span>Set back 40 mm from each face, with a warm LED line that washes the floor.</span></div></li>
       </ol>
     </div>
   </section>
@@ -373,20 +425,20 @@ ol.steps.timeline li b::before{content:none}
     <div class="head">
       <span class="eyebrow">Face schedule</span>
       <h2 id="faces">What goes where</h2>
-      <p>Products are the live samples to mount. One switch on every panel and face switches its own light channel, so every visitor can press something real.</p>
+      <p>One line of products per niche, chosen to make people want to touch, not to show every option. The full range lives on the iPad at the tables. One switch on every face controls its own niche light, so every visitor can press something real.</p>
     </div>
     <div class="tbl">
       <table>
-        <thead><tr><th>Where</th><th>Faces</th><th>Live products</th><th>Header line</th></tr></thead>
+        <thead><tr><th>Where</th><th>Faces</th><th>Live products</th><th>What staff say</th></tr></thead>
         <tbody>
-          <tr><td><b>C1</b> carpentry</td><td>Into booth</td><td><b>Lusano Prestige</b> × 9: Onyx, Champagne and Midnight, each in 1-, 2- and 3-gang</td><td><em>A jewel on your wall.</em></td></tr>
-          <tr><td><b>C2</b> carpentry</td><td>Into booth</td><td><b>Lusano Noble</b> × 3: Champagne, Ivory and Onyx, plus the <b>Halo</b> dimmer</td><td><em>A statement of art.</em></td></tr>
-          <tr><td><b>C3</b> carpentry</td><td>Into booth</td><td><b>Nova+ Pro</b> × 8: Champagne, Black, White and Silver in 2- and 4-gang, plus a <b>Nova S8</b> panel</td><td><em>A name on every key.</em></td></tr>
-          <tr><td><b>C4</b> carpentry</td><td>Into booth</td><td><b>Folio Ultra Slim</b> in White and Black marble, <b>Folio Ultra Slim Pro</b> in White and Grey, <b>Ark</b> in White, Gold, Silver and Black</td><td><em>So slim, it all but disappears.</em></td></tr>
+          <tr><td><b>C1</b> carpentry</td><td>Into booth</td><td><b>Lusano Prestige</b> × 3: Onyx, Champagne and Midnight</td><td><em>A jewel on your wall.</em></td></tr>
+          <tr><td><b>C2</b> carpentry</td><td>Into booth</td><td><b>Lusano Noble</b> in Champagne and Onyx, either side of the <b>Halo</b> dimmer</td><td><em>A statement of art.</em></td></tr>
+          <tr><td><b>C3</b> carpentry</td><td>Into booth</td><td><b>Nova+ Pro</b> in Champagne, Black and Silver, plus a <b>Nova S8</b> panel</td><td><em>A name on every key.</em></td></tr>
+          <tr><td><b>C4</b> carpentry</td><td>Into booth</td><td><b>Folio Ultra Slim</b> in White and Black marble, <b>Folio Ultra Slim Pro</b> in Grey, <b>Ark</b> in Gold</td><td><em>So slim, it all but disappears.</em></td></tr>
           <tr><td><b>Corner stand</b> aisle face</td><td><span class="chip a">Both aisles</span></td><td><b>Nova S10</b> 10-inch and <b>Nova S7</b> with Alexa built in, both live</td><td><em>Every room, composed on one quiet screen.</em></td></tr>
-          <tr><td><b>Corner stand</b> inside face</td><td><span class="chip b">Toward tables</span></td><td>The six <b>Lenovo</b> smart locks, supplied with MyDigitalLock, and a live <b>Nova S1</b> panel running Leave and Home modes</td><td><em>Door and gate, secured with a touch.</em></td></tr>
-          <tr><td><b>Lightbox</b></td><td>Into booth</td><td>Backlit brand graphic</td><td><em>The art of a single touch.</em></td></tr>
-          <tr><td><b>Tables</b></td><td>Centre</td><td>iPad with the Smart Life app, a tray of loose finish plates, a standing package menu with the QR to this month's offers, and the WhatsApp number +65 8988 1882</td><td>No header</td></tr>
+          <tr><td><b>Corner stand</b> inside face</td><td><span class="chip b">Toward tables</span></td><td>Three <b>Lenovo</b> smart locks, supplied with MyDigitalLock: F3 Ultra door, The Sun solar door and F3 Ultra gate. Plus a live <b>Nova S1</b> panel running Leave and Home modes</td><td><em>Door and gate, secured with a touch.</em></td></tr>
+          <tr><td><b>Lightbox</b></td><td>Into booth</td><td>One photograph of a Maxsen home at dusk</td><td><em>The art of a single touch.</em></td></tr>
+          <tr><td><b>Tables</b></td><td>Centre</td><td>Marble-look tops with a small vase of flowers, an iPad with the Smart Life app and the full range, a tray of loose finish plates, and a standing package menu with the only QR in the booth</td><td><em>Let's plan your home.</em></td></tr>
         </tbody>
       </table>
     </div>
@@ -395,18 +447,18 @@ ol.steps.timeline li b::before{content:none}
   <section aria-labelledby="light">
     <div class="head">
       <span class="eyebrow">Lighting</span>
-      <h2 id="light">Lit by your own products, with no roof</h2>
-      <p>There are no canopies, so the product lighting sits in the faces themselves: six LED light channels with Lumi LED strip, one above each cassette. The lightbox lights the seating. Programme these scenes on the gateway and put them on the S8 and S10 panels.</p>
+      <h2 id="light">Warm, low light you control</h2>
+      <p>Three layers, all warm: the niches light the products, the LED line under the wall and stand lights the floor, and the dimmed lightbox lights the seating. Keep everything at about 2,700 to 3,000 K; the hall's light is cold and flat, and warm light is what makes people step in. Programme these scenes on the gateway and put them on the S8 and S10 panels.</p>
     </div>
     <div class="tbl">
       <table>
         <thead><tr><th>Scene</th><th>When</th><th>Setting</th></tr></thead>
         <tbody>
-          <tr><td><b>Welcome</b></td><td>Doors open</td><td>All light channels warm, 80%. Lightbox on</td></tr>
-          <tr><td><b>Showcase</b></td><td>Product detail and photos</td><td>Wall channels cooler, 100%. Stands at 80%</td></tr>
-          <tr><td><b>Consult</b></td><td>A visitor sits down</td><td>Wall channels warmest, 70%. Stands at 60%, so the tables feel calmer</td></tr>
-          <tr><td><b>Halo demo</b></td><td>Any time</td><td>C2's light channel follows the Halo ring for brightness and the face for warmth</td></tr>
-          <tr><td><b>Close</b></td><td>End of day</td><td>All light channels off, lightbox on until the hall closes</td></tr>
+          <tr><td><b>Welcome</b></td><td>Doors open</td><td>Niches 80%, floor line 60%, lightbox 65%</td></tr>
+          <tr><td><b>Showcase</b></td><td>Product detail and photos</td><td>Niches 100%, floor line 40%, lightbox 50%</td></tr>
+          <tr><td><b>Consult</b></td><td>A visitor sits down</td><td>Niches 60%, floor line 70%, lightbox 70%, so the tables feel like a living room</td></tr>
+          <tr><td><b>Halo demo</b></td><td>Any time</td><td>C2's niche follows the Halo ring for brightness and the face for warmth</td></tr>
+          <tr><td><b>Close</b></td><td>End of day</td><td>Niches and floor line off, lightbox on until the hall closes</td></tr>
         </tbody>
       </table>
     </div>
@@ -423,8 +475,8 @@ ol.steps.timeline li b::before{content:none}
         <thead><tr><th>Point</th><th>Feeds</th><th>Where it lands</th></tr></thead>
         <tbody>
           <tr><td><b>P1</b> 13 A</td><td>Lightbox LED drivers</td><td>Behind the lightbox, back corner</td></tr>
-          <tr><td><b>P2</b> 13 A</td><td>4 wall light channels, 20 live switches, Halo, S8, Ultra Gateway, router</td><td>C2 service hatch</td></tr>
-          <tr><td><b>P3</b> 13 A</td><td>2 stand light channels, S10, S7, S1</td><td>Inside the corner stand, through its base</td></tr>
+          <tr><td><b>P2</b> 13 A</td><td>4 wall niches, the wall floor line, 13 live switches, Halo, S8, Ultra Gateway, router</td><td>C2 service hatch</td></tr>
+          <tr><td><b>P3</b> 13 A</td><td>2 stand niches, the stand floor line, S10, S7, S1</td><td>Inside the corner stand, through its base</td></tr>
           <tr><td><b>Network</b></td><td>Ultra Gateway for Zigbee devices; a Reyee router on a mobile data SIM or the venue's wired line, for the iPads, S7 and the app demo</td><td>C4 service hatch</td></tr>
         </tbody>
       </table>
@@ -442,16 +494,11 @@ ol.steps.timeline li b::before{content:none}
       <table>
         <thead><tr><th>Item</th><th>Qty</th><th>Size</th><th>Material</th><th>Content</th></tr></thead>
         <tbody>
-          <tr><td><b>Lightbox face</b></td><td class="n">1</td><td class="n">2,134 × 1,800</td><td>Backlit SEG fabric</td><td>Wordmark, "The art of a single touch.", Halo ring</td></tr>
-          <tr><td><b>Wall headers</b></td><td class="n">4</td><td class="n">1,189 × 280</td><td>Printed vinyl on laminate</td><td>Product name and one line</td></tr>
-          <tr><td><b>Wall info strips</b></td><td class="n">4</td><td class="n">1,189 × 300</td><td>Printed vinyl on laminate</td><td>Finishes, specs, QR</td></tr>
-          <tr><td><b>Wall lower panels</b></td><td class="n">4</td><td class="n">1,189 × 500</td><td>Fabric on a removable frame</td><td>Maxsen lattice</td></tr>
-          <tr><td><b>Stand headers</b></td><td class="n">2</td><td class="n">1,000 × 280</td><td>SEG fabric</td><td>Product name and one line</td></tr>
-          <tr><td><b>Stand info strips</b></td><td class="n">2</td><td class="n">1,000 × 300</td><td>SEG fabric</td><td>Finishes, specs, QR</td></tr>
-          <tr><td><b>Stand lower skins</b></td><td class="n">2</td><td class="n">1,000 × 500</td><td>SEG fabric</td><td>Maxsen lattice</td></tr>
-          <tr><td><b>Lock line-up</b></td><td class="n">1</td><td class="n">800 × 500</td><td>Print on the stand's inside cassette</td><td>Six Lenovo locks and the home each suits</td></tr>
+          <tr><td><b>Lightbox face</b></td><td class="n">1</td><td class="n">2,134 × 1,800</td><td>Backlit SEG fabric</td><td>One photograph of a Maxsen home at dusk, wordmark small at the bottom. Needs a high-resolution original</td></tr>
+          <tr><td><b>Wall names</b></td><td class="n">4</td><td class="n">about 900 × 110</td><td>Cut vinyl lettering on laminate</td><td>The product name only</td></tr>
+          <tr><td><b>Stand faces</b></td><td class="n">2</td><td class="n">1,000 × 1,750</td><td>Plain porcelain SEG fabric</td><td>The product name only, with the niche cut out</td></tr>
           <tr><td><b>Package menus</b></td><td class="n">2</td><td class="n">A5, standing</td><td>Rigid board in a holder</td><td>Ark Core, Nova+ Pro 10, Lusano+ Premium Core, with QR</td></tr>
-          <tr><td><b>Table tents</b></td><td class="n">2</td><td class="n">A5</td><td>Card</td><td>WhatsApp QR and showroom booking</td></tr>
+          <tr><td><b>Business cards</b></td><td class="n">1 box</td><td class="n">standard</td><td>Card</td><td>WhatsApp +65 8988 1882 and showroom booking, kept in the cupboard</td></tr>
         </tbody>
       </table>
     </div>
@@ -463,12 +510,14 @@ ol.steps.timeline li b::before{content:none}
       <h2 id="finish">One palette, from the Maxsen brand</h2>
     </div>
     <ul class="swatches">
-      <li><i style="background:#2B231F"></i><b>Midnight bronze</b><span>Light channels, stand ends and table legs. Powder-coated aluminium</span></li>
+      <li><i style="background:#2B231F"></i><b>Midnight bronze</b><span>Shadow gaps, bases, stand ends and table legs. Powder-coated aluminium</span></li>
       <li><i style="background:#D8C6AE"></i><b>Champagne laminate</b><span>Carpentry wall faces</span></li>
-      <li><i style="background:#F4EEE6"></i><b>Porcelain fabric</b><span>Stand skins and wall lower panels</span></li>
-      <li><i style="background:#F7E3C8"></i><b>Warm white light</b><span>Lightbox fabric, lit from behind</span></li>
+      <li><i style="background:#F4EEE6"></i><b>Porcelain fabric</b><span>Stand faces, plain</span></li>
+      <li><i style="background:#F4F1EC"></i><b>Marble-look tops</b><span>The two tables, tying in with Folio's marble faces</span></li>
       <li><i style="background:#CFA594"></i><b>Rose</b><span>Chair fabric and graphic accents</span></li>
-      <li><i style="background:#B3A291"></i><b>Taupe carpet</b><span>Booth floor, so the white tables stand out</span></li>
+      <li><i style="background:#CFC2B3"></i><b>Stone carpet</b><span>Booth floor, warm and quiet</span></li>
+      <li><i style="background:#8A7563"></i><b>Wool rugs</b><span>Two round rugs, 1.4 m across, under the tables</span></li>
+      <li><i style="background:#6F7A5C"></i><b>Living green</b><span>An olive tree and small vases of flowers, the warmest thing in the booth</span></li>
     </ul>
   </section>
 
@@ -479,7 +528,7 @@ ol.steps.timeline li b::before{content:none}
     </div>
     <ol class="steps">
       <li><b>Notice</b><span>The lit screens on the corner stand catch both aisles at once. The lightbox glows behind.</span></li>
-      <li><b>Touch</b><span>On the product wall, visitors press a Lusano key and the light above it answers. They turn Halo and watch C2 warm up.</span></li>
+      <li><b>Touch</b><span>On the product wall, visitors press a Lusano key and its niche brightens. They turn Halo and watch C2 warm up.</span></li>
       <li><b>Sit</b><span>A consultant takes them to a table, opens the Smart Life app on the iPad and picks finishes from the tray.</span></li>
       <li><b>Leave with a plan</b><span>The package menus stand on the tables, and the smart lock face looks back at them. Visitors scan the QR or save the WhatsApp number to book a showroom visit or a site check.</span></li>
     </ol>
@@ -495,7 +544,8 @@ ol.steps.timeline li b::before{content:none}
       <div>
         <h3>Keep on hand</h3>
         <ul class="plain">
-          <li>Spare switches for each finish on the wall, in case one is knocked.</li>
+          <li>Spare switches for each finish on the wall, in the C4 cupboard.</li>
+          <li>Nothing on the floor or tables except the iPad, finish tray, flowers and menu. Bags and boxes go in the cupboard.</li>
           <li>A charged power bank for each iPad.</li>
           <li>Microfibre cloths: crystal and glass faces show fingerprints.</li>
         </ul>
@@ -519,7 +569,7 @@ ol.steps.timeline li b::before{content:none}
           <tr><td class="n">4</td><td>Stand the corner stand on its base plate at 45°, level it</td><td class="n">15 min</td></tr>
           <tr><td class="n">5</td><td>Fit the cassettes, connect power, gateway and router</td><td class="n">45 min</td></tr>
           <tr><td class="n">6</td><td>Fit headers, info strips and lower skins</td><td class="n">30 min</td></tr>
-          <tr><td class="n">7</td><td>Tables, chairs, iPads, finish tray, table tents</td><td class="n">15 min</td></tr>
+          <tr><td class="n">7</td><td>Rugs, tables, chairs, olive tree, fresh flowers, iPads, finish tray, menus. Everything else into the cupboard</td><td class="n">20 min</td></tr>
           <tr><td class="n">8</td><td>Run every scene, press every switch, clean the faces</td><td class="n">30 min</td></tr>
         </tbody>
       </table>
@@ -555,11 +605,14 @@ ol.steps.timeline li b::before{content:none}
             <thead><tr><th>Item</th><th>Qty</th></tr></thead>
             <tbody>
               <tr><td>Fabric lightbox, 2,134 × 1,800 × 120, with LED backlight and printed fabric</td><td class="n">1</td></tr>
-              <tr><td>Carpentry wall panel, about 1,190 × 1,800 × 150, with an LED light channel</td><td class="n">4</td></tr>
-              <tr><td>Two-sided stand, 1,000 × 1,800 × 200, with two LED light channels and a 600 base</td><td class="n">1</td></tr>
-              <tr><td>Product cassette, 800 × 500</td><td class="n">6</td></tr>
-              <tr><td>Round table, 600 mm, 760 high</td><td class="n">2</td></tr>
+              <tr><td>Carpentry wall panel, about 1,190 × 1,750 × 150, with a lit niche, on a 50 mm floating base; C4 with a lockable cupboard</td><td class="n">4</td></tr>
+              <tr><td>Two-sided stand, 1,000 × 1,800 × 200, with two lit niches, a floating base and a 600 steel plate</td><td class="n">1</td></tr>
+              <tr><td>Niche back board, 800 × 500, cut for the products</td><td class="n">6</td></tr>
+              <tr><td>Round table, 600 mm, 760 high, marble-look top</td><td class="n">2</td></tr>
               <tr><td>Chair, rose upholstery</td><td class="n">4</td></tr>
+              <tr><td>Round wool rug, 1.4 m</td><td class="n">2</td></tr>
+              <tr><td>Olive tree in a dark ceramic pot, under 1.8 m</td><td class="n">1</td></tr>
+              <tr><td>Small ceramic vase, with fresh flowers each show day</td><td class="n">2</td></tr>
               <tr><td>Padded crates for panels and stands, cassette case, fabric bag</td><td class="n">1 set</td></tr>
             </tbody>
           </table>
@@ -571,14 +624,14 @@ ol.steps.timeline li b::before{content:none}
           <table style="min-width:0">
             <thead><tr><th>Item</th><th>Qty</th></tr></thead>
             <tbody>
-              <tr><td>Lusano Prestige switches</td><td class="n">9</td></tr>
-              <tr><td>Lusano Noble switches</td><td class="n">3</td></tr>
-              <tr><td>Nova+ Pro switches</td><td class="n">8</td></tr>
-              <tr><td>Folio, Folio Pro and Ark switches</td><td class="n">2 + 2 + 4</td></tr>
+              <tr><td>Lusano Prestige switches</td><td class="n">3</td></tr>
+              <tr><td>Lusano Noble switches</td><td class="n">2</td></tr>
+              <tr><td>Nova+ Pro switches</td><td class="n">3</td></tr>
+              <tr><td>Folio, Folio Pro and Ark switches</td><td class="n">2 + 1 + 1</td></tr>
+              <tr><td>Lenovo smart locks, from MyDigitalLock</td><td class="n">3</td></tr>
               <tr><td>Halo dimmer</td><td class="n">1</td></tr>
               <tr><td>Nova panels: S1, S7, S8, S10</td><td class="n">1 each</td></tr>
-              <tr><td>Lumi LED strip, for 6 light channels</td><td class="n">about 5 m</td></tr>
-              <tr><td>Door and window sensor, motion sensor</td><td class="n">1 each</td></tr>
+              <tr><td>Lumi LED strip, for 6 niches and the floor lines</td><td class="n">about 11 m</td></tr>
               <tr><td>Ultra Gateway and a Reyee router</td><td class="n">1 each</td></tr>
               <tr><td>iPads with the Smart Life app</td><td class="n">2</td></tr>
             </tbody>
@@ -643,8 +696,8 @@ window.MaxsenBooth = (function () {
     c.width = Math.round(wmm * K); c.height = Math.round(hmm * K);
     const g = c.getContext('2d'); g.scale(K, K); return [c, g];
   }
-  const FH = 1800; // face artwork covers the full height: no canopies or overhangs
-  const Y = h => FH - h; // height above floor (mm) to canvas y
+  const FH = 1750; // face artwork runs from 50 mm (the floating base) to 1,800 mm: no canopies or overhangs
+  const Y = h => 1800 - h; // height above floor (mm) to canvas y
   function rr(g, x, y, w, h, r) { g.beginPath(); g.roundRect ? g.roundRect(x, y, w, h, r) : g.rect(x, y, w, h); }
   function plate(g, cx, cyH, s, fill, kind) {
     const x = cx - s / 2, y = Y(cyH) - s / 2;
@@ -700,15 +753,14 @@ window.MaxsenBooth = (function () {
     g.restore();
   }
 
+  const ROW = 1100; // every product sits on one line inside its niche
   const FACES = {
-    prestige: { name: 'Lusano Prestige', sub: 'SWAROVSKI CRYSTALS · AUSTRIA', info: ['Onyx · Champagne · Midnight', '1, 2 and 3-gang'], draw(g, cx) {
-      const f = ['#1d1b1a', '#cbb79c', '#2b2f3a'];
-      for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) plate(g, cx - 150 + c * 150, 1250 - r * 150, 86, f[r], 'crystal');
+    prestige: { name: 'Lusano Prestige', draw(g, cx) {
+      ['#1d1b1a', '#cbb79c', '#2b2f3a'].forEach((f, k) => plate(g, cx - 200 + k * 200, ROW, 86, f, 'crystal'));
     } },
-    noble: { name: 'Lusano Noble', sub: 'WITH THE HALO DIMMER', info: ['Champagne · Ivory · Onyx', 'Halo: turn the ring, turn the face'], draw(g, cx) {
-      const f = ['#cbb79c', '#efe8dc', '#1d1b1a'];
-      for (let c = 0; c < 3; c++) plate(g, cx - 200 + c * 200, 1240, 90, f[c], 'noble');
-      const hy = Y(1010), r = 62;
+    noble: { name: 'Lusano Noble', draw(g, cx) {
+      plate(g, cx - 210, ROW, 90, '#cbb79c', 'noble'); plate(g, cx + 210, ROW, 90, '#1d1b1a', 'noble');
+      const hy = Y(ROW), r = 62;
       const rim = g.createLinearGradient(cx - r, hy - r, cx + r, hy + r);
       rim.addColorStop(0, '#f7f6f4'); rim.addColorStop(.45, '#8f8b87'); rim.addColorStop(1, '#efedea');
       g.save(); g.shadowColor = 'rgba(40,25,15,.4)'; g.shadowBlur = 14; g.shadowOffsetY = 6;
@@ -717,221 +769,225 @@ window.MaxsenBooth = (function () {
       pearl.addColorStop(0, '#fffaf4'); pearl.addColorStop(.6, '#efe4f0'); pearl.addColorStop(1, '#dfe9ef');
       g.fillStyle = pearl; g.beginPath(); g.arc(cx, hy, r * .8, 0, 7); g.fill();
     } },
-    nova: { name: 'Nova+ Pro', sub: 'A NAME ON EVERY KEY', info: ['Champagne · Black · White · Silver', 'Nova S8 panel'], draw(g, cx) {
-      const f = ['#cbb79c', '#232221', '#f4f2ee', '#c9c9c9'];
-      for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) plate(g, cx - 225 + c * 150, 1270 - r * 140, 86, f[c], 'nova');
-      screen(g, cx, 950, 234, 128, 3);
+    nova: { name: 'Nova+ Pro', draw(g, cx) {
+      ['#cbb79c', '#232221', '#c9c9c9'].forEach((f, k) => plate(g, cx - 300 + k * 140, ROW, 86, f, 'nova'));
+      screen(g, cx + 200, ROW, 234, 128, 3);
     } },
-    folio: { name: 'Folio + Ark', sub: 'SLIM AND SIMPLE', info: ['Folio: White and Black marble', 'Ark: White · Gold · Silver · Black'], draw(g, cx) {
-      const top = ['#f3f1ee', '#1f1f20', '#f4f2ee', '#565a62'];
-      for (let c = 0; c < 4; c++) plate(g, cx - 225 + c * 150, 1250, 86, top[c], c >= 2 ? 'nova' : 'noble');
-      const ark = ['#f4f2ee', '#d9c08a', '#cfcfcf', '#1f1d1c'];
-      for (let c = 0; c < 4; c++) plate(g, cx - 225 + c * 150, 1030, 86, ark[c], 'dot');
+    folio: { name: 'Folio + Ark', draw(g, cx) {
+      plate(g, cx - 240, ROW, 86, '#f3f1ee', 'noble'); plate(g, cx - 80, ROW, 86, '#1f1f20', 'noble');
+      plate(g, cx + 80, ROW, 86, '#565a62', 'nova'); plate(g, cx + 240, ROW, 86, '#d9c08a', 'dot');
     } },
-    panels: { name: 'Control panels', sub: 'EVERY ROOM, ONE QUIET SCREEN', info: ['Nova S10 · 10-inch', 'Nova S7 · Alexa built in'], draw(g, cx) {
-      screen(g, cx - 170, 1110, 300, 190, 3); screen(g, cx + 190, 1110, 230, 140, 2);
+    panels: { name: 'Control panels', draw(g, cx) {
+      screen(g, cx - 140, ROW, 300, 190, 3); screen(g, cx + 190, ROW, 230, 140, 2);
     } },
-    locks: { name: 'Smart locks', sub: 'LENOVO · WITH MYDIGITALLOCK', info: ['F3 Ultra · The Sun solar', 'Door and gate locks'], draw(g, cx) {
-      const f = ['#5a2a1b', '#2a2622', '#3a3d42', '#5a2a1b', '#2a2622', '#3a3d42'];
-      for (let i = 0; i < 6; i++) {
-        const x = cx - 300 + i * 120, y = Y(1330);
+    secure: { name: 'Smart locks', draw(g, cx) {
+      ['#5a2a1b', '#2a2622', '#3a3d42'].forEach((f, i) => {
+        const x = cx - 270 + i * 120, y = Y(1250);
         g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 10; g.shadowOffsetY = 5;
-        g.fillStyle = f[i]; rr(g, x - 32, y, 64, 300, 14); g.fill(); g.restore();
-        g.fillStyle = '#111'; rr(g, x - 22, y + 30, 44, 60, 6); g.fill();
-        g.fillStyle = i % 3 === 1 ? '#b48a4a' : '#9aa0a6'; g.fillRect(x - 22, y + 180, 44, 8);
-      }
-    } },
-    secure: { name: 'Smart locks', sub: 'LENOVO · WITH MYDIGITALLOCK', info: ['F3 Ultra · The Sun solar · gate locks', 'Nova S1: Leave and Home at the door'], draw(g, cx) {
-      const f = ['#5a2a1b', '#2a2622', '#3a3d42', '#5a2a1b', '#2a2622', '#3a3d42'];
-      for (let i = 0; i < 6; i++) {
-        const x = cx - 340 + i * 90, y = Y(1330);
-        g.save(); g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 10; g.shadowOffsetY = 5;
-        g.fillStyle = f[i]; rr(g, x - 28, y, 56, 290, 12); g.fill(); g.restore();
-        g.fillStyle = '#111'; rr(g, x - 19, y + 28, 38, 54, 5); g.fill();
-        g.fillStyle = i % 3 === 1 ? '#b48a4a' : '#9aa0a6'; g.fillRect(x - 19, y + 170, 38, 7);
-      }
-      screen(g, cx + 270, 1100, 130, 130, 2);
-    } },
-    s1: { name: 'Nova S1', sub: 'LEAVE AND HOME, AT THE DOOR', info: ['Door and window sensor', 'Motion sensor'], draw(g, cx) {
-      screen(g, cx - 150, 1100, 130, 130, 2);
-      g.fillStyle = '#f4f2ee'; rr(g, cx + 40, Y(1160), 36, 90, 6); g.fill(); rr(g, cx + 84, Y(1150), 18, 70, 5); g.fill();
-      g.beginPath(); g.arc(cx + 210, Y(1110), 40, 0, 7); g.fill();
-      g.strokeStyle = '#cfc8c0'; g.lineWidth = 2; g.stroke();
-    } },
-    packages: { name: 'Packages', sub: "SCAN FOR THIS MONTH'S OFFERS", info: ['Planned, fitted and handed over', 'by our in-house team'], draw(g, cx) {
-      const t = ['Ark Core', 'Nova+ Pro 10', 'Lusano+ Premium Core'];
-      for (let i = 0; i < 3; i++) {
-        const x = cx - 360 + i * 245, y = Y(1330);
-        g.fillStyle = i === 2 ? INK : '#fbf8f4'; rr(g, x, y, 225, 460, 8); g.fill();
-        g.fillStyle = i === 2 ? ROSE : ROSE_T; g.font = `700 20px ${SANS}`; g.textAlign = 'left'; g.fillText('PACKAGE', x + 20, y + 44);
-        g.fillStyle = i === 2 ? '#fbf8f4' : INK; g.font = `400 40px ${SERIF}`;
-        const words = t[i].split(' '); let line = '', ly = y + 100;
-        words.forEach(w => { if (g.measureText(line + w).width > 190) { g.fillText(line, x + 20, ly); line = ''; ly += 44; } line += w + ' '; });
-        g.fillText(line, x + 20, ly);
-        qr(g, x + 60, y + 330, 104, i + 3);
-      }
+        g.fillStyle = f; rr(g, x - 30, y, 60, 300, 13); g.fill(); g.restore();
+        g.fillStyle = '#111'; rr(g, x - 20, y + 28, 40, 56, 5); g.fill();
+        g.fillStyle = i === 1 ? '#b48a4a' : '#9aa0a6'; g.fillRect(x - 20, y + 176, 40, 7);
+      });
+      screen(g, cx + 220, ROW, 130, 130, 2);
     } }
   };
 
-  function faceTexture(THREE, wmm, key, surface) {
+  function faceTexture(THREE, wmm, key, surface, opts = {}) {
     const f = FACES[key];
     const [c, g] = cv(wmm, FH);
+    g.translate(0, -50); // canvas y 0 is 1,800 mm; the face stops at 50 mm
     const cx = wmm / 2;
-    // ground: laminate for the carpentry wall, porcelain fabric for the stands
-    const bg = g.createLinearGradient(0, 0, 0, FH);
-    if (surface === 'wall') { bg.addColorStop(0, '#E6D8C5'); bg.addColorStop(1, '#D8C6AE'); }
-    else { bg.addColorStop(0, '#F7F1EA'); bg.addColorStop(1, '#EDE3D7'); }
-    g.fillStyle = bg; g.fillRect(0, 0, wmm, FH);
-    lattice(g, 0, wmm);
-    g.fillStyle = INK; g.fillRect(0, Y(50), wmm, 50);
-    // header
+    const bg = g.createLinearGradient(0, 0, 0, 1800);
+    if (surface === 'wall') { bg.addColorStop(0, '#E8DBC9'); bg.addColorStop(1, '#DDCBB4'); }
+    else { bg.addColorStop(0, '#F7F1EA'); bg.addColorStop(1, '#EEE5D9'); }
+    g.fillStyle = bg; g.fillRect(0, 0, wmm, 1800);
+    // the product name, and nothing else
     g.fillStyle = INK; g.textAlign = 'center';
-    g.font = `400 112px ${SERIF}`; g.fillText(f.name, cx, Y(1590));
-    g.fillStyle = ROSE_T; g.font = `700 24px ${SANS}`;
-    if (g.letterSpacing !== undefined) g.letterSpacing = '6px';
-    g.fillText(f.sub, cx, Y(1515));
-    if (g.letterSpacing !== undefined) g.letterSpacing = '0px';
-    // cassette
-    g.save(); g.shadowColor = 'rgba(40,25,15,.25)'; g.shadowBlur = 18; g.shadowOffsetY = 8;
-    g.fillStyle = surface === 'wall' ? '#F3ECE2' : '#E6D7C4'; g.fillRect(cx - 400, Y(1350), 800, 500); g.restore();
-    g.strokeStyle = 'rgba(126,86,67,.35)'; g.lineWidth = 2; g.strokeRect(cx - 400, Y(1350), 800, 500);
+    g.font = `400 104px ${SERIF}`; g.fillText(f.name, cx, Y(1560));
+    // a niche 40 mm deep, lit from a strip hidden in its top edge
+    const nx = cx - 400, ny = Y(1350), nw = 800, nh = 500;
+    g.fillStyle = surface === 'wall' ? '#D4C0A6' : '#E2D3C0'; g.fillRect(nx, ny, nw, nh);
+    const wash = g.createLinearGradient(0, ny, 0, ny + nh);
+    wash.addColorStop(0, 'rgba(255,220,170,.95)'); wash.addColorStop(.35, 'rgba(255,214,160,.45)'); wash.addColorStop(1, 'rgba(255,214,160,0)');
+    g.fillStyle = wash; g.fillRect(nx, ny, nw, nh);
+    const side = (x0, dir) => { const s = g.createLinearGradient(x0, 0, x0 + dir * 40, 0); s.addColorStop(0, 'rgba(60,38,20,.28)'); s.addColorStop(1, 'rgba(60,38,20,0)'); g.fillStyle = s; g.fillRect(Math.min(x0, x0 + dir * 40), ny, 40, nh); };
+    side(nx, 1); side(nx + nw, -1);
+    const bot = g.createLinearGradient(0, ny + nh, 0, ny + nh - 40); bot.addColorStop(0, 'rgba(60,38,20,.22)'); bot.addColorStop(1, 'rgba(60,38,20,0)');
+    g.fillStyle = bot; g.fillRect(nx, ny + nh - 40, nw, 40);
+    g.fillStyle = 'rgba(40,25,15,.55)'; g.fillRect(nx, ny, nw, 6);
+    g.fillStyle = 'rgba(255,248,236,.7)'; g.fillRect(nx, ny + nh, nw, 3);
     f.draw(g, cx);
-    // LED light channel above the cassette
-    const lg = g.createLinearGradient(0, Y(1360), 0, Y(1200));
-    lg.addColorStop(0, 'rgba(255,214,160,.55)'); lg.addColorStop(1, 'rgba(255,214,160,0)');
-    g.fillStyle = lg; g.fillRect(cx - 400, Y(1360), 800, 160);
-    g.fillStyle = INK; g.fillRect(cx - 420, Y(1390), 840, 30);
-    g.fillStyle = '#FFE9C8'; g.fillRect(cx - 400, Y(1364), 800, 4);
-    // info strip
-    g.textAlign = 'left'; g.fillStyle = INK; g.font = `400 34px ${SANS}`;
-    g.fillText(f.info[0], cx - 400, Y(790)); g.fillStyle = '#5B4E47'; g.font = `300 30px ${SANS}`; g.fillText(f.info[1], cx - 400, Y(745));
-    g.fillStyle = ROSE_T; g.font = `700 20px ${SANS}`; g.fillText('SCAN FOR PRICING & PACKAGES', cx - 400, Y(680));
-    qr(g, cx + 290, Y(840), 110, key.length);
+    if (opts.cupboard) { // the staff cupboard, a flush door in the lower face
+      g.strokeStyle = 'rgba(60,38,20,.22)'; g.lineWidth = 3;
+      g.strokeRect(cx - 520, Y(640), 1040, 560); g.beginPath(); g.moveTo(cx, Y(640)); g.lineTo(cx, Y(80)); g.stroke();
+    }
     const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
   }
 
-  function lightboxTexture(THREE) {
+  function lightboxTexture(THREE, photo) {
     const wmm = D * 1000, vis = (D - CW) * 1000; // visible part starts at the front edge (u = 0)
     const [c, g] = cv(wmm, 1800);
-    const cx = vis / 2;
-    const bg = g.createRadialGradient(cx, 760, 50, cx, 760, 1300);
-    bg.addColorStop(0, '#FFF3DF'); bg.addColorStop(.55, '#F7E3C8'); bg.addColorStop(1, '#EBCFAE');
-    g.fillStyle = bg; g.fillRect(0, 0, wmm, 1800);
-    g.strokeStyle = 'rgba(126,86,67,.12)'; g.lineWidth = 3;
-    for (let x = -1800; x < wmm + 1800; x += 180) { g.beginPath(); g.moveTo(x, 1800); g.lineTo(x + 1000, 0); g.stroke(); g.beginPath(); g.moveTo(x + 1000, 1800); g.lineTo(x, 0); g.stroke(); }
-    const veil = g.createRadialGradient(cx, 780, 60, cx, 780, 820);
-    veil.addColorStop(0, 'rgba(255,246,232,.95)'); veil.addColorStop(1, 'rgba(255,246,232,0)');
-    g.fillStyle = veil; g.fillRect(0, 0, wmm, 1800);
-    g.textAlign = 'center'; g.fillStyle = INK;
-    g.font = `700 64px ${SANS}`; if (g.letterSpacing !== undefined) g.letterSpacing = '30px';
-    g.fillText('MAXSEN', cx + 15, 330); if (g.letterSpacing !== undefined) g.letterSpacing = '0px';
-    g.font = `400 190px ${SERIF}`; g.fillText('The art of', cx, 720);
-    g.fillStyle = ROSE_T; g.font = `italic 400 190px ${SERIF}`; g.fillText('a single touch.', cx, 920);
-    g.fillStyle = '#5B4E47'; g.font = `700 36px ${SANS}`; if (g.letterSpacing !== undefined) g.letterSpacing = '12px';
-    g.fillText('SMART HOME · SINGAPORE', cx + 6, 1060); if (g.letterSpacing !== undefined) g.letterSpacing = '0px';
-    g.strokeStyle = ROSE; g.lineWidth = 14; g.beginPath(); g.arc(cx, 1360, 150, 0, 7); g.stroke();
-    g.strokeStyle = 'rgba(207,165,148,.5)'; g.lineWidth = 4; g.beginPath(); g.arc(cx, 1360, 118, 0, 7); g.stroke();
+    g.fillStyle = '#2a1e16'; g.fillRect(0, 0, wmm, 1800);
+    if (photo) {
+      const r = Math.max(vis / photo.width, 1800 / photo.height), w = photo.width * r, h = photo.height * r;
+      g.drawImage(photo, (vis - w) / 2, (1800 - h) / 2, w, h);
+    }
+    const fade = g.createLinearGradient(0, 1250, 0, 1800);
+    fade.addColorStop(0, 'rgba(20,14,10,0)'); fade.addColorStop(1, 'rgba(20,14,10,.75)');
+    g.fillStyle = fade; g.fillRect(0, 0, vis, 1800);
+    g.textAlign = 'center'; g.fillStyle = '#FBF3E8';
+    g.font = `700 54px ${SANS}`; if (g.letterSpacing !== undefined) g.letterSpacing = '26px';
+    g.fillText('MAXSEN', vis / 2 + 13, 1650); if (g.letterSpacing !== undefined) g.letterSpacing = '0px';
     const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+
+  function marbleTexture(THREE) {
+    const c = document.createElement('canvas'); c.width = c.height = 512; const g = c.getContext('2d');
+    g.fillStyle = '#F4F1EC'; g.fillRect(0, 0, 512, 512);
+    let v = 7; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+    for (let k = 0; k < 9; k++) {
+      g.strokeStyle = `rgba(120,110,100,${.08 + rnd() * .14})`; g.lineWidth = .8 + rnd() * 2.2;
+      g.beginPath(); let x = rnd() * 512, y = 0; g.moveTo(x, y);
+      while (y < 512) { x += (rnd() - .5) * 60; y += 20 + rnd() * 30; g.lineTo(x, y); }
+      g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t;
   }
 
   /* ---------- the model ---------- */
-  function build(THREE) {
+  function build(THREE, photo) {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xE7E1DA);
-    scene.fog = new THREE.Fog(0xE7E1DA, 14, 32);
+    scene.background = new THREE.Color(0xE5DED6);
+    scene.fog = new THREE.Fog(0xE5DED6, 14, 32);
     const std = (o) => new THREE.MeshStandardMaterial(Object.assign({ roughness: .8, metalness: 0 }, o));
     const bronze = std({ color: 0x2B231F, roughness: .55, metalness: .35 });
     const add = (geo, mat, x, y, z, o = {}) => {
       const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z);
       m.castShadow = o.cast !== false; m.receiveShadow = true; scene.add(m); return m;
     };
+    const B = .05, FHm = H - B; // the floating base and the height of every face above it
 
-    scene.add(new THREE.HemisphereLight(0xfffaf4, 0xb9ab9c, .5));
-    const sun = new THREE.DirectionalLight(0xfff6ec, .5);
+    scene.add(new THREE.HemisphereLight(0xfff6ee, 0xb3a493, .45));
+    const sun = new THREE.DirectionalLight(0xfff2e4, .45);
     sun.position.set(7, 9, 8); sun.target.position.set(2.4, 0, 1); scene.add(sun.target);
     sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
     Object.assign(sun.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 30 });
     sun.shadow.bias = -0.0005; scene.add(sun);
 
-    // floors
-    const expo = add(new THREE.PlaneGeometry(60, 60), std({ color: 0xD6D0C8 }), W / 2, 0, D / 2, { cast: false });
+    // floors: warm stone carpet, and a wool rug under each table
+    const expo = add(new THREE.PlaneGeometry(60, 60), std({ color: 0xD3CCC3 }), W / 2, 0, D / 2, { cast: false });
     expo.rotation.x = -Math.PI / 2;
-    add(new THREE.BoxGeometry(W, .012, D), std({ color: 0xB3A291, roughness: 1 }), W / 2, .006, D / 2, { cast: false });
-    const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W, .001, D)), new THREE.LineBasicMaterial({ color: 0xB08A75 }));
-    edge.position.set(W / 2, .014, D / 2); scene.add(edge);
+    add(new THREE.BoxGeometry(W, .012, D), std({ color: 0xCFC2B3, roughness: 1 }), W / 2, .006, D / 2, { cast: false });
+    const rug = std({ color: 0x8A7563, roughness: 1 });
+    [.85, 2.95].forEach(x => add(new THREE.CylinderGeometry(.7, .7, .01, 72), rug, x, .017, 1.35, { cast: false }));
 
-    // LED light channel above each cassette: a slim bar and a soft wash down the face
-    const barMat = new THREE.MeshBasicMaterial({ color: 0xfff0d6 });
-    function channel(x, z, nx, nz) {
-      const along = nz !== 0;
-      const bar = new THREE.Mesh(new THREE.BoxGeometry(along ? .84 : .03, .03, along ? .03 : .84), bronze);
-      bar.position.set(x + nx * .015, 1.375, z + nz * .015); scene.add(bar);
-      const led = new THREE.Mesh(new THREE.BoxGeometry(along ? .8 : .006, .006, along ? .006 : .8), barMat);
-      led.position.set(x + nx * .031, 1.362, z + nz * .031); scene.add(led);
-      const s = new THREE.SpotLight(0xffdcb0, .8, 1.6, 1.0, .9, 1.8);
-      s.position.set(x + nx * .22, 1.42, z + nz * .22); s.target.position.set(x, 1.0, z);
-      scene.add(s); scene.add(s.target);
+    // the warm line of light under the wall and the stand
+    const glowTex = (() => {
+      const c = document.createElement('canvas'); c.width = 4; c.height = 128; const g = c.getContext('2d');
+      const gr = g.createLinearGradient(0, 0, 0, 128); gr.addColorStop(0, 'rgba(255,200,140,.9)'); gr.addColorStop(1, 'rgba(255,200,140,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 4, 128); return new THREE.CanvasTexture(c);
+    })();
+    const glowMat = new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: .55 });
+    const ledMat = new THREE.MeshBasicMaterial({ color: 0xffe2bc });
+
+    // light hidden in the top edge of each niche
+    function nicheLight(parent, x, z, nx, nz) {
+      const s = new THREE.SpotLight(0xffcf98, .75, 1.5, 1.05, .95, 1.8);
+      s.position.set(x + nx * .2, 1.42, z + nz * .2); s.target.position.set(x, .95, z);
+      parent.add(s); parent.add(s.target);
     }
 
-    // fabric lightbox along the left 7 ft side
-    const lbTex = lightboxTexture(THREE);
+    // fabric lightbox along the left 7 ft side: one photograph of a Maxsen home, dimmed to about 65%
+    const lbTex = lightboxTexture(THREE, photo);
     const frame = std({ color: 0xD9D4CE, roughness: .4, metalness: .6 });
-    const lbMats = [new THREE.MeshBasicMaterial({ map: lbTex }), frame, frame, frame, frame, frame];
+    const lbMats = [new THREE.MeshBasicMaterial({ map: lbTex, color: 0xb8b8b8 }), frame, frame, frame, frame, frame];
     add(new THREE.BoxGeometry(LB, H, D), lbMats, LB / 2, H / 2, D / 2);
-    const glow = new THREE.PointLight(0xffe2bc, .35, 3, 2); glow.position.set(.8, 1.1, 1.15); scene.add(glow);
+    const glow = new THREE.PointLight(0xffd6a6, .3, 3, 2); glow.position.set(.8, 1.1, 1.15); scene.add(glow);
 
-    // one-sided carpentry wall along the back, four panels
+    // one-sided carpentry wall: four panels with 10 mm shadow gaps, floating 50 mm off the floor
     const keys = ['prestige', 'noble', 'nova', 'folio'];
-    const lam = std({ color: 0xD8C6AE, roughness: .7 });
+    const lam = std({ color: 0xDDCBB4, roughness: .7 });
+    add(new THREE.BoxGeometry(W - LB, FHm, .1), bronze, LB + (W - LB) / 2, B + FHm / 2, .05);
+    add(new THREE.BoxGeometry(W - LB, B, CW - .05), bronze, LB + (W - LB) / 2, B / 2, (CW - .05) / 2, { cast: false });
     keys.forEach((k, i) => {
       const x = LB + PW * i + PW / 2;
-      const tex = faceTexture(THREE, PW * 1000 - 6, k, 'wall');
+      const tex = faceTexture(THREE, PW * 1000 - 10, k, 'wall', { cupboard: k === 'folio' });
       const mats = [lam, lam, lam, lam, std({ map: tex, roughness: .75 }), lam];
-      add(new THREE.BoxGeometry(PW - .006, H, CW), mats, x, H / 2, CW / 2);
-      channel(x, CW, 0, 1);
+      add(new THREE.BoxGeometry(PW - .01, FHm, CW), mats, x, B + FHm / 2, CW / 2);
+      nicheLight(scene, x, CW, 0, 1);
     });
+    const wl = W - LB;
+    const led = add(new THREE.BoxGeometry(wl, .006, .006), ledMat, LB + wl / 2, .03, CW - .03, { cast: false });
+    const wg = new THREE.Mesh(new THREE.PlaneGeometry(wl, .32), glowMat);
+    wg.rotation.x = -Math.PI / 2; wg.position.set(LB + wl / 2, .014, CW + .16); scene.add(wg);
 
-    // one two-sided stand set at 45° across the front right corner:
-    // the outer face looks at both aisles, the inner face looks at the tables
+    // one two-sided stand at 45° across the front right corner, also floating
     const dark = bronze;
     const outer = std({ map: faceTexture(THREE, 1000, 'panels', 'stand'), roughness: .85 });
     const inner = std({ map: faceTexture(THREE, 1000, 'secure', 'stand'), roughness: .85 });
     const stand = new THREE.Group(); stand.position.set(4.277, 0, 1.534); stand.rotation.y = Math.PI / 4; scene.add(stand);
     const sm = (geo, mat, x, y, z) => { const o = new THREE.Mesh(geo, mat); o.position.set(x, y, z); o.castShadow = true; o.receiveShadow = true; stand.add(o); return o; };
-    sm(new THREE.BoxGeometry(1, H, .2), [dark, dark, dark, dark, outer, inner], 0, H / 2, 0);
-    sm(new THREE.BoxGeometry(1, .012, .6), bronze, 0, .006, 0);
+    sm(new THREE.BoxGeometry(1, FHm, .2), [dark, dark, dark, dark, outer, inner], 0, B + FHm / 2, 0);
+    sm(new THREE.BoxGeometry(.96, B, .12), bronze, 0, B / 2, 0);
+    sm(new THREE.BoxGeometry(1, .008, .6), bronze, 0, .004, 0);
     [1, -1].forEach(n => {
-      sm(new THREE.BoxGeometry(.84, .03, .03), bronze, 0, 1.375, n * .115);
-      sm(new THREE.BoxGeometry(.8, .006, .006), barMat, 0, 1.362, n * .131);
-      const sp = new THREE.SpotLight(0xffdcb0, .8, 1.6, 1.0, .9, 1.8);
-      sp.position.set(0, 1.42, n * .32); sp.target.position.set(0, 1.0, n * .1);
-      stand.add(sp); stand.add(sp.target);
+      sm(new THREE.BoxGeometry(.96, .006, .006), ledMat, 0, .03, n * .065);
+      const sg = new THREE.Mesh(new THREE.PlaneGeometry(1, .28), glowMat);
+      sg.rotation.x = -Math.PI / 2; sg.position.set(0, .013, n * .24); if (n < 0) sg.rotation.z = Math.PI; stand.add(sg);
+      nicheLight(stand, 0, n * .1, 0, n);
     });
 
-    // two consult tables with two chairs each
-    const top = std({ color: 0xFBF8F4, roughness: .35 });
-    const seat = std({ color: 0xCFA594, roughness: .9 });
+    // two consult tables: marble-look tops, upholstered chairs, flowers
+    const top = std({ map: marbleTexture(THREE), roughness: .3 });
+    const seat = std({ color: 0xC69A87, roughness: .95 });
     const leg = std({ color: 0x2B231F, roughness: .4, metalness: .5 });
     function table(x, z) {
       add(new THREE.CylinderGeometry(.3, .3, .03, 48), top, x, .745, z);
       add(new THREE.CylinderGeometry(.03, .03, .72, 16), leg, x, .37, z);
-      add(new THREE.CylinderGeometry(.22, .24, .02, 32), leg, x, .01, z);
+      add(new THREE.CylinderGeometry(.22, .24, .02, 32), leg, x, .03, z);
     }
     function chair(x, z, face) {
       const g = new THREE.Group();
       const m = (geo, mat, px, py, pz) => { const o = new THREE.Mesh(geo, mat); o.position.set(px, py, pz); o.castShadow = true; o.receiveShadow = true; g.add(o); };
-      m(new THREE.BoxGeometry(.42, .06, .42), seat, 0, .45, 0);
-      m(new THREE.BoxGeometry(.42, .38, .05), seat, 0, .67, -.19);
+      m(new THREE.BoxGeometry(.44, .09, .44), seat, 0, .45, 0);
+      m(new THREE.BoxGeometry(.44, .34, .07), seat, 0, .66, -.19);
       [[-.18, -.18], [.18, -.18], [-.18, .18], [.18, .18]].forEach(([a, b]) => m(new THREE.CylinderGeometry(.012, .012, .42, 8), leg, a, .21, b));
       g.position.set(x, 0, z); g.rotation.y = face; scene.add(g);
     }
     table(.85, 1.35); chair(.4, 1.35, Math.PI / 2); chair(1.3, 1.35, -Math.PI / 2);
     table(2.95, 1.35); chair(2.5, 1.35, Math.PI / 2); chair(3.4, 1.35, -Math.PI / 2);
-    // an iPad and a finish tray on the tables
-    add(new THREE.BoxGeometry(.25, .008, .18), std({ color: 0x1b1b1d, roughness: .3 }), .85, .764, 1.32);
-    add(new THREE.BoxGeometry(.3, .02, .2), std({ color: 0xCBB79C, roughness: .5 }), 2.95, .77, 1.34);
+    add(new THREE.BoxGeometry(.25, .008, .18), std({ color: 0x1b1b1d, roughness: .3 }), .82, .764, 1.3);
+    add(new THREE.BoxGeometry(.3, .02, .2), std({ color: 0xB9A17F, roughness: .5 }), 2.92, .77, 1.3);
     const menu = std({ color: 0x29221F, roughness: .6 });
-    [.85, 2.95].forEach(x => { const m = add(new THREE.BoxGeometry(.15, .21, .012), menu, x + .12, .865, 1.55); m.rotation.x = -.15; });
+    [.85, 2.95].forEach(x => { const m = add(new THREE.BoxGeometry(.15, .21, .012), menu, x + .14, .865, 1.56); m.rotation.x = -.15; });
+    const ceramic = std({ color: 0xF2EEE8, roughness: .5 });
+    const stem = std({ color: 0x6E7A5A, roughness: .9 });
+    const bloomCols = [0xFBF6EF, 0xEAD3C8, 0xFBF6EF, 0xD9B5A6, 0xFBF6EF];
+    [.85, 2.95].forEach(x => {
+      add(new THREE.CylinderGeometry(.035, .045, .15, 24), ceramic, x - .13, .835, 1.5);
+      bloomCols.forEach((col, k) => {
+        const a = k * 1.3;
+        add(new THREE.CylinderGeometry(.003, .003, .1, 6), stem, x - .13 + Math.cos(a) * .012, .95, 1.5 + Math.sin(a) * .012);
+        add(new THREE.SphereGeometry(.026, 14, 10), std({ color: col, roughness: .9 }), x - .13 + Math.cos(a) * .035, 1.0 + (k % 2) * .02, 1.5 + Math.sin(a) * .035);
+      });
+    });
+
+    // an olive tree beside the lightbox, under 1.8 m
+    add(new THREE.CylinderGeometry(.2, .16, .42, 32), std({ color: 0x3A302A, roughness: .6 }), .42, .21, 1.86);
+    add(new THREE.CylinderGeometry(.19, .19, .01, 32), std({ color: 0x4a3b2e, roughness: 1 }), .42, .41, 1.86, { cast: false });
+    add(new THREE.CylinderGeometry(.018, .03, .72, 10), std({ color: 0x5b4a3c, roughness: .9 }), .42, .78, 1.86);
+    const leafA = std({ color: 0x66704F, roughness: .85 }), leafB = std({ color: 0x7E8866, roughness: .85 });
+    let lv = 11; const lr = () => (lv = (lv * 9301 + 49297) % 233280) / 233280;
+    [[-.1, 1.02, .05, .55], [.12, 1.08, -.04, .5]].forEach(([dx, y, dz, len]) => {
+      const br = add(new THREE.CylinderGeometry(.008, .012, len * .45, 6), std({ color: 0x5b4a3c, roughness: .9 }), .42 + dx * .5, y + .1, 1.86 + dz * .5);
+      br.rotation.z = -dx * 2.4; br.rotation.x = dz * 2.4;
+    });
+    for (let k = 0; k < 46; k++) {
+      const th = lr() * Math.PI * 2, ph = Math.acos(2 * lr() - 1), r = Math.cbrt(lr());
+      const x = .42 + Math.sin(ph) * Math.cos(th) * .3 * r, y = 1.36 + Math.cos(ph) * .24 * r, z = 1.86 + Math.sin(ph) * Math.sin(th) * .26 * r;
+      const m = add(new THREE.IcosahedronGeometry(.055 + lr() * .05, 0), lr() > .5 ? leafA : leafB, x, y, z);
+      m.scale.set(1.25, .7, 1); m.rotation.set(lr() * 3, lr() * 3, lr() * 3);
+    }
 
     // two visitors for scale, 1.7 m
     const skin = std({ color: 0x9E968D, roughness: .9 });
@@ -956,15 +1012,20 @@ window.MaxsenBooth = (function () {
     top:    { pos: [5.6, 6.4, 5.6], at: [2.3, 0, 1.0], fov: 36, label: 'From above', people: false }
   };
 
-  function mount(THREE, el, opts = {}) {
+  function loadImage(src) {
+    return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+  }
+
+  async function mount(THREE, el, opts = {}) {
+    const photo = await loadImage(opts.photo || 'assets/lightbox-photo.jpg');
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: !!opts.capture });
     renderer.setPixelRatio(opts.ratio || Math.min(2, window.devicePixelRatio || 1));
     renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .92;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .9;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.physicallyCorrectLights = false;
     el.appendChild(renderer.domElement);
-    const scene = build(THREE);
+    const scene = build(THREE, photo);
     const cam = new THREE.PerspectiveCamera(40, 1, .05, 80);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) {
@@ -1008,7 +1069,7 @@ window.MaxsenBooth = (function () {
       try { await document.fonts.ready; } catch (e) {}
       stage.querySelector('img').hidden = true; btn.hidden = true;
       stage.classList.add('live');
-      viewer = MaxsenBooth.mount(THREE, stage, { view: 'corner' });
+      viewer = await MaxsenBooth.mount(THREE, stage, { view: 'corner' });
       bar.hidden = false;
     } catch (e) {
       btn.disabled = false; btn.textContent = 'The model did not load. Try again';
