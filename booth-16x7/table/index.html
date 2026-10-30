@@ -1,0 +1,507 @@
+<title>Maxsen Counter Table</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: a product sheet for one piece of furniture. The render leads, then the sketch beside
+   the model, the drawings to scale, and the build notes. Maxsen palette: porcelain, ink, rose. */
+:root{
+  --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
+  --rose:#CFA594; --rose-text:#7E5643;
+  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56;
+  --serif:"EB Garamond",Garamond,Georgia,serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C;
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 72px;display:grid;gap:60px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1.08}
+h1{font-size:clamp(36px,5.6vw,58px)} h1 em{font-style:italic;color:var(--rose-text)}
+h2{font-size:clamp(28px,3.4vw,38px)} h3{font-size:21px}
+p{margin:0;max-width:68ch}
+section{display:grid;gap:20px;min-width:0}
+.head{display:grid;gap:12px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-text)}
+.lede{font-size:18px;font-weight:300;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule)}
+.facts div{padding:14px 14px 0 0;display:grid;gap:4px}
+.facts b{font:400 28px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:13px;color:var(--muted);line-height:1.4}
+@media (max-width:720px){.facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+.shot{margin:0;display:grid;gap:8px;min-width:0}
+.shot img{width:100%;height:auto;display:block;border-radius:4px;border:1px solid var(--rule);background:var(--surface)}
+.shot figcaption{font-size:14px;color:var(--ink-2)} .shot figcaption b{color:var(--fg)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.read{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+@media (max-width:820px){.read{grid-template-columns:minmax(0,1fr)}}
+.tbl{overflow-x:auto;border-top:1px solid var(--fg)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:11px 12px 11px 0;border-bottom:1px solid var(--rule)}
+th{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+td b{font-weight:700}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap;background:var(--surface);color:var(--muted);border:1px solid var(--rule)}
+.chip.q{background:var(--rose);color:#29221F;border-color:var(--rose)}
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:4px;display:grid;gap:10px;padding:18px 16px 14px;min-width:0;margin:0}
+.sheet-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sheet-h b{font:400 20px/1.2 var(--serif)}
+.sheet-h span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.dwg{display:block;width:100%;height:auto;min-width:520px}
+.dwg.narrow{min-width:300px;max-width:420px}
+.drw{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.drw{grid-template-columns:minmax(0,1fr)}}
+.dim line{stroke:var(--dimc);stroke-width:3}
+text{font-family:var(--sans)}
+.td{fill:var(--dimc);font-size:40px;font-variant-numeric:tabular-nums}
+.tz{fill:var(--rose-text);font-size:36px;font-weight:700;letter-spacing:8px}
+.word{fill:var(--fg);font-size:34px;font-weight:700;letter-spacing:16px}
+.floor{fill:var(--muted)}
+.stone{fill:var(--stone);stroke:var(--fg);stroke-width:4}
+.lam{fill:var(--lam);stroke:var(--fg);stroke-width:3}
+.lamback{fill:var(--lam);opacity:.55}
+.lamplan{fill:var(--lam);opacity:.6}
+.shelf{fill:var(--shelf);stroke:var(--fg);stroke-width:2}
+.bronze{fill:var(--bronze)}
+.led{fill:var(--led)}
+.outline{fill:none;stroke:var(--dimc);stroke-width:3;stroke-dasharray:16 10}
+.radius{fill:none;stroke:var(--rose-text);stroke-width:5}
+.viewer{display:grid;gap:10px}
+.stage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule);background:var(--surface)}
+.stage img{width:100%;height:100%;object-fit:cover;filter:brightness(.92)}
+.stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:none}
+.btn{position:absolute;left:50%;top:50%;translate:-50% -50%;min-height:48px;padding:15px 26px;border-radius:999px;border:0;font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;background:var(--fg);color:var(--bg);box-shadow:0 18px 40px -16px rgba(0,0,0,.5)}
+.btn:disabled{opacity:.7;cursor:progress}
+.views{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.views[hidden]{display:none}
+.views button{border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.views span{font-size:13px;color:var(--muted);margin-left:6px}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
+ul.plain li::marker{color:var(--rose)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>div{display:grid;gap:10px;align-content:start;min-width:0}
+.confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.confirm{grid-template-columns:minmax(0,1fr)}}
+.confirm div{border:1px solid var(--rule);border-radius:4px;padding:16px 18px;display:grid;gap:6px;background:var(--surface)}
+.confirm b{font:400 19px/1.2 var(--serif)}
+.confirm span{font-size:14.5px;color:var(--ink-2)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">Maxsen · booth furniture · from your sketch</span>
+    <h1>The counter table, <em>built from your drawing.</em></h1>
+    <p class="lede">A 1.4 m counter with a soft-cornered stone top, a closed centre carrying the Maxsen wordmark, and open shelves that wrap around both ends. LED light runs under the top and under the base, so the whole piece seems to float.</p>
+    <div class="facts">
+      <div><b>1,400 × 600</b><span>length × depth in mm (depth assumed)</span></div>
+      <div><b>1,000</b><span>height in mm, counter height</span></div>
+      <div><b>R150</b><span>rounded corners on the top</span></div>
+      <div><b>2 LED lines</b><span>under the top and under the base</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="look">
+    <figure class="shot">
+      <img src="renders/day-hero.jpg" alt="Render of the counter table in daylight: white stone top with rounded corners, a champagne centre panel with the Maxsen wordmark, open shelves with slim bronze posts at both ends, on a lit floating base" width="1600" height="1000">
+      <figcaption><b>Daylight.</b> Stone top, champagne centre, open end shelves on slim bronze posts.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="renders/night-hero.jpg" alt="The same view with hall lights low: warm LED light washes down the body from under the top and pools on the floor under the base" width="1600" height="1000" loading="lazy">
+      <figcaption><b>Show lights low.</b> The LED under the top washes the body; the LED under the base lights the floor.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="read">
+    <div class="head">
+      <span class="eyebrow">Your sketch</span>
+      <h2 id="read">How I read the drawing</h2>
+      <p>Everything marked "from the sketch" is what you drew. The rest are my assumptions, which you can change.</p>
+    </div>
+    <div class="read">
+      <figure class="shot"><img src="assets/sketch.jpg" alt="Your hand sketch of the table, with notes for 15 cm, LED, LED below, shelves, 1 metre and 1.4 m" width="2000" height="1280" loading="lazy"><figcaption><b>Your sketch.</b></figcaption></figure>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Note on the sketch</th><th>What I modelled</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><b>1.4 m</b></td><td>1,400 mm long</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>1 metre</b></td><td>1,000 mm high to the top surface</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Depth arrow, no number</b></td><td>600 mm deep</td><td><span class="chip q">Assumed</span></td></tr>
+            <tr><td><b>15 cm at the corner</b></td><td>A 150 mm radius on all four corners of the top</td><td><span class="chip q">Assumed</span></td></tr>
+            <tr><td><b>LED, under the top edge</b></td><td>The top overhangs the body by 30 mm, with an LED strip hidden underneath</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>LED below</b></td><td>A bronze base set back 60 mm, with an LED line that lights the floor</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Shelves</b></td><td>Three open shelves at each end, wrapping around the rounded corners</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Centre panel</b></td><td>Closed, 760 mm wide, with the Maxsen wordmark</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Materials</b></td><td>Marble-look stone top, champagne laminate body, bronze posts and base</td><td><span class="chip q">Assumed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="more">
+    <div class="head">
+      <span class="eyebrow">More views</span>
+      <h2 id="more">Front, ends and details</h2>
+    </div>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/day-front.jpg" alt="Straight-on front view of the table" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> Closed centre, shelves either side.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-end.jpg" alt="Three-quarter view of the right end, showing the shelves wrapping round the rounded corner" width="1600" height="1000" loading="lazy"><figcaption><b>End.</b> The shelves follow the curve of the corner.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-detail.jpg" alt="Close-up of the stone top corner, the hidden LED strip and a shelf with switch samples" width="1600" height="1000" loading="lazy"><figcaption><b>Corner detail.</b> 40 mm top, 30 mm overhang, LED hidden below.</figcaption></figure>
+      <figure class="shot"><img src="renders/night-detail.jpg" alt="The corner detail with show lights low, the LED glowing under the top edge" width="1600" height="1000" loading="lazy"><figcaption><b>Corner at night.</b> You see the glow, not the strip.</figcaption></figure>
+    </div>
+    <div class="viewer">
+      <div class="stage" id="stage">
+        <img src="renders/day-hero.jpg" alt="" width="1600" height="1000">
+        <button class="btn" id="open3d" type="button">Open the 3D model</button>
+      </div>
+      <div class="views" id="views" hidden role="toolbar" aria-label="Camera views">
+        <button type="button" data-v="hero" aria-pressed="true">Three-quarter</button>
+        <button type="button" data-v="front" aria-pressed="false">Front</button>
+        <button type="button" data-v="end" aria-pressed="false">End</button>
+        <button type="button" data-v="detail" aria-pressed="false">Corner</button>
+        <button type="button" data-m="night" aria-pressed="false">Lights low</button>
+        <span>Drag to turn, pinch or scroll to zoom</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="dwg">
+    <div class="head">
+      <span class="eyebrow">Drawings</span>
+      <h2 id="dwg">To scale, in millimetres</h2>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -150 1960 1370" class="dwg" role="img" aria-label="Front elevation with dimensions"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="90" y="940" width="1220" height="58" class="bronze"/><rect x="100" y="952" width="1200" height="5" class="led"/><rect x="320" y="42" width="760" height="898" class="lam"/><text x="700" y="440" class="word" text-anchor="middle">MAXSEN</text><rect x="30" y="913" width="290" height="27" class="shelf"/><rect x="30" y="620" width="290" height="25" class="shelf"/><rect x="30" y="325" width="290" height="25" class="shelf"/><rect x="30" y="40" width="290" height="27" class="shelf"/><rect x="72" y="42" width="16" height="898" class="bronze"/><rect x="1080" y="913" width="290" height="27" class="shelf"/><rect x="1080" y="620" width="290" height="25" class="shelf"/><rect x="1080" y="325" width="290" height="25" class="shelf"/><rect x="1080" y="40" width="290" height="27" class="shelf"/><rect x="1312" y="42" width="16" height="898" class="bronze"/><rect x="0" y="0" width="1400" height="40" rx="6" class="stone"/><rect x="40" y="42" width="1320" height="5" class="led"/><g class="dim"><line x1="0" y1="-70" x2="1400" y2="-70"/><line x1="0" y1="-95" x2="0" y2="-45"/><line x1="1400" y1="-95" x2="1400" y2="-45"/></g><text x="700.0" y="-92" class="td" text-anchor="middle">1,400</text><g class="dim"><line x1="320" y1="1090" x2="1080" y2="1090"/><line x1="320" y1="1065" x2="320" y2="1115"/><line x1="1080" y1="1065" x2="1080" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">760 closed centre</text><g class="dim"><line x1="30" y1="1090" x2="320" y2="1090"/><line x1="30" y1="1065" x2="30" y2="1115"/><line x1="320" y1="1065" x2="320" y2="1115"/></g><text x="175.0" y="1150" class="td" text-anchor="middle">290 shelves</text><g class="dim"><line x1="1080" y1="1090" x2="1370" y2="1090"/><line x1="1080" y1="1065" x2="1080" y2="1115"/><line x1="1370" y1="1065" x2="1370" y2="1115"/></g><text x="1225.0" y="1150" class="td" text-anchor="middle">290 shelves</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1000"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="514.0" class="td" text-anchor="end">1,000</text><g class="dim"><line x1="1460" y1="0" x2="1460" y2="40"/><line x1="1435" y1="0" x2="1485" y2="0"/><line x1="1435" y1="40" x2="1485" y2="40"/></g><text x="1490" y="34.0" class="td" text-anchor="start">40 top</text><g class="dim"><line x1="1460" y1="940" x2="1460" y2="1000"/><line x1="1435" y1="940" x2="1485" y2="940"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="984.0" class="td" text-anchor="start">60 base</text><text x="1460" y="655" class="td" text-anchor="start">shelf 355</text><text x="1460" y="360" class="td" text-anchor="start">shelf 650</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>End</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -150 1000 1370" class="dwg narrow" role="img" aria-label="End elevation, showing the open shelves"><rect x="-60" y="1000" width="720" height="10" class="floor"/><rect x="90" y="940" width="420" height="58" class="bronze"/><rect x="100" y="952" width="400" height="5" class="led"/><rect x="30" y="42" width="540" height="898" class="lamback"/><rect x="30" y="913" width="540" height="27" rx="4" class="shelf"/><rect x="30" y="620" width="540" height="25" rx="4" class="shelf"/><rect x="30" y="325" width="540" height="25" rx="4" class="shelf"/><rect x="30" y="40" width="540" height="27" rx="4" class="shelf"/><rect x="72" y="42" width="16" height="898" class="bronze"/><rect x="512" y="42" width="16" height="898" class="bronze"/><rect x="0" y="0" width="600" height="40" rx="6" class="stone"/><rect x="40" y="42" width="520" height="5" class="led"/><g class="dim"><line x1="0" y1="-70" x2="600" y2="-70"/><line x1="0" y1="-95" x2="0" y2="-45"/><line x1="600" y1="-95" x2="600" y2="-45"/></g><text x="300.0" y="-92" class="td" text-anchor="middle">600 (to confirm)</text><g class="dim"><line x1="30" y1="1090" x2="570" y2="1090"/><line x1="30" y1="1065" x2="30" y2="1115"/><line x1="570" y1="1065" x2="570" y2="1115"/></g><text x="300.0" y="1150" class="td" text-anchor="middle">540 body</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1000"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="514.0" class="td" text-anchor="end">1,000</text></svg></div></figure>
+    </div>
+    <figure class="sheet"><div class="sheet-h"><b>Plan from above</b><span>body dashed under the top</span></div><div class="scroll"><svg viewBox="-260 -150 1960 870" class="dwg" role="img" aria-label="Plan from above, with the 150 mm corner radius"><rect x="0" y="0" width="1400" height="600" rx="150" class="stone"/><rect x="30" y="30" width="1340" height="540" rx="120" class="outline"/><rect x="320" y="30" width="760" height="540" class="lamplan"/><circle cx="80" cy="80" r="10" class="bronze"/><circle cx="80" cy="520" r="10" class="bronze"/><circle cx="1320" cy="80" r="10" class="bronze"/><circle cx="1320" cy="520" r="10" class="bronze"/><text x="700" y="315" class="td" text-anchor="middle">closed centre</text><text x="175" y="315" class="td" text-anchor="middle">shelves</text><text x="1225" y="315" class="td" text-anchor="middle">shelves</text><text x="700" y="660" class="tz" text-anchor="middle">FRONT</text><g class="dim"><line x1="0" y1="-70" x2="1400" y2="-70"/><line x1="0" y1="-95" x2="0" y2="-45"/><line x1="1400" y1="-95" x2="1400" y2="-45"/></g><text x="700.0" y="-92" class="td" text-anchor="middle">1,400</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="600"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="600" x2="-35" y2="600"/></g><text x="-88" y="314.0" class="td" text-anchor="end">600</text><path d="M1400 150 A150 150 0 0 0 1250 0" class="radius"/><text x="1430" y="70" class="td" text-anchor="start">R150</text></svg></div></figure>
+  </section>
+
+  <section aria-labelledby="spec">
+    <div class="head">
+      <span class="eyebrow">Build notes</span>
+      <h2 id="spec">What the fabricator needs to know</h2>
+    </div>
+    <div class="two">
+      <div>
+        <h3>Top</h3>
+        <ul class="plain">
+          <li>1,400 × 600, 150 mm corner radius, 40 mm thick edge.</li>
+          <li>Marble-look sintered stone or quartz, 12 mm on a plywood core with a mitred 40 mm edge, so it stays light enough to lift.</li>
+          <li>Overhangs the body by 30 mm all round. It lifts off for transport.</li>
+        </ul>
+        <h3>Body and shelves</h3>
+        <ul class="plain">
+          <li>Plywood with a champagne laminate, matching the booth's carpentry wall.</li>
+          <li>Closed centre, 760 wide, with the wordmark in cut bronze or printed vinyl.</li>
+          <li>Three open shelves at each end, 25 mm thick, at 355, 650 and under the top, following the corner curve.</li>
+          <li>Two 16 mm bronze posts at each end steady the shelf edges.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Light</h3>
+        <ul class="plain">
+          <li>Lumi LED strip in an aluminium channel with a diffuser, set 20 mm back under the top edge, all the way round.</li>
+          <li>A second strip under the base, behind a 60 mm set-back, lighting the floor.</li>
+          <li>Warm white, on the Maxsen gateway, so the table joins the booth's scenes.</li>
+        </ul>
+        <h3>Power and use</h3>
+        <ul class="plain">
+          <li>One 13 A point. The cable enters through the base, and the driver sits inside the closed centre.</li>
+          <li>At 1 m high this is a standing counter. If people should sit, use bar stools with a 750 mm seat.</li>
+          <li>The closed centre opens from the back as a lockable cupboard for the iPad, brochures and bags.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="conf">
+    <div class="head">
+      <span class="eyebrow">To confirm</span>
+      <h2 id="conf">Four things I guessed</h2>
+    </div>
+    <div class="confirm">
+      <div><b>Depth</b><span>The sketch shows a depth arrow without a number. I used 600 mm. If you meant something else, tell me and I'll redraw.</span></div>
+      <div><b>"15cm" at the corner</b><span>I read it as a 150 mm corner radius. If it means the top's thickness or the overhang, the top changes noticeably.</span></div>
+      <div><b>The back</b><span>The sketch only shows the front. I made the shelves open at the back too, with a cupboard door at the back of the centre. A closed back is also possible.</span></div>
+      <div><b>Where it goes in the booth</b><span>It could replace the two round tables as one standing consult counter, or sit beside them. Tell me which and I'll add it to the booth plan and renders.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Rendered from a 3D model of the sketch. Materials and props are illustrative.</span>
+    <span>Maxsen · Singapore</span>
+  </footer>
+</div>
+
+<script>
+/* The Maxsen counter table from the sketch: 1,400 long, 600 deep (assumed), 1,000 high.
+   Units are metres. x runs along the length, z from the back (-) to the front (+), y is up. */
+window.MaxsenTable = (function () {
+  const L = 1.4, D = 0.6, H = 1.0, TOP = 0.04, R = 0.15; // top: 40 mm slab, 150 mm corner radius
+  const INSET = 0.03;                                     // the top overhangs the body by 30 mm
+  const BL = L - 2 * INSET, BD = D - 2 * INSET, BR = R - INSET;
+  const BASE = 0.06;                                      // floating base
+  const CORE = 0.76;                                      // closed centre section
+  const SHELF_Y = [BASE, 0.355, 0.65, H - TOP - 0.027];   // shelf boards, bottom to top
+  const SERIF = '"EB Garamond", Garamond, Georgia, serif';
+  const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
+
+  function rrShape(THREE, w, d, r, cx = 0, cz = 0) {
+    const s = new THREE.Shape(), x = cx - w / 2, y = cz - d / 2;
+    s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+    s.lineTo(x + w, y + d - r); s.quadraticCurveTo(x + w, y + d, x + w - r, y + d);
+    s.lineTo(x + r, y + d); s.quadraticCurveTo(x, y + d, x, y + d - r);
+    s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y); return s;
+  }
+  // a shelf board for one end: square on the inside, rounded at the two outer corners
+  function endShape(THREE, side, w, d, r) {
+    const s = new THREE.Shape(), z0 = -d / 2, z1 = d / 2;
+    if (side > 0) {
+      s.moveTo(0, z0); s.lineTo(w - r, z0); s.quadraticCurveTo(w, z0, w, z0 + r);
+      s.lineTo(w, z1 - r); s.quadraticCurveTo(w, z1, w - r, z1); s.lineTo(0, z1); s.lineTo(0, z0);
+    } else {
+      s.moveTo(0, z0); s.lineTo(-w + r, z0); s.quadraticCurveTo(-w, z0, -w, z0 + r);
+      s.lineTo(-w, z1 - r); s.quadraticCurveTo(-w, z1, -w + r, z1); s.lineTo(0, z1); s.lineTo(0, z0);
+    }
+    return s;
+  }
+  // extrude a plan shape (drawn in x/z) upward by h, starting at y
+  function slab(THREE, shape, h, bevel) {
+    const g = new THREE.ExtrudeGeometry(shape, { depth: h, bevelEnabled: !!bevel, bevelThickness: bevel || 0, bevelSize: bevel || 0, bevelSegments: 4, curveSegments: 24 });
+    g.rotateX(Math.PI / 2); g.translate(0, h, 0); // shape y becomes +z, extrusion becomes +y
+    g.computeVertexNormals();
+    return g;
+  }
+
+  function marble(THREE) {
+    const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+    g.fillStyle = '#F3F0EB'; g.fillRect(0, 0, 2048, 1024);
+    let v = 21; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+    const cloud = g.createRadialGradient(700, 400, 50, 700, 400, 900); cloud.addColorStop(0, 'rgba(225,218,208,.5)'); cloud.addColorStop(1, 'rgba(225,218,208,0)');
+    g.fillStyle = cloud; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 16; k++) {
+      g.strokeStyle = `rgba(${95 + rnd() * 40},${88 + rnd() * 30},${80 + rnd() * 25},${.12 + rnd() * .26})`;
+      g.lineWidth = .6 + rnd() * (k < 4 ? 3.5 : 1.5);
+      g.beginPath(); let x = rnd() * 2048, y = -20; g.moveTo(x, y);
+      const drift = (rnd() - .3) * 70;
+      while (y < 1050) { x += drift + (rnd() - .5) * 90; y += 18 + rnd() * 34; g.lineTo(x, y); }
+      g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1 / L, 1 / D); t.offset.set(.5, .5);
+    return t;
+  }
+
+  function coreFront(THREE) {
+    const w = 1520, h = 1800; // 0.5 px per mm of a 760 x 900 panel
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
+    const bg = g.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, '#E4D5C1'); bg.addColorStop(1, '#D9C7AF');
+    g.fillStyle = bg; g.fillRect(0, 0, w, h);
+    // fine vertical grain of the laminate
+    let v = 5; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+    for (let i = 0; i < 260; i++) { g.fillStyle = `rgba(120,95,70,${rnd() * .035})`; g.fillRect(rnd() * w, 0, 1 + rnd() * 3, h); }
+    g.fillStyle = '#3A2E26'; g.textAlign = 'center';
+    g.font = `700 58px ${SANS}`; if (g.letterSpacing !== undefined) g.letterSpacing = '30px';
+    g.fillText('MAXSEN', w / 2 + 15, h * .42);
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+
+  function floorGlow(THREE) {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 256; const g = c.getContext('2d');
+    const f = g.createRadialGradient(256, 128, 40, 256, 128, 250);
+    f.addColorStop(0, 'rgba(255,196,130,.0)'); f.addColorStop(.42, 'rgba(255,196,130,.85)'); f.addColorStop(.6, 'rgba(255,196,130,.35)'); f.addColorStop(1, 'rgba(255,196,130,0)');
+    g.save(); g.scale(1, .52); g.translate(0, 118); g.fillStyle = f; g.fillRect(0, -128, 512, 512); g.restore();
+    return new THREE.CanvasTexture(c);
+  }
+
+  function build(THREE, renderer, mood) {
+    const night = mood === 'night';
+    const scene = new THREE.Scene();
+    const bgc = night ? 0x1E1915 : 0xE9E4DD;
+    scene.background = new THREE.Color(bgc);
+    scene.fog = new THREE.Fog(bgc, 5.5, 13);
+    const pm = new THREE.PMREMGenerator(renderer);
+    scene.environment = pm.fromScene(new THREE.RoomEnvironment(), .04).texture;
+
+    const std = o => new THREE.MeshStandardMaterial(Object.assign({ roughness: .7, metalness: 0, envMapIntensity: night ? .22 : .5 }, o));
+    const add = (geo, mat, x = 0, y = 0, z = 0, o = {}) => {
+      const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z);
+      m.castShadow = o.cast !== false; m.receiveShadow = true; scene.add(m); return m;
+    };
+
+    // studio: a warm concrete floor and soft light
+    const floor = add(new THREE.PlaneGeometry(40, 40), std({ color: night ? 0x3a322c : 0xC2B7AA, roughness: .92 }), 0, 0, 0, { cast: false });
+    floor.rotation.x = -Math.PI / 2;
+    scene.add(new THREE.HemisphereLight(0xfff7ef, night ? 0x1a1410 : 0x9d8f80, night ? .08 : .22));
+    const key = new THREE.DirectionalLight(0xfff3e6, night ? .12 : .78);
+    key.position.set(-2.6, 4.2, 3.2); key.castShadow = true; key.shadow.mapSize.set(4096, 4096); key.shadow.radius = 6;
+    Object.assign(key.shadow.camera, { left: -2, right: 2, top: 2, bottom: -2, near: .5, far: 12 }); key.shadow.bias = -.0004;
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xffe6cc, night ? .05 : .22); rim.position.set(3, 2.5, -3); scene.add(rim);
+
+    // materials from the Maxsen palette
+    const stone = new THREE.MeshPhysicalMaterial({ map: marble(THREE), roughness: .25, clearcoat: .5, clearcoatRoughness: .25, envMapIntensity: night ? .3 : .6, color: 0xF2EEE8 });
+    const lam = std({ color: 0xD3BFA4, roughness: .55 });
+    const shelfMat = std({ color: 0xC4AD8F, roughness: .5 });
+    const bronze = std({ color: 0x2B231F, roughness: .38, metalness: .55 });
+    const led = new THREE.MeshBasicMaterial({ color: night ? 0xffd9a8 : 0xfff1dc });
+
+    // top: 40 mm slab, 150 mm corner radius, a small softened edge
+    add(slab(THREE, rrShape(THREE, L - .006, D - .006, R), TOP - .006, .003), stone, 0, H - TOP + .003, 0);
+
+    // LED strip tucked 20 mm under the top edge, washing down the body
+    const ledRing = slab(THREE, rrShape(THREE, BL + .03, BD + .03, BR + .015), .006);
+    const ringCut = rrShape(THREE, BL + .016, BD + .016, BR + .008); // a thin ring, not a solid sheet
+    const ringShape = rrShape(THREE, BL + .03, BD + .03, BR + .015); ringShape.holes.push(ringCut);
+    add(slab(THREE, ringShape, .006), led, 0, H - TOP - .007, 0, { cast: false });
+    ledRing.dispose();
+
+    // closed centre section
+    const frontTex = coreFront(THREE);
+    const coreMats = [lam, lam, lam, lam, std({ map: frontTex, roughness: .55 }), lam];
+    add(new THREE.BoxGeometry(CORE, H - TOP - BASE - .002, BD), coreMats, 0, BASE + (H - TOP - BASE) / 2, 0);
+
+    // open shelves at both ends, wrapping round the rounded corners, carried on slim bronze posts
+    const endW = BL / 2 - CORE / 2;
+    [1, -1].forEach(side => {
+      const x0 = side * CORE / 2;
+      SHELF_Y.forEach((y, i) => {
+        const th = i === 0 || i === SHELF_Y.length - 1 ? .027 : .025;
+        add(slab(THREE, endShape(THREE, side, endW, BD, BR), th, i === 0 ? 0 : .002), shelfMat, x0, y, 0);
+      });
+      [[-1], [1]].forEach(([zs]) => add(new THREE.CylinderGeometry(.008, .008, H - TOP - BASE, 12), bronze, x0 + side * (endW - .05), BASE + (H - TOP - BASE) / 2, zs * (BD / 2 - .05)));
+    });
+
+    // floating base: a bronze plinth set back 60 mm, with an LED line that lights the floor
+    add(slab(THREE, rrShape(THREE, BL - .12, BD - .12, BR - .04), BASE - .004), bronze, 0, .002, 0);
+    const baseRing = rrShape(THREE, BL - .1, BD - .1, BR - .03); baseRing.holes.push(rrShape(THREE, BL - .114, BD - .114, BR - .036));
+    add(slab(THREE, baseRing, .005), led, 0, BASE - .012, 0, { cast: false });
+    const gl = new THREE.Mesh(new THREE.PlaneGeometry(BL + .7, BD + .55), new THREE.MeshBasicMaterial({ map: floorGlow(THREE), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .9 : .45 }));
+    gl.rotation.x = -Math.PI / 2; gl.position.y = .002; scene.add(gl);
+
+    // warm light from the LEDs: under the top onto the body, and from the base onto the floor
+    THREE.RectAreaLightUniformsLib.init();
+    const washI = night ? 7 : 2.2;
+    [[0, BD / 2 + .012, 0, BL - .3], [0, -BD / 2 - .012, Math.PI, BL - .3]].forEach(([x, z, ry, w]) => {
+      const a = new THREE.RectAreaLight(0xffc98f, washI, w, .02);
+      a.position.set(x, H - TOP - .012, z); a.lookAt(x, 0, z + (z > 0 ? .05 : -.05)); scene.add(a);
+    });
+    [[1, 0], [-1, 0]].forEach(([s]) => {
+      const a = new THREE.RectAreaLight(0xffc98f, washI * .8, .02, BD - .2);
+      a.position.set(s * (BL / 2 + .012), H - TOP - .012, 0); a.lookAt(s * (BL / 2 + .06), 0, 0); scene.add(a);
+    });
+    const low = new THREE.RectAreaLight(0xffc48a, night ? 5 : 2, BL - .1, BD - .1);
+    low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
+    // light inside each shelf bay, so the products glow
+    [1, -1].forEach(s => SHELF_Y.slice(1).forEach(y => {
+      const p = new THREE.PointLight(0xffcf98, night ? .5 : .18, .5, 2); p.position.set(s * (CORE / 2 + endW / 2), y - .03, 0); scene.add(p);
+    }));
+
+    // a few things on the shelves and top, for scale
+    const paper = std({ color: 0xF6F1EA, roughness: .9 });
+    const ceramic = std({ color: 0xEDE7DF, roughness: .45 });
+    const plateCols = [0x1d1b1a, 0xcbb79c, 0x2b2f3a];
+    const L0 = -(CORE / 2 + endW / 2), R0 = CORE / 2 + endW / 2;
+    // left: brochures and a vase; right: switch samples and a small book stack
+    for (let i = 0; i < 4; i++) add(new THREE.BoxGeometry(.21, .006, .297), i % 2 ? paper : std({ color: 0x2B231F, roughness: .6 }), L0 - .02, SHELF_Y[1] + .028 + i * .007, .02);
+    add(new THREE.CylinderGeometry(.045, .055, .2, 32), ceramic, L0 + .02, SHELF_Y[2] + .125, -.05);
+    add(new THREE.CylinderGeometry(.06, .05, .12, 32), std({ color: 0x8A7563, roughness: .8 }), L0 - .03, SHELF_Y[0] + .087, .05);
+    plateCols.forEach((c, i) => {
+      const p = add(new THREE.BoxGeometry(.086, .086, .01), std({ color: c, roughness: .3, metalness: .2 }), R0 - .09 + i * .095, SHELF_Y[2] + .07, .08);
+      p.rotation.x = -.18;
+    });
+    for (let i = 0; i < 3; i++) add(new THREE.BoxGeometry(.17, .025, .23), std({ color: [0xCFA594, 0xEDE7DF, 0x2B231F][i], roughness: .8 }), R0, SHELF_Y[1] + .04 + i * .026, -.02);
+    add(new THREE.BoxGeometry(.11, .11, .04), std({ color: 0x18181b, roughness: .25 }), R0 + .02, SHELF_Y[0] + .084, 0);
+    // on the top: an iPad and a small vase of flowers
+    const pad = add(new THREE.BoxGeometry(.25, .007, .178), std({ color: 0x1b1b1d, roughness: .2, metalness: .3 }), -.25, H + .0035, .05);
+    pad.rotation.y = .15;
+    add(new THREE.CylinderGeometry(.03, .04, .13, 28), ceramic, .42, H + .065, -.08);
+    [0xFBF6EF, 0xEAD3C8, 0xFBF6EF, 0xD9B5A6].forEach((c, k) => {
+      const a = k * 1.6;
+      add(new THREE.SphereGeometry(.024, 16, 12), std({ color: c, roughness: .9 }), .42 + Math.cos(a) * .028, H + .16 + (k % 2) * .015, -.08 + Math.sin(a) * .028);
+    });
+    return scene;
+  }
+
+  const VIEWS = {
+    hero:   { pos: [-1.95, 1.45, 2.35], at: [.02, .5, 0], fov: 27 },
+    front:  { pos: [0, 1.05, 3.1], at: [0, .52, 0], fov: 30 },
+    end:    { pos: [2.3, 1.2, 1.45], at: [.2, .5, 0], fov: 30 },
+    detail: { pos: [1.05, 1.08, .95], at: [.5, .78, .15], fov: 36 },
+    top:    { pos: [0, 3.3, 1.6], at: [0, .5, 0], fov: 30 }
+  };
+
+  function mount(THREE, el, opts = {}) {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: !!opts.capture });
+    renderer.setPixelRatio(opts.ratio || Math.min(2, window.devicePixelRatio || 1));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = opts.mood === 'night' ? 1.0 : .85;
+    renderer.physicallyCorrectLights = false;
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    el.appendChild(renderer.domElement);
+    const scene = build(THREE, renderer, opts.mood);
+    const cam = new THREE.PerspectiveCamera(34, 1, .02, 60);
+    let controls = null;
+    if (THREE.OrbitControls && !opts.capture) {
+      controls = new THREE.OrbitControls(cam, renderer.domElement);
+      controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .6; controls.maxDistance = 7;
+    }
+    function size() { const w = el.clientWidth || opts.w, h = el.clientHeight || opts.h; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+    function view(k) { const v = VIEWS[k]; cam.fov = v.fov; cam.position.set(...v.pos); cam.lookAt(...v.at); if (controls) { controls.target.set(...v.at); controls.update(); } cam.updateProjectionMatrix(); }
+    size(); view(opts.view || 'hero');
+    let raf = 0;
+    const loop = () => { raf = requestAnimationFrame(loop); if (controls) controls.update(); renderer.render(scene, cam); };
+    if (!opts.capture) loop();
+    window.addEventListener('resize', size);
+    return { view, size, capture(k) { view(k); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/png'); }, stop() { cancelAnimationFrame(raf); } };
+  }
+  return { mount, VIEWS };
+})();
+
+(() => {
+  const btn = document.getElementById('open3d'), stage = document.getElementById('stage'), bar = document.getElementById('views');
+  let viewer = null, mood = 'day', current = 'hero';
+  const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
+  function start() {
+    if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
+    viewer = MaxsenTable.mount(THREE, stage, { view: current, mood });
+  }
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; btn.textContent = 'Loading the model';
+    try {
+      if (!window.THREE) await load(CDN + 'build/three.min.js');
+      for (const f of ['examples/js/controls/OrbitControls.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/lights/RectAreaLightUniformsLib.js']) await load(CDN + f);
+      try { await document.fonts.ready; } catch (e) {}
+      stage.querySelector('img').hidden = true; btn.hidden = true;
+      start(); bar.hidden = false;
+    } catch (e) { btn.disabled = false; btn.textContent = 'The model did not load. Try again'; }
+  });
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !viewer) return;
+    if (b.dataset.m) {
+      mood = mood === 'night' ? 'day' : 'night';
+      b.setAttribute('aria-pressed', String(mood === 'night')); start(); return;
+    }
+    current = b.dataset.v; viewer.view(current);
+    bar.querySelectorAll('button[data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  });
+})();
+</script>
