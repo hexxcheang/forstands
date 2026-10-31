@@ -1,0 +1,296 @@
+<title>Maxsen Counter Table</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: a product sheet for one piece of furniture. The render leads, then the sketch beside
+   the model, the drawings to scale, and the build notes. Maxsen palette: porcelain, ink, rose. */
+:root{
+  --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
+  --rose:#CFA594; --rose-text:#7E5643;
+  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56; --oakc:#C09A6E; --bodyc:#3E3029; --innerc:#D6C1A6; --stonec:#E8DCCB;
+  --serif:"EB Garamond",Garamond,Georgia,serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#5A4639; --innerc:#8C7760; --stonec:#4A4038;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#5A4639; --innerc:#8C7760; --stonec:#4A4038;
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 72px;display:grid;gap:60px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1.08}
+h1{font-size:clamp(36px,5.6vw,58px)} h1 em{font-style:italic;color:var(--rose-text)}
+h2{font-size:clamp(28px,3.4vw,38px)} h3{font-size:21px}
+p{margin:0;max-width:68ch}
+section{display:grid;gap:20px;min-width:0}
+.head{display:grid;gap:12px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-text)}
+.lede{font-size:18px;font-weight:300;color:var(--ink-2)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule)}
+.facts div{padding:14px 14px 0 0;display:grid;gap:4px}
+.facts b{font:400 28px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:13px;color:var(--muted);line-height:1.4}
+@media (max-width:720px){.facts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}}
+.shot{margin:0;display:grid;gap:8px;min-width:0}
+.shot img{width:100%;height:auto;display:block;border-radius:4px;border:1px solid var(--rule);background:var(--surface)}
+.shot figcaption{font-size:14px;color:var(--ink-2)} .shot figcaption b{color:var(--fg)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:700px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.read{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+@media (max-width:820px){.read{grid-template-columns:minmax(0,1fr)}}
+.tbl{overflow-x:auto;border-top:1px solid var(--fg)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:11px 12px 11px 0;border-bottom:1px solid var(--rule)}
+th{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+td b{font-weight:700}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap;background:var(--surface);color:var(--muted);border:1px solid var(--rule)}
+.chip.q{background:var(--rose);color:#29221F;border-color:var(--rose)}
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:4px;display:grid;gap:10px;padding:18px 16px 14px;min-width:0;margin:0}
+.sheet-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sheet-h b{font:400 20px/1.2 var(--serif)}
+.sheet-h span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.dwg{display:block;width:100%;height:auto;min-width:520px}
+.dwg.narrow{min-width:300px;max-width:420px}
+.drw{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.drw{grid-template-columns:minmax(0,1fr)}}
+.dim line{stroke:var(--dimc);stroke-width:3}
+text{font-family:var(--sans)}
+.td{fill:var(--dimc);font-size:40px;font-variant-numeric:tabular-nums}
+.tz{fill:var(--rose-text);font-size:36px;font-weight:700;letter-spacing:8px}
+.word{fill:#29221F;font-size:30px;font-weight:700;letter-spacing:14px}
+.floor{fill:var(--muted)}
+.stone{fill:var(--stonec);stroke:var(--fg);stroke-width:4}
+.body{fill:var(--bodyc)}
+.inner{fill:var(--innerc)}
+.sw{fill:#29221F;stroke:var(--fg);stroke-width:2}
+.logo{fill:none;stroke:#FFE7C2;stroke-width:8}
+.wordlit{fill:#FFE7C2;font-size:58px;font-weight:700;letter-spacing:12px}
+.tdw{fill:#3E3029;font-size:34px;font-weight:700;letter-spacing:2px}
+.lam{fill:var(--lam);stroke:var(--fg);stroke-width:3}
+.lamback{fill:var(--lam);opacity:.55}
+.lamplan{fill:var(--lam);opacity:.6}
+.shelf{fill:var(--shelf);stroke:var(--fg);stroke-width:2}
+.bronze{fill:var(--bronze)}
+.led{fill:var(--led)}
+.oak{fill:var(--oakc);stroke:var(--fg);stroke-width:2}
+.outline{fill:none;stroke:var(--dimc);stroke-width:3;stroke-dasharray:16 10}
+.radius{fill:none;stroke:var(--rose-text);stroke-width:5}
+.viewer{display:grid;gap:10px}
+.stage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:4px;overflow:hidden;border:1px solid var(--rule);background:var(--surface)}
+.stage img{width:100%;height:100%;object-fit:cover;filter:brightness(.92)}
+.stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:none}
+.btn{position:absolute;left:50%;top:50%;translate:-50% -50%;min-height:48px;padding:15px 26px;border-radius:999px;border:0;font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;background:var(--fg);color:var(--bg);box-shadow:0 18px 40px -16px rgba(0,0,0,.5)}
+.btn:disabled{opacity:.7;cursor:progress}
+.views{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.views[hidden]{display:none}
+.views button{border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.views span{font-size:13px;color:var(--muted);margin-left:6px}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
+ul.plain li::marker{color:var(--rose)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+@media (max-width:760px){.two{grid-template-columns:minmax(0,1fr)}}
+.two>div{display:grid;gap:10px;align-content:start;min-width:0}
+.confirm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.confirm{grid-template-columns:minmax(0,1fr)}}
+.confirm div{border:1px solid var(--rule);border-radius:4px;padding:16px 18px;display:grid;gap:6px;background:var(--surface)}
+.confirm b{font:400 19px/1.2 var(--serif)}
+.confirm span{font-size:14.5px;color:var(--ink-2)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">Maxsen · booth furniture · from your reference</span>
+    <h1>The switch counter, <em>in the Maxsen colours.</em></h1>
+    <p class="lede">A 1.4 m standing counter with a soft porcelain stone top, a 150 mm oak strip running down its middle, and a row of live Maxsen switches set into the stone. Below, a Midnight Bronze body with the Maxsen logo lit from behind on its closed centre, straight shelves at the left and curved shelves wrapping the right corner. Addressable RGBCCT LED strips run under the top, under each shelf and under the base.</p>
+    <div class="facts">
+      <div><b>1,400 × 600</b><span>length × depth in mm (depth assumed)</span></div>
+      <div><b>1,000</b><span>height in mm, standing counter</span></div>
+      <div><b>150 mm</b><span>oak strip down the middle of the top</span></div>
+      <div><b>RGBCCT IC</b><span>addressable LED: tunable white and full colour</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="look">
+    <figure class="shot">
+      <img src="renders/day-hero.jpg" alt="Render of the counter: a cream stone top with rounded corners, an oak strip down the middle and five switches in front of it; below, a dark bronze wood body with the backlit Maxsen logo on its closed centre, straight shelves at the left and curved shelves at the right" width="1600" height="1000">
+      <figcaption><b>Daylight.</b> Porcelain stone, champagne oak, Midnight Bronze, and champagne inside the shelves.</figcaption>
+    </figure>
+    <div class="grid2">
+      <figure class="shot">
+        <img src="renders/night-hero.jpg" alt="The same view with the show lights low: warm white LED under the top edge, the lit logo and a pool of light under the base" width="1600" height="1000" loading="lazy">
+        <figcaption><b>Warm white.</b> The everyday setting: the logo and the strips at a soft warm white.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="renders/colour-hero.jpg" alt="The same view with the LED strips running a flowing colour gradient from pink through violet, blue and green" width="1600" height="1000" loading="lazy">
+        <figcaption><b>Colour effect.</b> Each pixel set on its own, so colour can flow round the counter.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="read">
+    <div class="head">
+      <span class="eyebrow">From your reference</span>
+      <h2 id="read">What I took, and what changed for Maxsen</h2>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Part</th><th>Your reference</th><th>Maxsen version</th></tr></thead>
+        <tbody>
+          <tr><td><b>Top</b></td><td>Thick cream stone, rounded corners, glowing lower edge</td><td>Porcelain marble-look stone, 100 mm thick edge, 150 mm corners, warm LED line underneath</td></tr>
+          <tr><td><b>15 cm band</b></td><td>Marked across the top, top-down, in the middle</td><td>A 150 mm champagne oak strip, flush in the stone, running the length of the top</td></tr>
+          <tr><td><b>Switches</b></td><td>A row of switches set into the top</td><td>Lusano Prestige, Nova+ Pro in two styles, Halo and Folio, live, in front of the oak strip</td></tr>
+          <tr><td><b>Body</b></td><td>Dark walnut</td><td>Midnight Bronze wood veneer</td></tr>
+          <tr><td><b>Shelves</b></td><td>Straight at the left, curved at the right, lit</td><td>The same, in champagne, with an RGBCCT strip under each shelf edge</td></tr>
+          <tr><td><b>Centre</b></td><td>An open niche</td><td>Closed with a Midnight Bronze panel, 660 wide, carrying the Maxsen monogram and wordmark, lit from behind</td></tr>
+          <tr><td><b>LED</b></td><td>White strips</td><td>IC RGBCCT strips: tunable white for daily use, and full colour with each pixel addressable for effects</td></tr>
+          <tr><td><b>Base</b></td><td>Solid plinth</td><td>A bronze base set back 60 mm, with an RGBCCT strip under it, from your first sketch</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="more">
+    <div class="head">
+      <span class="eyebrow">More views</span>
+      <h2 id="more">Front, the right end, the top, and colour</h2>
+    </div>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/day-front.jpg" alt="Straight-on front view: shelves at the left, the closed centre with the lit Maxsen logo, curved shelves at the right" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> Shelves, the lit logo, curved shelves.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-end.jpg" alt="Three-quarter view of the right end, showing the curved shelves wrapping the corner" width="1600" height="1000" loading="lazy"><figcaption><b>Right end.</b> The shelves curve round the corner.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-detail.jpg" alt="Close-up of the top: the oak strip and the row of five switches set into the stone" width="1600" height="1000" loading="lazy"><figcaption><b>The top, close.</b> Five live switches in front of the oak strip.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-top.jpg" alt="Top-down view: the oak strip runs down the middle of the top, with the switch row in front" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> The 150 mm strip down the middle.</figcaption></figure>
+    </div>
+    <figure class="shot"><img src="renders/colour-low.jpg" alt="Low front view in colour mode: the RGB pixels visible along the top edge and under the base, with the logo lit in white" width="1600" height="1000" loading="lazy"><figcaption><b>Colour, low view.</b> The pixels of the IC strip along the top edge and the base, with the logo in white.</figcaption></figure>
+    <div class="viewer">
+      <div class="stage" id="stage">
+        <img src="renders/day-hero.jpg" alt="" width="1600" height="1000">
+        <button class="btn" id="open3d" type="button">Open the 3D model</button>
+      </div>
+      <div class="views" id="views" hidden role="toolbar" aria-label="Camera views">
+        <button type="button" data-v="hero" aria-pressed="true">Three-quarter</button>
+        <button type="button" data-v="front" aria-pressed="false">Front</button>
+        <button type="button" data-v="end" aria-pressed="false">Right end</button>
+        <button type="button" data-v="detail" aria-pressed="false">Top, close</button>
+        <button type="button" data-v="top" aria-pressed="false">From above</button>
+        <button type="button" data-m="night" aria-pressed="false">Warm white</button>
+        <button type="button" data-m="colour" aria-pressed="false">Colour</button>
+        <span>Drag to turn, pinch or scroll to zoom</span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="dwg">
+    <div class="head">
+      <span class="eyebrow">Drawings</span>
+      <h2 id="dwg">To scale, in millimetres</h2>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll">{{FRONT}}</div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>End</b><span>mm</span></div><div class="scroll">{{END}}</div></figure>
+    </div>
+    <figure class="sheet"><div class="sheet-h"><b>Plan from above</b><span>front at the bottom</span></div><div class="scroll">{{PLAN}}</div></figure>
+  </section>
+
+  <section aria-labelledby="spec">
+    <div class="head">
+      <span class="eyebrow">Build notes</span>
+      <h2 id="spec">What the fabricator needs to know</h2>
+    </div>
+    <div class="two">
+      <div>
+        <h3>Top</h3>
+        <ul class="plain">
+          <li>1,400 × 600, 150 mm corner radius, 100 mm thick with a softly rounded edge.</li>
+          <li>Porcelain marble-look sintered stone, 12 mm on a plywood core with a built-up edge, so it stays liftable.</li>
+          <li>A 150 mm champagne oak strip, set flush, running the length of the top through the middle of its depth.</li>
+          <li>Five cut-outs for 86-type switches in front of the strip, with back boxes inside the top and wiring down through the niche.</li>
+        </ul>
+        <h3>Body</h3>
+        <ul class="plain">
+          <li>Plywood with Midnight Bronze wood veneer outside and champagne veneer inside the bays and niche.</li>
+          <li>Left bay: two straight shelves. Right bay: two shelves that curve round the front corner. Shelves at 330 and 600.</li>
+          <li>Centre: closed with a removable Midnight Bronze panel, 660 wide. The Maxsen monogram and wordmark are cut through and backed with opal acrylic, lit from behind, so the logo glows.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Light</h3>
+        <ul class="plain">
+          <li>IC RGBCCT LED strip throughout: RGB plus warm and cool white chips, with driver ICs so each pixel or segment can be set on its own.</li>
+          <li>Under the top edge all the way round, under the front edge of each shelf, and under the base, in aluminium channels with opal diffusers so the pixels blend into a line.</li>
+          <li>Run them from an addressable (SPI) controller linked to the Maxsen gateway: warm white for the show, and colour scenes or flowing effects for launches and photos.</li>
+          <li>The logo is lit separately in white, so it stays on brand whatever the strips are doing.</li>
+        </ul>
+        <h3>Power and height</h3>
+        <ul class="plain">
+          <li>One 13 A point, entering through the base. The 24 V power supply, the SPI controller and the gateway sit behind the centre panel.</li>
+          <li>1,000 mm is right for a standing counter: the body fills the space below, so there is no knee room for sitting.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="conf">
+    <div class="head">
+      <span class="eyebrow">To confirm</span>
+      <h2 id="conf">Five things to check</h2>
+    </div>
+    <div class="confirm">
+      <div><b>Depth</b><span>Still assumed at 600 mm. A deeper top gives more space for the switches in front of the strip.</span></div>
+      <div><b>The oak strip</b><span>I ran it almost the full length, stopping 100 mm from each end. It can also run to the edges, or stop at the switch row.</span></div>
+      <div><b>Which switches</b><span>Shown: Lusano Prestige, Nova+ Pro (two styles), Halo and Folio. Swap in any five.</span></div>
+      <div><b>Panel width</b><span>The closed centre is 660 mm wide, which keeps the shelf bays usable either side. Widening it to about 1 m would leave the end bays too narrow for shelves on a 1.4 m counter.</span></div>
+      <div><b>Where it goes in the booth</b><span>It could replace the two round tables as one consult counter, or sit beside them. Tell me and I'll add it to the booth plan.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Rendered from a 3D model after your reference. Materials and props are illustrative.</span>
+    <span>Maxsen · Singapore</span>
+  </footer>
+</div>
+
+<script>
+{{SCENE}}
+(() => {
+  const btn = document.getElementById('open3d'), stage = document.getElementById('stage'), bar = document.getElementById('views');
+  let viewer = null, mood = 'day', current = 'hero';
+  const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
+  async function start() {
+    if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
+    viewer = await MaxsenTable.mount(THREE, stage, { view: current, mood });
+  }
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; btn.textContent = 'Loading the model';
+    try {
+      if (!window.THREE) await load(CDN + 'build/three.min.js');
+      for (const f of ['examples/js/controls/OrbitControls.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/lights/RectAreaLightUniformsLib.js']) await load(CDN + f);
+      try { await document.fonts.ready; } catch (e) {}
+      stage.querySelector('img').hidden = true; btn.hidden = true;
+      start(); bar.hidden = false;
+    } catch (e) { btn.disabled = false; btn.textContent = 'The model did not load. Try again'; }
+  });
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !viewer) return;
+    if (b.dataset.m) {
+      mood = mood === b.dataset.m ? 'day' : b.dataset.m;
+      bar.querySelectorAll('button[data-m]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === mood))); start(); return;
+    }
+    current = b.dataset.v; viewer.view(current);
+    bar.querySelectorAll('button[data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  });
+})();
+</script>
