@@ -9,19 +9,19 @@
 :root{
   --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
   --rose:#CFA594; --rose-text:#7E5643;
-  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56;
+  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56; --oakc:#A67C55;
   --serif:"EB Garamond",Garamond,Georgia,serif;
   --sans:"Lato","Helvetica Neue",Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
-  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#B98D63;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
-  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#B98D63;
   color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
@@ -76,6 +76,7 @@ text{font-family:var(--sans)}
 .shelf{fill:var(--shelf);stroke:var(--fg);stroke-width:2}
 .bronze{fill:var(--bronze)}
 .led{fill:var(--led)}
+.oak{fill:var(--oakc);stroke:var(--fg);stroke-width:2}
 .outline{fill:none;stroke:var(--dimc);stroke-width:3;stroke-dasharray:16 10}
 .radius{fill:none;stroke:var(--rose-text);stroke-width:5}
 .viewer{display:grid;gap:10px}
@@ -107,19 +108,19 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   <header class="head">
     <span class="eyebrow">Maxsen · booth furniture · from your sketch</span>
     <h1>The counter table, <em>built from your drawing.</em></h1>
-    <p class="lede">A 1.4 m counter with a soft-cornered stone top, a closed centre carrying the Maxsen wordmark, and open shelves that wrap around both ends. LED light runs under the top and under the base, so the whole piece seems to float.</p>
+    <p class="lede">A 1.4 m standing counter with a soft-cornered stone top, a closed centre carrying the Maxsen wordmark, and open shelves that wrap around both ends. One oak line runs across the middle, from shelf to shelf. LED light runs under the top and under the base, so the whole piece seems to float.</p>
     <div class="facts">
       <div><b>1,400 × 600</b><span>length × depth in mm (depth assumed)</span></div>
       <div><b>1,000</b><span>height in mm, counter height</span></div>
       <div><b>R150</b><span>rounded corners on the top</span></div>
-      <div><b>2 LED lines</b><span>under the top and under the base</span></div>
+      <div><b>1 oak line</b><span>across the middle, end to end, with no posts</span></div>
     </div>
   </header>
 
   <section aria-labelledby="look">
     <figure class="shot">
-      <img src="renders/day-hero.jpg" alt="Render of the counter table in daylight: white stone top with rounded corners, a champagne centre panel with the Maxsen wordmark, open shelves with slim bronze posts at both ends, on a lit floating base" width="1600" height="1000">
-      <figcaption><b>Daylight.</b> Stone top, champagne centre, open end shelves on slim bronze posts.</figcaption>
+      <img src="renders/day-hero.jpg" alt="Render of the counter table in daylight: white stone top with rounded corners, a champagne centre with the Maxsen wordmark, an oak shelf and band running across the middle, on a lit floating base" width="1600" height="1000">
+      <figcaption><b>Daylight.</b> Stone top, champagne body, and one oak line across the middle.</figcaption>
     </figure>
     <figure class="shot">
       <img src="renders/night-hero.jpg" alt="The same view with hall lights low: warm LED light washes down the body from under the top and pools on the floor under the base" width="1600" height="1000" loading="lazy">
@@ -145,9 +146,10 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
             <tr><td><b>15 cm at the corner</b></td><td>A 150 mm radius on all four corners of the top</td><td><span class="chip q">Assumed</span></td></tr>
             <tr><td><b>LED, under the top edge</b></td><td>The top overhangs the body by 30 mm, with an LED strip hidden underneath</td><td><span class="chip">From the sketch</span></td></tr>
             <tr><td><b>LED below</b></td><td>A bronze base set back 60 mm, with an LED line that lights the floor</td><td><span class="chip">From the sketch</span></td></tr>
-            <tr><td><b>Shelves</b></td><td>Three open shelves at each end, wrapping around the rounded corners</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Shelves</b></td><td>Two open bays at each end, wrapping around the rounded corners, with no posts</td><td><span class="chip">From the sketch</span></td></tr>
+            <tr><td><b>Wood across the centre</b></td><td>An oak shelf at each end, 40 mm thick, running on as an oak band across the front and back of the centre, at 480–520 mm</td><td><span class="chip">Your change</span></td></tr>
             <tr><td><b>Centre panel</b></td><td>Closed, 760 mm wide, with the Maxsen wordmark</td><td><span class="chip">From the sketch</span></td></tr>
-            <tr><td><b>Materials</b></td><td>Marble-look stone top, champagne laminate body, bronze posts and base</td><td><span class="chip q">Assumed</span></td></tr>
+            <tr><td><b>Materials</b></td><td>Marble-look stone top, champagne laminate body, oak line, bronze base</td><td><span class="chip q">Assumed</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -161,8 +163,8 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
     <div class="grid2">
       <figure class="shot"><img src="renders/day-front.jpg" alt="Straight-on front view of the table" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> Closed centre, shelves either side.</figcaption></figure>
-      <figure class="shot"><img src="renders/day-end.jpg" alt="Three-quarter view of the right end, showing the shelves wrapping round the rounded corner" width="1600" height="1000" loading="lazy"><figcaption><b>End.</b> The shelves follow the curve of the corner.</figcaption></figure>
-      <figure class="shot"><img src="renders/day-detail.jpg" alt="Close-up of the stone top corner, the hidden LED strip and a shelf with switch samples" width="1600" height="1000" loading="lazy"><figcaption><b>Corner detail.</b> 40 mm top, 30 mm overhang, LED hidden below.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-end.jpg" alt="Three-quarter view of the right end, showing the shelves wrapping round the rounded corner" width="1600" height="1000" loading="lazy"><figcaption><b>End.</b> The oak shelf follows the curve of the corner.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-detail.jpg" alt="Close-up of the stone top corner, the hidden LED strip and a shelf with switch samples" width="1600" height="1000" loading="lazy"><figcaption><b>Corner detail.</b> The oak shelf meets the oak band, with the stone top and hidden LED above.</figcaption></figure>
       <figure class="shot"><img src="renders/night-detail.jpg" alt="The corner detail with show lights low, the LED glowing under the top edge" width="1600" height="1000" loading="lazy"><figcaption><b>Corner at night.</b> You see the glow, not the strip.</figcaption></figure>
     </div>
     <div class="viewer">
@@ -210,8 +212,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <ul class="plain">
           <li>Plywood with a champagne laminate, matching the booth's carpentry wall.</li>
           <li>Closed centre, 760 wide, with the wordmark in cut bronze or printed vinyl.</li>
-          <li>Three open shelves at each end, 25 mm thick, at 355, 650 and under the top, following the corner curve.</li>
-          <li>Two 16 mm bronze posts at each end steady the shelf edges.</li>
+          <li>Two open bays at each end, following the corner curve. The base and top boards are champagne laminate.</li>
+          <li>The middle shelf is solid oak, 40 mm thick, at 480–520 mm. It continues as a 16 mm oak band across the front and back of the centre, so it reads as one line.</li>
+          <li>No posts: the oak shelves are fixed into the centre with hidden steel brackets, which a 40 mm shelf can carry for display items.</li>
         </ul>
       </div>
       <div>
@@ -224,17 +227,36 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <h3>Power and use</h3>
         <ul class="plain">
           <li>One 13 A point. The cable enters through the base, and the driver sits inside the closed centre.</li>
-          <li>At 1 m high this is a standing counter. If people should sit, use bar stools with a 750 mm seat.</li>
+          <li>1 m is a standing counter height. The body fills the space under the top, so there is no knee room for sitting.</li>
           <li>The closed centre opens from the back as a lockable cupboard for the iPad, brochures and bags.</li>
         </ul>
       </div>
     </div>
   </section>
 
+  <section aria-labelledby="hgt">
+    <div class="head">
+      <span class="eyebrow">Height</span>
+      <h2 id="hgt">Is 1 metre too high? No, for this table</h2>
+      <p>The shelves and the closed centre fill the space under the top, so nobody can sit with their knees under it. That makes it a standing counter, and 1,000 mm is the standard height for one: a visitor can rest an arm or an iPad on it while talking to staff face to face.</p>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Height</th><th>What it suits</th><th>For this table</th></tr></thead>
+        <tbody>
+          <tr><td class="n"><b>750</b></td><td>Sitting on normal chairs, like the booth's round tables</td><td>Too low: there is no knee room, so people would bend down to it</td></tr>
+          <tr><td class="n"><b>900</b></td><td>Kitchen worktops</td><td>Works, but feels low for standing conversations</td></tr>
+          <tr><td class="n"><b>1,000</b></td><td>Standing counters and showroom tables</td><td>Recommended. Comfortable to lean on, and well under the booth's 1.8 m walls</td></tr>
+          <tr><td class="n"><b>1,050–1,100</b></td><td>Reception and bar counters, with tall stools</td><td>Only if you want people to perch on stools</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
   <section aria-labelledby="conf">
     <div class="head">
       <span class="eyebrow">To confirm</span>
-      <h2 id="conf">Four things I guessed</h2>
+      <h2 id="conf">Three things I guessed, and where it goes</h2>
     </div>
     <div class="confirm">
       <div><b>Depth</b><span>The sketch shows a depth arrow without a number. I used 600 mm. If you meant something else, tell me and I'll redraw.</span></div>

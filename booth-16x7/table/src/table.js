@@ -6,7 +6,8 @@ window.MaxsenTable = (function () {
   const BL = L - 2 * INSET, BD = D - 2 * INSET, BR = R - INSET;
   const BASE = 0.06;                                      // floating base
   const CORE = 0.76;                                      // closed centre section
-  const SHELF_Y = [BASE, 0.355, 0.65, H - TOP - 0.027];   // shelf boards, bottom to top
+  const MID = 0.48, OAK = 0.04;                           // the oak line across the middle, 480 to 520
+  const SHELF_Y = [BASE, MID, H - TOP - 0.027];           // shelf boards, bottom to top
   const SERIF = '"EB Garamond", Garamond, Georgia, serif';
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
@@ -56,6 +57,20 @@ window.MaxsenTable = (function () {
     return t;
   }
 
+  function oakTex(THREE) {
+    const c = document.createElement('canvas'); c.width = 1024; c.height = 256; const g = c.getContext('2d');
+    g.fillStyle = '#A67C55'; g.fillRect(0, 0, 1024, 256);
+    let v = 3; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+    for (let i = 0; i < 140; i++) {
+      g.strokeStyle = `rgba(${rnd() > .5 ? '80,52,30' : '196,150,104'},${.08 + rnd() * .18})`; g.lineWidth = .5 + rnd() * 2.5;
+      let y = rnd() * 256; g.beginPath(); g.moveTo(0, y);
+      for (let x = 0; x <= 1024; x += 64) { y += (rnd() - .5) * 5; g.lineTo(x, y); }
+      g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1.2, 1); return t;
+  }
+
   function coreFront(THREE) {
     const w = 1520, h = 1800; // 0.5 px per mm of a 760 x 900 panel
     const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
@@ -66,7 +81,7 @@ window.MaxsenTable = (function () {
     for (let i = 0; i < 260; i++) { g.fillStyle = `rgba(120,95,70,${rnd() * .035})`; g.fillRect(rnd() * w, 0, 1 + rnd() * 3, h); }
     g.fillStyle = '#3A2E26'; g.textAlign = 'center';
     g.font = `700 58px ${SANS}`; if (g.letterSpacing !== undefined) g.letterSpacing = '30px';
-    g.fillText('MAXSEN', w / 2 + 15, h * .42);
+    g.fillText('MAXSEN', w / 2 + 15, h * .26);
     const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
   }
 
@@ -107,6 +122,7 @@ window.MaxsenTable = (function () {
     const stone = new THREE.MeshPhysicalMaterial({ map: marble(THREE), roughness: .25, clearcoat: .5, clearcoatRoughness: .25, envMapIntensity: night ? .3 : .6, color: 0xF2EEE8 });
     const lam = std({ color: 0xD3BFA4, roughness: .55 });
     const shelfMat = std({ color: 0xC4AD8F, roughness: .5 });
+    const oak = std({ map: oakTex(THREE), roughness: .55 });
     const bronze = std({ color: 0x2B231F, roughness: .38, metalness: .55 });
     const led = new THREE.MeshBasicMaterial({ color: night ? 0xffd9a8 : 0xfff1dc });
 
@@ -125,15 +141,17 @@ window.MaxsenTable = (function () {
     const coreMats = [lam, lam, lam, lam, std({ map: frontTex, roughness: .55 }), lam];
     add(new THREE.BoxGeometry(CORE, H - TOP - BASE - .002, BD), coreMats, 0, BASE + (H - TOP - BASE) / 2, 0);
 
+    // the oak band across the centre, front and back, continuing the oak shelves
+    [1, -1].forEach(zs => add(new THREE.BoxGeometry(CORE + .002, OAK, .016), oak, 0, MID + OAK / 2, zs * (BD / 2 + .008)));
+
     // open shelves at both ends, wrapping round the rounded corners, carried on slim bronze posts
     const endW = BL / 2 - CORE / 2;
     [1, -1].forEach(side => {
       const x0 = side * CORE / 2;
       SHELF_Y.forEach((y, i) => {
-        const th = i === 0 || i === SHELF_Y.length - 1 ? .027 : .025;
-        add(slab(THREE, endShape(THREE, side, endW, BD, BR), th, i === 0 ? 0 : .002), shelfMat, x0, y, 0);
+        const mid = y === MID, th = mid ? OAK : .027;
+        add(slab(THREE, endShape(THREE, side, endW, BD, BR), th, mid ? .002 : 0), mid ? oak : shelfMat, x0, y, 0);
       });
-      [[-1], [1]].forEach(([zs]) => add(new THREE.CylinderGeometry(.008, .008, H - TOP - BASE, 12), bronze, x0 + side * (endW - .05), BASE + (H - TOP - BASE) / 2, zs * (BD / 2 - .05)));
     });
 
     // floating base: a bronze plinth set back 60 mm, with an LED line that lights the floor
@@ -167,15 +185,15 @@ window.MaxsenTable = (function () {
     const plateCols = [0x1d1b1a, 0xcbb79c, 0x2b2f3a];
     const L0 = -(CORE / 2 + endW / 2), R0 = CORE / 2 + endW / 2;
     // left: brochures and a vase; right: switch samples and a small book stack
-    for (let i = 0; i < 4; i++) add(new THREE.BoxGeometry(.21, .006, .297), i % 2 ? paper : std({ color: 0x2B231F, roughness: .6 }), L0 - .02, SHELF_Y[1] + .028 + i * .007, .02);
-    add(new THREE.CylinderGeometry(.045, .055, .2, 32), ceramic, L0 + .02, SHELF_Y[2] + .125, -.05);
-    add(new THREE.CylinderGeometry(.06, .05, .12, 32), std({ color: 0x8A7563, roughness: .8 }), L0 - .03, SHELF_Y[0] + .087, .05);
+    for (let i = 0; i < 4; i++) add(new THREE.BoxGeometry(.21, .006, .297), i % 2 ? paper : std({ color: 0x2B231F, roughness: .6 }), L0 - .02, SHELF_Y[0] + .03 + i * .007, .03);
+    add(new THREE.CylinderGeometry(.045, .055, .22, 32), ceramic, L0 + .04, MID + OAK + .11, -.04);
+    add(new THREE.CylinderGeometry(.05, .045, .1, 32), std({ color: 0x8A7563, roughness: .8 }), L0 - .08, MID + OAK + .05, .1);
     plateCols.forEach((c, i) => {
-      const p = add(new THREE.BoxGeometry(.086, .086, .01), std({ color: c, roughness: .3, metalness: .2 }), R0 - .09 + i * .095, SHELF_Y[2] + .07, .08);
+      const p = add(new THREE.BoxGeometry(.086, .086, .01), std({ color: c, roughness: .3, metalness: .2 }), R0 - .09 + i * .095, MID + OAK + .05, .08);
       p.rotation.x = -.18;
     });
-    for (let i = 0; i < 3; i++) add(new THREE.BoxGeometry(.17, .025, .23), std({ color: [0xCFA594, 0xEDE7DF, 0x2B231F][i], roughness: .8 }), R0, SHELF_Y[1] + .04 + i * .026, -.02);
-    add(new THREE.BoxGeometry(.11, .11, .04), std({ color: 0x18181b, roughness: .25 }), R0 + .02, SHELF_Y[0] + .084, 0);
+    for (let i = 0; i < 3; i++) add(new THREE.BoxGeometry(.17, .025, .23), std({ color: [0xCFA594, 0xEDE7DF, 0x2B231F][i], roughness: .8 }), R0 - .03, SHELF_Y[0] + .04 + i * .026, -.02);
+    add(new THREE.BoxGeometry(.11, .11, .04), std({ color: 0x18181b, roughness: .25 }), R0 + .07, MID + OAK + .055, -.12);
     // on the top: an iPad and a small vase of flowers
     const pad = add(new THREE.BoxGeometry(.25, .007, .178), std({ color: 0x1b1b1d, roughness: .2, metalness: .3 }), -.25, H + .0035, .05);
     pad.rotation.y = .15;
