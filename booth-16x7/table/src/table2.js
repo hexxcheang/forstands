@@ -3,7 +3,7 @@
    z from the back (-) to the front (+), y up. */
 window.MaxsenTable = (function () {
   const L = 1.4, D = 0.6, H = 1.0;
-  const TOP = 0.1, R = 0.15;               // a thick, soft stone top with 150 mm corners
+  const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
@@ -78,11 +78,13 @@ window.MaxsenTable = (function () {
   }
   function switchFace(THREE, kind) {
     const [c, g] = canvas(256, 256);
-    const plate = { prestige: '#1d1b1a', nova: '#202022', nova2: '#2a2a2c', folio: '#F2EFEA', ark: '#cbb79c' }[kind] || '#202022';
+    const plate = { prestige: '#1d1b1a', noble: '#E9E1D4', nova: '#202022', nova2: '#2a2a2c', folio: '#F2EFEA', ark: '#D9C08A' }[kind] || '#202022';
     g.fillStyle = plate; g.fillRect(0, 0, 256, 256);
     const sh = g.createLinearGradient(0, 0, 256, 256); sh.addColorStop(0, 'rgba(255,255,255,.18)'); sh.addColorStop(.5, 'rgba(255,255,255,0)'); g.fillStyle = sh; g.fillRect(0, 0, 256, 256);
     if (kind === 'prestige') { g.fillStyle = '#111'; g.fillRect(0, 100, 256, 56); g.fillStyle = '#fff4e2'; for (let i = 0; i < 18; i++) { g.beginPath(); g.arc(14 + i * 13.5, 128, 3, 0, 7); g.fill(); } }
     if (kind === 'nova') { g.fillStyle = '#ffcf8a'; g.fillRect(56, 120, 144, 6); for (let i = 0; i < 3; i++) { g.beginPath(); g.arc(78 + i * 50, 200, 5, 0, 7); g.fill(); } }
+    if (kind === 'noble') { g.strokeStyle = '#fff6e6'; g.lineWidth = 4; g.strokeRect(14, 14, 228, 228); g.strokeStyle = 'rgba(160,140,110,.5)'; g.lineWidth = 1; g.strokeRect(20, 20, 216, 216); }
+    if (kind === 'ark') { g.strokeStyle = 'rgba(90,70,40,.25)'; g.lineWidth = 2; g.beginPath(); g.moveTo(128, 30); g.lineTo(128, 226); g.stroke(); g.fillStyle = '#5aa0ff'; g.beginPath(); g.arc(70, 200, 6, 0, 7); g.fill(); g.beginPath(); g.arc(186, 200, 6, 0, 7); g.fill(); }
     if (kind === 'nova2') { g.strokeStyle = 'rgba(255,255,255,.12)'; g.lineWidth = 3; g.beginPath(); g.moveTo(128, 20); g.lineTo(128, 236); g.stroke(); }
     if (kind === 'folio') { g.strokeStyle = 'rgba(120,110,100,.25)'; g.lineWidth = 2; g.beginPath(); g.moveTo(20, 60); g.bezierCurveTo(90, 90, 150, 40, 240, 120); g.stroke(); g.fillStyle = '#7fb2ff'; [0, 1, 2, 3].forEach(i => { g.beginPath(); g.arc(70 + i * 38, 128, 7, 0, 7); g.strokeStyle = '#7fb2ff'; g.lineWidth = 3; g.stroke(); }); }
     return c;
@@ -158,22 +160,41 @@ window.MaxsenTable = (function () {
     const byX = p => (p.x + L / 2) / L * .9;
 
     // the top: 100 mm thick, rounded corners and softened edges
-    add(slab(THREE, rr(THREE, L - .04, D - .04, R - .02), TOP, .02), stoneMat, 0, Y1, 0);
+    add(slab(THREE, rr(THREE, L - .012, D - .012, R - .006), TOP, .006), stoneMat, 0, Y1, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
     // live Maxsen switches set into the top, in one row down the middle
-    const SW = [['prestige', -.44], ['nova2', -.22], ['nova', 0], ['halo', .22], ['folio', .44]];
-    const swZ = 0;
+    // six smart switches and the Halo dimmer in the centre, on the front edge of the top
+    const SW = [['prestige', -.375], ['noble', -.25], ['nova', -.125], ['halo', 0], ['nova2', .125], ['folio', .25], ['ark', .375]];
+    const ey = H - TOP / 2, ez = D / 2;
+    const edgeMat = std({ color: 0x1a1a1a, roughness: .4 });
     SW.forEach(([k, x]) => {
       if (k === 'halo') {
-        add(new THREE.BoxGeometry(.086, .006, .086), std({ color: 0xC9B79C, roughness: .35, metalness: .5 }), x, H + .003, swZ);
-        add(new THREE.CylinderGeometry(.022, .022, .022, 40), std({ color: 0xE8E4DF, roughness: .2, metalness: .9 }), x, H + .017, swZ);
-        add(new THREE.CylinderGeometry(.016, .016, .002, 32), std({ color: 0xF6EEF2, roughness: .25 }), x, H + .029, swZ);
+        add(new THREE.BoxGeometry(.086, .086, .006), std({ color: 0xC9B79C, roughness: .35, metalness: .5 }), x, ey, ez + .003);
+        const ring = new THREE.CylinderGeometry(.03, .03, .026, 48); ring.rotateX(Math.PI / 2);
+        add(ring, std({ color: 0xE8E4DF, roughness: .18, metalness: .95 }), x, ey, ez + .019);
+        const face = new THREE.CylinderGeometry(.023, .023, .003, 40); face.rotateX(Math.PI / 2);
+        add(face, std({ color: 0xF6EEF2, roughness: .25, metalness: .1 }), x, ey, ez + .033);
       } else {
         const m = std({ map: tex(THREE, switchFace(THREE, k)), roughness: .25, metalness: .1 });
-        add(new THREE.BoxGeometry(.086, .006, .086), [std({ color: 0x1a1a1a }), std({ color: 0x1a1a1a }), m, std({ color: 0x1a1a1a }), std({ color: 0x1a1a1a }), std({ color: 0x1a1a1a })], x, H + .003, swZ);
+        add(new THREE.BoxGeometry(.086, .086, .006), [edgeMat, edgeMat, edgeMat, edgeMat, m, edgeMat], x, ey, ez + .003);
       }
+    });
+
+    // Lenovo smart locks on the top, each on a small door panel so it reads as a real door
+    const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
+    doorMat.map.rotation = Math.PI / 2;
+    const LOCKS = [[-.42, 0x5a2a1b, 0x9aa0a6], [0, 0x2a2622, 0xb48a4a], [.42, 0x3a3d42, 0x9aa0a6]];
+    LOCKS.forEach(([x, body, trim]) => {
+      const z0 = -.06;
+      add(new THREE.BoxGeometry(.24, .012, .16), bronze, x, H + .006, z0);
+      add(new THREE.BoxGeometry(.22, .46, .036), doorMat, x, H + .012 + .23, z0);
+      const lz = z0 + .018 + .016;
+      add(new THREE.BoxGeometry(.074, .37, .032), std({ color: body, roughness: .3, metalness: .4 }), x + .04, H + .012 + .23, lz);
+      add(new THREE.BoxGeometry(.052, .07, .004), std({ color: 0x0c0c0e, roughness: .15, metalness: .2 }), x + .04, H + .012 + .36, lz + .017);
+      add(new THREE.BoxGeometry(.052, .006, .004), std({ color: trim, roughness: .25, metalness: .8 }), x + .04, H + .012 + .17, lz + .017);
+      add(new THREE.BoxGeometry(.018, .14, .022), std({ color: trim, roughness: .25, metalness: .8 }), x + .04, H + .012 + .26, lz + .027);
     });
 
     // body: bottom board, back, dividers and ends, in Midnight Bronze wood
@@ -248,11 +269,11 @@ window.MaxsenTable = (function () {
   }
 
   const VIEWS = {
-    hero:   { pos: [-1.55, 1.95, 2.25], at: [.02, .55, 0], fov: 32 },
-    low:    { pos: [-1.35, 1.15, 2.45], at: [.05, .5, 0], fov: 32 },
-    front:  { pos: [0, 1.05, 3.0], at: [0, .52, 0], fov: 31 },
-    end:    { pos: [2.1, 1.35, 1.75], at: [.35, .55, .05], fov: 32 },
-    detail: { pos: [-.35, 1.5, 1.05], at: [-.05, .97, .1], fov: 38 },
+    hero:   { pos: [-1.6, 1.95, 2.35], at: [.02, .68, 0], fov: 34 },
+    low:    { pos: [-1.45, 1.2, 2.75], at: [.05, .74, 0], fov: 36 },
+    front:  { pos: [0, 1.15, 3.1], at: [0, .7, 0], fov: 33 },
+    end:    { pos: [2.2, 1.45, 1.85], at: [.3, .68, .05], fov: 34 },
+    detail: { pos: [.25, 1.08, 1.0], at: [0, .95, .3], fov: 36 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
 
