@@ -4,7 +4,6 @@
 window.MaxsenTable = (function () {
   const L = 1.4, D = 0.6, H = 1.0;
   const TOP = 0.1, R = 0.15;               // a thick, soft stone top with 150 mm corners
-  const STRIP = 0.15;                      // the 150 mm oak strip down the middle of the top
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
@@ -127,11 +126,9 @@ window.MaxsenTable = (function () {
     Object.assign(key.shadow.camera, { left: -2, right: 2, top: 2, bottom: -2, near: .5, far: 12 }); key.shadow.bias = -.0004; scene.add(key);
     const rim = new THREE.DirectionalLight(0xffe6cc, night ? .05 : .22); rim.position.set(3, 2.5, -3); scene.add(rim);
 
-    // Maxsen colourway: porcelain stone, champagne oak, Midnight Bronze body, champagne-lit interiors
+    // Maxsen colourway: porcelain stone, Midnight Bronze body, champagne-lit interiors
     const stoneMat = new THREE.MeshPhysicalMaterial({ map: tex(THREE, stone(THREE), 1 / L, 1 / D), roughness: .38, clearcoat: .25, clearcoatRoughness: .35, envMapIntensity: night ? .3 : .45 });
     stoneMat.map.offset.set(.5, .5);
-    const oakMat = std({ map: tex(THREE, wood(THREE, '#C09A6E', '96,66,40', '224,192,150'), 1 / L, 1), roughness: .5 });
-    oakMat.map.offset.set(.5, 0);
     const bodyWood = wood(THREE, '#3E3029', '24,17,13', '110,86,70');
     const bodyMat = std({ map: tex(THREE, bodyWood, 1.2, 1), roughness: .55 });
     const bodyMatV = std({ map: tex(THREE, bodyWood, 1, 1), roughness: .55 }); bodyMatV.map.rotation = Math.PI / 2;
@@ -162,14 +159,12 @@ window.MaxsenTable = (function () {
 
     // the top: 100 mm thick, rounded corners and softened edges
     add(slab(THREE, rr(THREE, L - .04, D - .04, R - .02), TOP, .02), stoneMat, 0, Y1, 0);
-    // the 150 mm oak strip, down the middle of the top, set flush
-    add(new THREE.BoxGeometry(L - .2, .004, STRIP), oakMat, 0, H + .0015, 0, { cast: false });
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
-    // live Maxsen switches set into the top, in front of the oak strip
+    // live Maxsen switches set into the top, in one row down the middle
     const SW = [['prestige', -.44], ['nova2', -.22], ['nova', 0], ['halo', .22], ['folio', .44]];
-    const swZ = STRIP / 2 + (D / 2 - STRIP / 2) / 2;
+    const swZ = 0;
     SW.forEach(([k, x]) => {
       if (k === 'halo') {
         add(new THREE.BoxGeometry(.086, .006, .086), std({ color: 0xC9B79C, roughness: .35, metalness: .5 }), x, H + .003, swZ);

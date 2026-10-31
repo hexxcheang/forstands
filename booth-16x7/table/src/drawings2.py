@@ -52,17 +52,15 @@ end = f'<svg viewBox="-260 -150 1000 1370" class="dwg narrow" role="img" aria-la
 
 # plan: top down, front at the bottom
 p = [f'<rect x="0" y="0" width="1400" height="600" rx="150" class="stone"/>',
-     f'<rect x="100" y="225" width="1200" height="150" class="oak"/>']
+]
 for i, x in enumerate((260, 480, 700, 920, 1140)):
-    p.append(f'<rect x="{x-43}" y="{(375+600)/2-43:.0f}" width="86" height="86" rx="6" class="sw"/>')
-p.append(t(700, 315, "150 oak strip, down the middle", "tdw"))
-p.append(t(700, 640 + 20, "FRONT · SWITCH ROW", "tz"))
+    p.append(f'<rect x="{x-43}" y="{300-43}" width="86" height="86" rx="6" class="sw"/>')
+p.append(t(700, 640 + 20, "FRONT", "tz"))
 p.append(hdim(0, 1400, -70, "1,400"))
 p.append(vdim(-60, 0, 600, "600"))
-p.append(vdim(1460, 225, 375, "150", "right"))
 p.append('<path d="M1400 150 A150 150 0 0 0 1250 0" class="radius"/>')
 p.append(t(1430, 80, "R150", "td", "start"))
-plan = f'<svg viewBox="-260 -150 2080 870" class="dwg" role="img" aria-label="Plan from above: the 150 mm oak strip down the middle of the top, with five switches set in front of it">{"".join(p)}</svg>'
+plan = f'<svg viewBox="-260 -150 2080 870" class="dwg" role="img" aria-label="Plan from above: plain stone top with five switches in one row down the middle">{"".join(p)}</svg>'
 
 html = open(sys.argv[1]).read()
 html = html.replace("{{FRONT}}", front).replace("{{END}}", end).replace("{{PLAN}}", plan).replace("{{SCENE}}", open("table2.js").read())
