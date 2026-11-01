@@ -130,7 +130,8 @@ function MaxsenModel(cfg = {}) {
   // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
   // and trailing plants on the middle shelves, their vines hanging over the front edges
   // the switches along the front face: Noble on the left, the Halo dimmer, the S8 panel in the centre, Prestige on the right
-  const DEFAULT_SWITCHES = [['noble-champagne', -.5], ['noble-ivory', -.375], ['noble-onyx', -.25], ['halo', -.125], ['s8', 0], ['prestige-onyx', .125], ['prestige-champagne', .25], ['prestige-midnight', .375]]
+  // the S8 is 216 mm wide, the switches 86, with 20 mm between them
+  const DEFAULT_SWITCHES = [['noble-champagne', -.489], ['noble-ivory', -.383], ['noble-onyx', -.277], ['halo', -.171], ['s8', 0], ['prestige-onyx', .171], ['prestige-champagne', .277], ['prestige-midnight', .383]]
     .map(([v, x], i) => ({ id: 'sw' + (i + 1), type: 'switch', v, on: 'front', x, z: 0, r: 0 }));
   const DEFAULT_LAYOUT = [
     { id: 'lock1', type: 'lock', v: '0', on: 'top', x: -.445, z: -.077, r: 0 },
@@ -320,7 +321,7 @@ function MaxsenModel(cfg = {}) {
   function floorGlow(THREE, colour) {
     const [c, g] = canvas(512, 256);
     const f = g.createRadialGradient(256, 128, 40, 256, 128, 250);
-    f.addColorStop(0, 'rgba(255,196,130,0)'); f.addColorStop(.44, 'rgba(255,196,130,.85)'); f.addColorStop(.62, 'rgba(255,196,130,.3)'); f.addColorStop(1, 'rgba(255,196,130,0)');
+    f.addColorStop(0, 'rgba(255,126,20,0)'); f.addColorStop(.44, 'rgba(255,126,20,.85)'); f.addColorStop(.62, 'rgba(255,126,20,.3)'); f.addColorStop(1, 'rgba(255,126,20,0)');   // 1800 K
     g.save(); g.scale(1, .5); g.translate(0, 128); g.fillStyle = f; g.fillRect(0, -128, 512, 512); g.restore();
     if (colour && g.createConicGradient) { // the same ring of light, in the colours flowing round the strip
       const cg = g.createConicGradient(Math.PI / 2, 256, 128);
@@ -341,7 +342,7 @@ function MaxsenModel(cfg = {}) {
   function build(THREE, renderer, mood, imgs = {}, shelves = true) {
     const colour = mood === 'colour', night = ['night', 'colour', 'low', 'high'].includes(mood);
     // the ball light on the top: brightness and colour temperature set from Halo and the switches
-    const BALL = { low: [.16, 2700], high: [1, 4500] }[mood] || [.7, 3000];
+    const BALL = { low: [.16, 1800], high: [1, 4500] }[mood] || [.7, 3000];
     const scene = new THREE.Scene();
     const bgc = night ? 0x1E1915 : 0xE6E0D8;
     scene.background = new THREE.Color(bgc); scene.fog = new THREE.Fog(bgc, 5.5, 13);
@@ -410,8 +411,10 @@ function MaxsenModel(cfg = {}) {
     const inner = slotMat('inner', { rep: [1.5, 1] });
     const baseMat = slotMat('base');
     const bronze = std({ color: 0x29221F, roughness: .4, metalness: .5 });
-    // IC RGBCCT strips: every pixel addressable, warm white for daily use, full colour on demand
-    const warm = new THREE.Color(night ? 0xffd9a8 : 0xfff0d8);
+    // IC RGBCCT strips: every pixel addressable, warm 1800 K for daily use, full colour on demand
+    // 1800 K, as the colour you see: 255, 126, 0 (a deep amber, like candlelight)
+    const K1800 = new THREE.Color(0xFF7E00).convertSRGBToLinear();
+    const warm = K1800.clone();
     const pix = t => colour ? new THREE.Color().setHSL((t + .9) % 1, 1, .58) : warm.clone();
     const glowMat = (() => {
       const [c, g] = canvas(32, 64); const gr = g.createLinearGradient(0, 0, 0, 64);
@@ -566,7 +569,7 @@ function MaxsenModel(cfg = {}) {
       const [gc, gg] = canvas(1700, 300); gg.shadowColor = 'rgba(255,205,140,1)'; gg.shadowBlur = 40;
       for (let k = 0; k < 3; k++) gg.drawImage(mc, 0, 0);
       const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = Y0 + .04 + (Y1 - Y0 - .04) * .615, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
-      const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: night ? 0xffcf96 : 0xf2b46a, blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
+      const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: K1800.clone(), blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
       glow.position.set(0, y, zf); scene.add(glow);
       const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(mc), transparent: true, color: 0x3A2C24, roughness: .35, metalness: .55, envMapIntensity: night ? .2 : .5 }));
       face.position.set(0, y, zf + .004); scene.add(face);
@@ -581,7 +584,7 @@ function MaxsenModel(cfg = {}) {
     // light: the top's LED line washing down the body, the base, and each bay
     THREE.RectAreaLightUniformsLib.init();
     const wash = night ? 6 : 1.8;
-    const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
+    const lc0 = c => colour ? c : K1800.clone();
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
     if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [...SHELVES, Y1 + .0125].forEach(y => {
@@ -628,7 +631,7 @@ function MaxsenModel(cfg = {}) {
     // the ball light: brightness and colour temperature set from Halo and the switches
     const makeBall = () => group(() => {
       const [lvl, k] = BALL;
-      const kc = new THREE.Color({ 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
+      const kc = new THREE.Color({ 1800: 0xff8a2c, 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
       const br = .1, by = .022 + br;
       add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, 0, .011, 0);
       const ballMat = new THREE.MeshPhysicalMaterial({ color: night ? 0x6e6862 : 0xe8e3dc, emissive: kc, emissiveIntensity: .05 + Math.pow(lvl, 1.3) * 1.25, roughness: .45, clearcoat: .4, envMapIntensity: night ? .15 : .4 });
@@ -821,20 +824,48 @@ function MaxsenModel(cfg = {}) {
     };
 
     // a switch module: 86 x 86 mm, its back on the face of the marble, facing out
-    function s8Face() {   // the S8's touch screen: the time, four scene tiles and the brand
-      const [c, g] = canvas(512, 512), [ec, e] = canvas(512, 512);
-      const bg = g.createLinearGradient(0, 0, 512, 512); bg.addColorStop(0, '#1b1c20'); bg.addColorStop(1, '#0b0b0d'); g.fillStyle = bg; g.fillRect(0, 0, 512, 512);
-      e.fillStyle = '#000'; e.fillRect(0, 0, 512, 512);
-      [g, e].forEach(x => { x.fillStyle = '#ffffff'; x.textAlign = 'left'; x.font = '300 92px Lato, Arial, sans-serif'; x.fillText('10:30', 40, 128); x.font = '700 22px Lato, Arial, sans-serif'; if (x.letterSpacing !== undefined) x.letterSpacing = '4px'; x.fillStyle = '#d9c7af'; x.fillText('SAT 1 NOV · 27°', 44, 172); });
-      const tiles = [['WELCOME', '#cfa594'], ['SHOWCASE', '#d9c08a'], ['EVENING', '#9aa6c4'], ['ALL OFF', '#8a8580']];
-      tiles.forEach(([t, col], i) => {
-        const x = 40 + (i % 2) * 222, y = 214 + Math.floor(i / 2) * 128;
-        [g, e].forEach(ctx => { ctx.fillStyle = ctx === g ? 'rgba(255,255,255,.08)' : 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, 206, 112, 18) : ctx.rect(x, y, 206, 112); ctx.fill();
-          ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x + 34, y + 40, 12, 0, 7); ctx.fill();
-          ctx.fillStyle = '#f4eee6'; ctx.font = '700 22px Lato, Arial, sans-serif'; if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '3px'; ctx.fillText(t, x + 20, y + 92); });
+    function s8Face() {   // the S8's 8-inch screen: the date, scenes, weather, a switch, curtains and two light sliders
+      const W = 1280, Hh = 800, [c, g] = canvas(W, Hh), [ec, e] = canvas(W, Hh);
+      const bg = g.createLinearGradient(0, 0, W, Hh); bg.addColorStop(0, '#15171c'); bg.addColorStop(1, '#0a0b0e'); g.fillStyle = bg; g.fillRect(0, 0, W, Hh);
+      e.fillStyle = '#000'; e.fillRect(0, 0, W, Hh);
+      const both = f => [g, e].forEach(f);
+      const rr2 = (x, y, w, h, r) => ctx => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); };
+      const card = (x, y, w, h, fill) => both(ctx => { rr2(x, y, w, h, 22)(ctx); ctx.fillStyle = ctx === g ? fill : 'rgba(255,255,255,.22)'; ctx.fill(); });
+      const text = (t, x, y, size, col, weight = 600, align = 'left') => both(ctx => { ctx.fillStyle = col; ctx.font = `${weight} ${size}px Lato, Arial, sans-serif`; ctx.textAlign = align; ctx.fillText(t, x, y); });
+      text('Saturday 1st Nov. 10:30', 110, 82, 30, '#f2efea', 700);
+      text('27°C   64%', 470, 82, 24, '#a7a39d');
+      // scenes
+      card(120, 150, 230, 560, 'rgba(255,255,255,.07)');
+      [['Full Light', '#cfa594'], ['Welcome', '#d9c08a'], ['Evening', '#9aa6c4'], ['Showcase', '#a7c49a']].forEach(([t, col], i) => {
+        both(ctx => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(160, 214 + i * 120, 22, 0, 7); ctx.fill(); });
+        text(t, 200, 224 + i * 120, 26, '#f2efea');
       });
-      [g, e].forEach(x => { x.fillStyle = 'rgba(244,238,230,.55)'; x.font = '700 16px Lato, Arial, sans-serif'; if (x.letterSpacing !== undefined) x.letterSpacing = '8px'; x.textAlign = 'center'; x.fillText('MAXSEN', 256, 494); });
-      const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return [t, new THREE.CanvasTexture(ec)];
+      // weather and a switch
+      card(380, 150, 230, 230, 'rgba(160,170,185,.35)'); text('27°', 495, 260, 64, '#ffffff', 300, 'center'); text('Sunny', 495, 330, 26, '#e8e6e2', 600, 'center');
+      card(640, 150, 230, 230, '#e9e6e1'); text('Switch', 670, 200, 28, '#1a1a1a', 700); text('Showroom · Online', 670, 236, 18, '#6b6862');
+      both(ctx => { ctx.fillStyle = ctx === g ? '#ffffff' : 'rgba(255,255,255,.4)'; ctx.fillRect(720, 270, 70, 80); ctx.strokeStyle = '#bdb8b0'; ctx.lineWidth = 3; ctx.strokeRect(720, 270, 70, 80); ctx.beginPath(); ctx.moveTo(755, 270); ctx.lineTo(755, 350); ctx.stroke(); });
+      // curtains
+      card(380, 410, 490, 300, 'rgba(255,255,255,.07)'); text('Curtain switch', 410, 460, 26, '#f2efea', 700);
+      ['Open', 'Pause', 'Close'].forEach((t, i) => { card(410 + i * 150, 500, 135, 170, 'rgba(255,255,255,.09)'); text(t, 477 + i * 150, 640, 24, '#f2efea', 600, 'center'); });
+      // two lights, as sliders
+      [['Main light', .8], ['Vice light', .45]].forEach(([t, v], i) => {
+        const x = 900 + i * 190;
+        card(x, 150, 170, 560, 'rgba(255,255,255,.07)'); text(t, x + 20, 200, 24, '#f2efea', 700);
+        both(ctx => { rr2(x + 45, 250, 80, 340, 18)(ctx); ctx.fillStyle = 'rgba(255,255,255,.15)'; ctx.fill(); rr2(x + 45, 250 + 340 * (1 - v), 80, 340 * v, 18)(ctx); ctx.fillStyle = '#f2efea'; ctx.fill(); });
+        text(Math.round(v * 100) + '%', x + 85, 570, 26, '#1a1a1a', 700, 'center');
+        both(ctx => { ctx.strokeStyle = '#3fb6e8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x + 85, 655, 26, 0, 7); ctx.stroke(); });
+      });
+      // the side bar and the assistant ring
+      both(ctx => { ctx.strokeStyle = '#3fb6e8'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(64, 720, 22, 0, 7); ctx.stroke(); ctx.fillStyle = '#d6d3ce'; [180, 260, 340].forEach(y => ctx.fillRect(52, y, 24, 22)); ctx.beginPath(); ctx.moveTo(52, 92); ctx.lineTo(64, 76); ctx.lineTo(76, 92); ctx.lineTo(76, 104); ctx.lineTo(52, 104); ctx.fill(); });
+      const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return [t, new THREE.CanvasTexture(ec)];
+    }
+    function ribTex() {   // the speaker grille: fine vertical ribs, and the home key below
+      const [c, g] = canvas(128, 512);
+      g.fillStyle = '#0d0d0f'; g.fillRect(0, 0, 128, 512);
+      for (let x = 6; x < 128; x += 11) { const gr = g.createLinearGradient(x, 0, x + 9, 0); gr.addColorStop(0, '#060607'); gr.addColorStop(.5, '#2b2c30'); gr.addColorStop(1, '#060607'); g.fillStyle = gr; g.fillRect(x, 0, 9, 384); }
+      g.fillStyle = '#050506'; g.fillRect(0, 384, 128, 128); g.strokeStyle = '#3a3b40'; g.lineWidth = 3; g.strokeRect(2, 386, 124, 124);
+      g.strokeStyle = '#b9b6b0'; g.lineWidth = 4; g.beginPath(); g.moveTo(44, 458); g.lineTo(64, 440); g.lineTo(84, 458); g.moveTo(50, 452); g.lineTo(50, 474); g.lineTo(78, 474); g.lineTo(78, 452); g.stroke();
+      const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t;
     }
     const makeSwitch = v => group(() => {
       if (v === 'halo') {
@@ -844,11 +875,13 @@ function MaxsenModel(cfg = {}) {
         const face = new THREE.CylinderGeometry(.023, .023, .003, 40); face.rotateX(Math.PI / 2);
         add(face, std({ color: 0xF6EEF2, roughness: .25, metalness: .1 }), 0, 0, .033);
       } else if (v === 's8') {
-        // the S8 control panel: a champagne bezel round a lit glass touch screen
-        add(new THREE.BoxGeometry(.088, .088, .009), std({ color: 0xCDB58E, roughness: .3, metalness: .9, envMapIntensity: night ? .4 : 1 }), 0, 0, .0045);
+        // the S8 control panel: 216 x 116 mm, an 8-inch (16:10) touch screen in black glass, a ribbed speaker strip and home key on the right
+        const PW = .216, PH = .116, PD = .014, SW2 = .038;
+        add(new THREE.BoxGeometry(PW, PH, PD), std({ color: 0x0b0b0d, roughness: .35, metalness: .3 }), 0, 0, PD / 2);
         const [map, em] = s8Face();
-        const glass = new THREE.MeshPhysicalMaterial({ map, emissiveMap: em, emissive: new THREE.Color(0xffffff), emissiveIntensity: night ? .9 : .55, roughness: .05, clearcoat: 1, clearcoatRoughness: .04, envMapIntensity: night ? .35 : .9 });
-        add(new THREE.PlaneGeometry(.08, .08), glass, 0, 0, .0092, { cast: false });
+        const glass = new THREE.MeshPhysicalMaterial({ map, emissiveMap: em, emissive: new THREE.Color(0xffffff), emissiveIntensity: night ? .85 : .5, roughness: .05, clearcoat: 1, clearcoatRoughness: .04, envMapIntensity: night ? .35 : .9 });
+        add(new THREE.PlaneGeometry(.172, .108), glass, -PW / 2 + .004 + .086, 0, PD + .0004, { cast: false });   // the screen, 172 x 108
+        add(new THREE.PlaneGeometry(SW2, PH - .004), std({ map: ribTex(), roughness: .45, metalness: .4 }), PW / 2 - SW2 / 2 - .001, 0, PD + .0004, { cast: false });
       } else {
         const img = (imgs.sw || {})[v];
         let map;

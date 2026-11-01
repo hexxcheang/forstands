@@ -9,15 +9,19 @@ def vdim(x, y1, y2, label, side="left"):
     return (f'<g class="dim"><line x1="{x}" y1="{y1}" x2="{x}" y2="{y2}"/><line x1="{x-25}" y1="{y1}" x2="{x+25}" y2="{y1}"/><line x1="{x-25}" y1="{y2}" x2="{x+25}" y2="{y2}"/></g>' + t(tx, (y1+y2)/2 + 14, label, "td", "end" if side == "left" else "start"))
 
 # the switch row along the front face, in drawing x (700 = the centre): Noble, Halo, the S8 panel at the centre, Prestige
-SWROW = [(200, 'noble-champagne'), (325, 'noble-ivory'), (450, 'noble-onyx'), (575, 'halo'), (700, 's8'), (825, 'prestige-onyx'), (950, 'prestige-champagne'), (1075, 'prestige-midnight')]
+SWROW = [(211, 'noble-champagne'), (317, 'noble-ivory'), (423, 'noble-onyx'), (529, 'halo'), (700, 's8'), (871, 'prestige-onyx'), (977, 'prestige-champagne'), (1083, 'prestige-midnight')]
 SWCOL = {'noble-champagne': ('#E3D5C7', '#B88A4E'), 'noble-ivory': ('#E4E6E7', '#4a4a4a'), 'noble-onyx': ('#151515', '#555555'),
          'prestige-onyx': ('#3a3a3a', '#1a0f0d'), 'prestige-champagne': ('#A08A74', '#1a0f0d'), 'prestige-midnight': ('#4A4F5C', '#1a0f0d')}
 def switch_svg(x, y, k):
     if k == 'halo':
         return f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{y}" r="30" class="halok"/>'
-    if k == 's8':
-        tiles = ''.join(f'<rect x="{x-34 + (i % 2) * 36}" y="{y-6 + (i // 2) * 20}" width="32" height="16" rx="3" fill="#3a3a40"/>' for i in range(4))
-        return f'<rect x="{x-44}" y="{y-44}" width="88" height="88" rx="4" fill="#CDB58E" stroke="#29221F" stroke-width="2"/><rect x="{x-40}" y="{y-40}" width="80" height="80" rx="2" fill="#141416"/><rect x="{x-32}" y="{y-32}" width="34" height="12" rx="2" fill="#e9e3da"/>{tiles}'
+    if k == 's8':   # 216 x 116: the 8-inch screen (172 x 108) and the speaker strip with the home key
+        x0, y0 = x - 108, y - 58
+        tiles = ''.join(f'<rect x="{x0 + 22 + i * 34}" y="{y0 + 22}" width="28" height="{70 if i else 70}" rx="4" fill="#3a3a40"/>' for i in range(4))
+        ribs = ''.join(f'<rect x="{x0 + 181 + i * 5}" y="{y0 + 4}" width="3" height="80" fill="#2b2c30"/>' for i in range(6))
+        return (f'<rect x="{x0}" y="{y0}" width="216" height="116" rx="4" fill="#0b0b0d" stroke="#29221F" stroke-width="2"/>'
+                f'<rect x="{x0 + 4}" y="{y0 + 4}" width="172" height="108" rx="2" fill="#17181d"/>{tiles}{ribs}'
+                f'<rect x="{x0 + 180}" y="{y0 + 88}" width="32" height="24" fill="none" stroke="#6b6862" stroke-width="2"/>')
     face, band = SWCOL[k]
     return f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{y-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{y-5}" width="86" height="10" fill="#1a0f0d"/>'
 
@@ -97,9 +101,9 @@ for dx, dz in LOCKS:
     p.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
 p.append(f'<circle cx="{700 + BALL[0]}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
 for x, k in SWROW:
-    p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if k in ("halo", "s8") else "sw"}"/>')
+    p.append(f'<rect x="{x - (108 if k == "s8" else 43)}" y="500" width="{216 if k == "s8" else 86}" height="{14 if k == "s8" else 8}" class="{"halop" if k == "halo" else "sw"}"/>')
 p.append(t(800, -60, "6 Lenovo locks, staggered in two rows", "td"))
-p.append(t(100, 580, "ball light", "td"))
+p.append(t(700 + BALL[0], 250 + BALL[1] + 14, "ball light", "td"))
 p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
 p.append(hdim(-70, 1470, -110, "1,540 gold top (marble 1,400, dashed)"))
 p.append(vdim(-110, -25, 525, "550"))
@@ -161,7 +165,7 @@ def form_dwg(frac, rounded, share, name):
         q.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
     q.append(f'<circle cx="{bx + 8}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
     for x, k in SWROW:
-        q.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if k in ("halo", "s8") else "sw"}"/>')
+        q.append(f'<rect x="{x - (108 if k == "s8" else 43)}" y="500" width="{216 if k == "s8" else 86}" height="{14 if k == "s8" else 8}" class="{"halop" if k == "halo" else "sw"}"/>')
     q.append(hdim(0, 1400, -60, "1,400 marble, " + ("150 mm corner radius" if rounded else "square corners")))
     q.append(vdim(-60, 0, 500, "500"))
     q.append(t(700, 580, "FRONT FACE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
