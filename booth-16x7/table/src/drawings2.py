@@ -7,6 +7,20 @@ def hdim(x1, x2, y, label, ty=None):
 def vdim(x, y1, y2, label, side="left"):
     tx = x - 28 if side == "left" else x + 30
     return (f'<g class="dim"><line x1="{x}" y1="{y1}" x2="{x}" y2="{y2}"/><line x1="{x-25}" y1="{y1}" x2="{x+25}" y2="{y1}"/><line x1="{x-25}" y1="{y2}" x2="{x+25}" y2="{y2}"/></g>' + t(tx, (y1+y2)/2 + 14, label, "td", "end" if side == "left" else "start"))
+
+# the switch row along the front face, in drawing x (700 = the centre): Noble, Halo, the S8 panel at the centre, Prestige
+SWROW = [(200, 'noble-champagne'), (325, 'noble-ivory'), (450, 'noble-onyx'), (575, 'halo'), (700, 's8'), (825, 'prestige-onyx'), (950, 'prestige-champagne'), (1075, 'prestige-midnight')]
+SWCOL = {'noble-champagne': ('#E3D5C7', '#B88A4E'), 'noble-ivory': ('#E4E6E7', '#4a4a4a'), 'noble-onyx': ('#151515', '#555555'),
+         'prestige-onyx': ('#3a3a3a', '#1a0f0d'), 'prestige-champagne': ('#A08A74', '#1a0f0d'), 'prestige-midnight': ('#4A4F5C', '#1a0f0d')}
+def switch_svg(x, y, k):
+    if k == 'halo':
+        return f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{y}" r="30" class="halok"/>'
+    if k == 's8':
+        tiles = ''.join(f'<rect x="{x-34 + (i % 2) * 36}" y="{y-6 + (i // 2) * 20}" width="32" height="16" rx="3" fill="#3a3a40"/>' for i in range(4))
+        return f'<rect x="{x-44}" y="{y-44}" width="88" height="88" rx="4" fill="#CDB58E" stroke="#29221F" stroke-width="2"/><rect x="{x-40}" y="{y-40}" width="80" height="80" rx="2" fill="#141416"/><rect x="{x-32}" y="{y-32}" width="34" height="12" rx="2" fill="#e9e3da"/>{tiles}'
+    face, band = SWCOL[k]
+    return f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{y-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{y-5}" width="86" height="10" fill="#1a0f0d"/>'
+
 H = 1000                 # the floor line in the drawing
 Z = 840                  # top of the marble; the gold top brings the counter to 850
 sv = lambda h: H - h
@@ -29,13 +43,8 @@ for h in SH:
 f.append(f'<rect x="0" y="{sv(Z)}" width="1400" height="120" rx="8" class="stone"/>')
 f.append(f'<rect x="-70" y="{sv(Z+10)}" width="1540" height="10" rx="3" class="goldc"/>')
 LUS = {325: ('#E3D5C7', '#B88A4E'), 450: ('#E4E6E7', '#4a4a4a'), 575: ('#151515', '#555555'), 825: ('#3a3a3a', '#1a0f0d'), 950: ('#A08A74', '#1a0f0d'), 1075: ('#4A4F5C', '#1a0f0d')}
-for x in (325, 450, 575, 700, 825, 950, 1075):
-    if x == 700:
-        f.append(f'<rect x="{x-43}" y="{sv(Z-60)-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{sv(Z-60)}" r="30" class="halok"/>')
-    else:
-        face, band = LUS[x]
-        f.append(f'<rect x="{x-43}" y="{sv(Z-60)-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{sv(Z-60)-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{sv(Z-60)-5}" width="86" height="10" fill="#1a0f0d"/>')
-
+for x, k in SWROW:
+    f.append(switch_svg(x, sv(Z-60), k))
 # the standard layout: six locks staggered, back row and front row, in mm (x along, z towards the front)
 LOCKS = LOCKS_STD = ((-445, -77), (-225, 104), (-30, -79), (188, 92), (391, -69), (601, 99))
 BALL = (-608, 116)
@@ -47,7 +56,7 @@ f.append(f'<rect x="{bx-60}" y="{sv(Z+44)}" width="120" height="22" rx="6" class
 f.append(f'<rect x="25" y="{sv(U)+2}" width="1350" height="5" class="led"/>')
 f.append(hdim(-70, 1470, sv(Z + 610), "1,540 gold top"))
 f.append(hdim(0, 1400, H + 300, "1,400 marble and body", ty=H + 360))
-f.append(t(700, H + 230, "front edge: Lusano Noble · Halo · Lusano Prestige", "td"))
+f.append(t(700, H + 230, "front edge: Lusano Noble · Halo · S8 panel · Lusano Prestige", "td"))
 f.append(hdim(15, 370, H + 90, "355 curved shelves", ty=H + 150))
 f.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
 f.append(hdim(1030, 1385, H + 90, "355 curved shelves", ty=H + 150))
@@ -87,11 +96,11 @@ for dx, dz in LOCKS:
     x, y = 700 + dx, 250 + dz
     p.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
 p.append(f'<circle cx="{700 + BALL[0]}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
-for x in (325, 450, 575, 700, 825, 950, 1075):
-    p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
+for x, k in SWROW:
+    p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if k in ("halo", "s8") else "sw"}"/>')
 p.append(t(800, -60, "6 Lenovo locks, staggered in two rows", "td"))
 p.append(t(100, 580, "ball light", "td"))
-p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · PRESTIGE", "tz"))
+p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
 p.append(hdim(-70, 1470, -110, "1,540 gold top (marble 1,400, dashed)"))
 p.append(vdim(-110, -25, 525, "550"))
 p.append('<path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/>')
@@ -131,13 +140,8 @@ def form_dwg(frac, rounded, share, name):
     r.append(f'<rect x="35" y="{sv(RS + 12)}" width="320" height="25" class="shelf"/><rect x="1045" y="{sv(RS + 12)}" width="320" height="25" class="shelf"/>')
     r.append(f'<rect x="0" y="{sv(RZ)}" width="1400" height="{RT}" rx="{8 if rounded else 3}" class="stone"/>')
     r.append(f'<rect x="25" y="{sv(RU)+2}" width="1350" height="5" class="led"/>')
-    for x in (325, 450, 575, 700, 825, 950, 1075):
-        if x == 700:
-            r.append(f'<rect x="{x-43}" y="{sv(RZ - RT / 2)-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{sv(RZ - RT / 2)}" r="30" class="halok"/>')
-        else:
-            face, band = LUS[x]
-            y = sv(RZ - RT / 2)
-            r.append(f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{y-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{y-5}" width="86" height="10" fill="#1a0f0d"/>')
+    for x, k in SWROW:
+        r.append(switch_svg(x, sv(RZ - RT / 2), k))
     for dx, dz in sorted(LOCKS, key=lambda l: l[1]):
         x = 700 + dx
         r.append(f'<rect x="{x-85}" y="{sv(RZ+12)}" width="170" height="12" class="bronze"/><rect x="{x-75}" y="{sv(RZ+562)}" width="150" height="550" class="door"/><rect x="{x-44}" y="{sv(RZ+502)}" width="78" height="410" rx="8" class="lockb"/>')
@@ -156,11 +160,11 @@ def form_dwg(frac, rounded, share, name):
         x, y = 700 + dx, 250 + dz
         q.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
     q.append(f'<circle cx="{bx + 8}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
-    for x in (325, 450, 575, 700, 825, 950, 1075):
-        q.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
+    for x, k in SWROW:
+        q.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if k in ("halo", "s8") else "sw"}"/>')
     q.append(hdim(0, 1400, -60, "1,400 marble, " + ("150 mm corner radius" if rounded else "square corners")))
     q.append(vdim(-60, 0, 500, "500"))
-    q.append(t(700, 580, "FRONT FACE · NOBLE · HALO · PRESTIGE", "tz"))
+    q.append(t(700, 580, "FRONT FACE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
     rplan = f'<svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="{name} from above: a 1,400 by 500 marble top with {'rounded' if rounded else 'square'} corners, the six staggered locks and the ball light">{"".join(q)}</svg>'
     return rfront, rplan
 

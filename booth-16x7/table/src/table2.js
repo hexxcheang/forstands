@@ -110,7 +110,10 @@ function MaxsenModel(cfg = {}) {
   const CATALOGUES = { maxsen: 'Maxsen catalogues', lusano: 'Lusano catalogues', lenovo: 'Lenovo lock catalogues', halo: 'Halo catalogues' };
   const BROCHURES = { lenovo: 'Lenovo brochure stand', lusano: 'Lusano brochure stand', maxsen: 'Maxsen brochure stand' };
   const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid', pothos: 'Golden pothos (trailing)', ivy: 'English ivy (trailing)', pearls: 'String of pearls (trailing)' };
-  const KIND_VARIANTS = { lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
+  const SWITCHES = [['noble-champagne', 'Lusano Noble · Champagne'], ['noble-ivory', 'Lusano Noble · Ivory'], ['noble-onyx', 'Lusano Noble · Onyx'],
+    ['prestige-onyx', 'Lusano Prestige · Onyx'], ['prestige-champagne', 'Lusano Prestige · Champagne'], ['prestige-midnight', 'Lusano Prestige · Midnight'],
+    ['halo', 'Halo dimmer'], ['s8', 'S8 control panel']];
+  const KIND_VARIANTS = { switch: SWITCHES, lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
   // each surface: its height, its plan outline (corner radii back-left, back-right, front-right, front-left) and the clear height above it
   const shelfY = [Y0 + .04, ...SHELVES.map(y => y + .0125)];
   const shelfH = shelfY.map((y, i) => (i < SHELVES.length ? SHELVES[i] - .0185 : Y1 - .012) - y);
@@ -121,9 +124,14 @@ function MaxsenModel(cfg = {}) {
     SURF['L' + i] = { label: 'Left bay · ' + nm + ' shelf', y: shelfY[i], x0: -BL / 2 + .004, x1: -DIV - .015, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [BR - T, 0, 0, BR], h: shelfH[i] };
     SURF['R' + i] = { label: 'Right bay · ' + nm + ' shelf', y: shelfY[i], x0: DIV + .015, x1: BL / 2 - .004, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [0, BR - T, BR, 0], h: shelfH[i] };
   });
+  const FLAT = L / 2 - Math.max(R, .006) - .003;   // the flat part of the front face, between the rounded corners
+  SURF.front = { label: 'Front face', vertical: true, y: H - TOP / 2, zf: D / 2, x0: -FLAT, x1: FLAT, z0: -(TOP / 2 - .004), z1: TOP / 2 - .004, rc: [0, 0, 0, 0], h: 1 };
   const SURF_ORDER = ['top', ...shelfY.map((y, i) => 'L' + i).reverse(), ...shelfY.map((y, i) => 'R' + i).reverse()];
   // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
   // and trailing plants on the middle shelves, their vines hanging over the front edges
+  // the switches along the front face: Noble on the left, the Halo dimmer, the S8 panel in the centre, Prestige on the right
+  const DEFAULT_SWITCHES = [['noble-champagne', -.5], ['noble-ivory', -.375], ['noble-onyx', -.25], ['halo', -.125], ['s8', 0], ['prestige-onyx', .125], ['prestige-champagne', .25], ['prestige-midnight', .375]]
+    .map(([v, x], i) => ({ id: 'sw' + (i + 1), type: 'switch', v, on: 'front', x, z: 0, r: 0 }));
   const DEFAULT_LAYOUT = [
     { id: 'lock1', type: 'lock', v: '0', on: 'top', x: -.445, z: -.077, r: 0 },
     { id: 'lock2', type: 'lock', v: '1', on: 'top', x: -.225, z: .104, r: 0 },
@@ -137,18 +145,20 @@ function MaxsenModel(cfg = {}) {
     { id: 'pothos1', type: 'plant', v: 'pothos', on: 'L1', x: -.6, z: .15, r: 0, s: 1 },
     { id: 'ivy1', type: 'plant', v: 'ivy', on: 'L1', x: -.43, z: .16, r: .6, s: 1 },
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
-    { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
+    { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 },
+    ...DEFAULT_SWITCHES
   ];
   if (SHELVES.length === 1) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
   // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
   const DEFAULT_CLOSED = [
-    ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
+    ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball' || d.type === 'switch'),
     { id: 'pothos3', type: 'plant', v: 'pothos', on: 'top', x: -.66, z: -.13, r: 0, s: 1 },
     { id: 'ivy3', type: 'plant', v: 'ivy', on: 'top', x: .66, z: -.13, r: 0, s: 1 }
   ];
   function itemName(d) {
     if (d.type === 'lock') return 'Lenovo ' + (LOCK_VARIANTS[+d.v] || LOCK_VARIANTS[0]).name;
     if (d.type === 'ball') return 'Ball light';
+    if (d.type === 'switch') return (SWITCHES.find(x => x[0] === d.v) || SWITCHES[0])[1];
     if (d.type === 'catalogues') return CATALOGUES[d.v] || 'Catalogues';
     if (d.type === 'brochures') return BROCHURES[d.v] || 'Brochure stand';
     return PLANTS[d.v] || 'Plant';
@@ -431,28 +441,7 @@ function MaxsenModel(cfg = {}) {
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
-    // live Maxsen switches set into the top, in one row down the middle
-    // six smart switches and the Halo dimmer in the centre, on the front edge of the top
-    // Lusano Noble on the left, Lusano Prestige on the right, from the product photos
-    const SW = [['noble-champagne', -.375], ['noble-ivory', -.25], ['noble-onyx', -.125], ['halo', 0], ['prestige-onyx', .125], ['prestige-champagne', .25], ['prestige-midnight', .375]];
-    const ey = H - TOP / 2, ez = D / 2;
     const edgeMat = std({ color: 0x1a1a1a, roughness: .4 });
-    SW.forEach(([k, x]) => {
-      if (k === 'halo') {
-        add(new THREE.BoxGeometry(.086, .086, .006), std({ color: 0xC9B79C, roughness: .35, metalness: .5 }), x, ey, ez + .003);
-        const ring = new THREE.CylinderGeometry(.03, .03, .026, 48); ring.rotateX(Math.PI / 2);
-        add(ring, std({ color: 0xE8E4DF, roughness: .18, metalness: .95 }), x, ey, ez + .019);
-        const face = new THREE.CylinderGeometry(.023, .023, .003, 40); face.rotateX(Math.PI / 2);
-        add(face, std({ color: 0xF6EEF2, roughness: .25, metalness: .1 }), x, ey, ez + .033);
-      } else {
-        const img = (imgs.sw || {})[k];
-        let map;
-        if (img) { map = new THREE.Texture(img); map.needsUpdate = true; map.encoding = THREE.sRGBEncoding; map.anisotropy = 8; }
-        else map = tex(THREE, switchFace(THREE, k.startsWith('prestige') ? 'prestige' : 'noble'));
-        const m = std({ map, roughness: k.startsWith('prestige') ? .22 : .3, metalness: .15 });
-        add(new THREE.BoxGeometry(.086, .086, .006), [edgeMat, edgeMat, edgeMat, edgeMat, m, edgeMat], x, ey, ez + .003);
-      }
-    });
 
     // Lenovo smart locks, modelled after the product photos, each on its own small door panel
     const doorMat = slotMat('stands', { rep: [1, 1], rot: Math.PI / 2 });
@@ -831,7 +820,47 @@ function MaxsenModel(cfg = {}) {
       return g;
     };
 
+    // a switch module: 86 x 86 mm, its back on the face of the marble, facing out
+    function s8Face() {   // the S8's touch screen: the time, four scene tiles and the brand
+      const [c, g] = canvas(512, 512), [ec, e] = canvas(512, 512);
+      const bg = g.createLinearGradient(0, 0, 512, 512); bg.addColorStop(0, '#1b1c20'); bg.addColorStop(1, '#0b0b0d'); g.fillStyle = bg; g.fillRect(0, 0, 512, 512);
+      e.fillStyle = '#000'; e.fillRect(0, 0, 512, 512);
+      [g, e].forEach(x => { x.fillStyle = '#ffffff'; x.textAlign = 'left'; x.font = '300 92px Lato, Arial, sans-serif'; x.fillText('10:30', 40, 128); x.font = '700 22px Lato, Arial, sans-serif'; if (x.letterSpacing !== undefined) x.letterSpacing = '4px'; x.fillStyle = '#d9c7af'; x.fillText('SAT 1 NOV · 27°', 44, 172); });
+      const tiles = [['WELCOME', '#cfa594'], ['SHOWCASE', '#d9c08a'], ['EVENING', '#9aa6c4'], ['ALL OFF', '#8a8580']];
+      tiles.forEach(([t, col], i) => {
+        const x = 40 + (i % 2) * 222, y = 214 + Math.floor(i / 2) * 128;
+        [g, e].forEach(ctx => { ctx.fillStyle = ctx === g ? 'rgba(255,255,255,.08)' : 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, 206, 112, 18) : ctx.rect(x, y, 206, 112); ctx.fill();
+          ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x + 34, y + 40, 12, 0, 7); ctx.fill();
+          ctx.fillStyle = '#f4eee6'; ctx.font = '700 22px Lato, Arial, sans-serif'; if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '3px'; ctx.fillText(t, x + 20, y + 92); });
+      });
+      [g, e].forEach(x => { x.fillStyle = 'rgba(244,238,230,.55)'; x.font = '700 16px Lato, Arial, sans-serif'; if (x.letterSpacing !== undefined) x.letterSpacing = '8px'; x.textAlign = 'center'; x.fillText('MAXSEN', 256, 494); });
+      const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return [t, new THREE.CanvasTexture(ec)];
+    }
+    const makeSwitch = v => group(() => {
+      if (v === 'halo') {
+        add(new THREE.BoxGeometry(.086, .086, .006), std({ color: 0xC9B79C, roughness: .35, metalness: .5 }), 0, 0, .003);
+        const ring = new THREE.CylinderGeometry(.03, .03, .026, 48); ring.rotateX(Math.PI / 2);
+        add(ring, std({ color: 0xE8E4DF, roughness: .18, metalness: .95 }), 0, 0, .019);
+        const face = new THREE.CylinderGeometry(.023, .023, .003, 40); face.rotateX(Math.PI / 2);
+        add(face, std({ color: 0xF6EEF2, roughness: .25, metalness: .1 }), 0, 0, .033);
+      } else if (v === 's8') {
+        // the S8 control panel: a champagne bezel round a lit glass touch screen
+        add(new THREE.BoxGeometry(.088, .088, .009), std({ color: 0xCDB58E, roughness: .3, metalness: .9, envMapIntensity: night ? .4 : 1 }), 0, 0, .0045);
+        const [map, em] = s8Face();
+        const glass = new THREE.MeshPhysicalMaterial({ map, emissiveMap: em, emissive: new THREE.Color(0xffffff), emissiveIntensity: night ? .9 : .55, roughness: .05, clearcoat: 1, clearcoatRoughness: .04, envMapIntensity: night ? .35 : .9 });
+        add(new THREE.PlaneGeometry(.08, .08), glass, 0, 0, .0092, { cast: false });
+      } else {
+        const img = (imgs.sw || {})[v];
+        let map;
+        if (img) { map = new THREE.Texture(img); map.needsUpdate = true; map.encoding = THREE.sRGBEncoding; map.anisotropy = 8; }
+        else map = tex(THREE, switchFace(THREE, v.startsWith('prestige') ? 'prestige' : 'noble'));
+        const m = std({ map, roughness: v.startsWith('prestige') ? .22 : .3, metalness: .15 });
+        add(new THREE.BoxGeometry(.086, .086, .006), [edgeMat, edgeMat, edgeMat, edgeMat, m, edgeMat], 0, 0, .003);
+      }
+    });
+
     const KINDS = {
+      switch: d => makeSwitch(d.v),
       lock: d => makeLock(d.v), ball: () => makeBall(),
       catalogues: d => makeCatalogues(d.v, d.n || 4), brochures: d => makeBrochures(d.v),
       plant: d => TRAIL[d.v] ? makeTrailing(d.v, d.id) : ({ olive: makeOlive, monstera: makeMonstera, succulent: makeSucculent, orchid: makeOrchid }[d.v] || makeOlive)()
@@ -897,9 +926,16 @@ function MaxsenModel(cfg = {}) {
       });
       return b;
     }
-    const fits = (it, on) => it.box.max.y * (it.d.s || 1) <= SURF[on].h + .001;
+    const fits = (it, on) => it.d.type === 'switch' ? on === 'front' : on !== 'front' && it.box.max.y * (it.d.s || 1) <= SURF[on].h + .001;
+    const faceExt = it => ({ x0: it.box.min.x, x1: it.box.max.x, z0: it.box.min.y, z1: it.box.max.y });   // a piece on the face, as seen from the front
     function place(it, moving) {
       const d = it.d, S = SURF[d.on], sc = d.s || 1;
+      if (S.vertical) {
+        [d.x, d.z] = clampTo(S, d.x, d.z, faceExt(it)); d.r = 0;
+        it.g.position.set(d.x, S.y + d.z, S.zf); it.g.rotation.y = 0; it.g.scale.setScalar(1);
+        if (sel === it) frame();
+        return;
+      }
       [d.x, d.z] = clampTo(S, d.x, d.z, footprint(it.box, d.r || 0, sc));
       it.g.position.set(d.x, S.y, d.z); it.g.rotation.y = d.r || 0; it.g.scale.setScalar(sc);
       if (it.g.userData.drape && !moving) it.g.userData.drape(S, d.x, d.z, d.r || 0, sc);
@@ -908,7 +944,8 @@ function MaxsenModel(cfg = {}) {
     function spawn(d) {
       const g = make(d); g.userData.id = d.id;
       const it = { d, g, box: localBox(g) };
-      if (!ORDER.includes(d.on) || !fits(it, d.on)) d.on = ORDER.find(k => fits(it, k)) || 'top';
+      if (d.type === 'switch') d.on = 'front';
+      else if (!ORDER.includes(d.on) || !fits(it, d.on)) d.on = ORDER.find(k => fits(it, k)) || 'top';
       items.set(d.id, it); scene.add(g); place(it); return it;
     }
     function drop(it) {
@@ -921,13 +958,18 @@ function MaxsenModel(cfg = {}) {
     helper.material.depthTest = false; helper.material.transparent = true; helper.renderOrder = 999; helper.visible = false; scene.add(helper);
     let sel = null;
     function frame() {
-      const d = sel.d, sc = d.s || 1, e = footprint(sel.box, d.r || 0, sc), y = SURF[d.on].y;
+      const d = sel.d, sc = d.s || 1, S = SURF[d.on];
+      if (S.vertical) {
+        selBox.min.set(d.x + sel.box.min.x - .006, S.y + d.z + sel.box.min.y - .006, S.zf - .002);
+        selBox.max.set(d.x + sel.box.max.x + .006, S.y + d.z + sel.box.max.y + .006, S.zf + sel.box.max.z + .006); return;
+      }
+      const e = footprint(sel.box, d.r || 0, sc), y = S.y;
       selBox.min.set(d.x + e.x0 - .006, y + .001, d.z + e.z0 - .006); selBox.max.set(d.x + e.x1 + .006, y + sel.box.max.y * sc + .006, d.z + e.z1 + .006);
     }
     function info(it) {
       if (!it) return null;
       const d = it.d;
-      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
+      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: (d.type === 'switch' ? ['front'] : ORDER).map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
     }
     function select(id) {
       sel = (id && items.get(id)) || null; helper.visible = !!sel; if (sel) frame();
@@ -937,12 +979,18 @@ function MaxsenModel(cfg = {}) {
     const getLayout = () => [...items.values()].map(it => JSON.parse(JSON.stringify(it.d)));
     function setLayout(list) {
       const clean = sanitize(list); if (!clean) return;
+      if (!clean.some(d => d.type === 'switch')) clean.push(...JSON.parse(JSON.stringify(DEFAULT_SWITCHES)));
       const keep = sel && sel.d.id;
       [...items.values()].forEach(drop); clean.forEach(spawn);
       if (keep && items.has(keep)) select(keep); else select(null);
     }
     function freeSpot(it, on) {     // the place on a surface furthest from what is already there
       const S = SURF[on], others = [...items.values()].filter(o => o !== it && o.d.on === on);
+      if (S.vertical) {
+        let best = 0, bs = -1;
+        for (let x = S.x0 + .045; x <= S.x1 - .045; x += .005) { const sc = others.length ? Math.min(...others.map(o => Math.abs(o.d.x - x))) : 1 - Math.abs(x); if (sc > bs + 1e-6) { bs = sc; best = x; } }
+        return [best, 0];
+      }
       let best = [(S.x0 + S.x1) / 2, 0], bestScore = -1;
       for (let x = S.x0 + .06; x <= S.x1 - .06; x += .02) for (const z of [.08, 0, -.08, .14]) {
         const score = others.length ? Math.min(...others.map(o => Math.hypot(o.d.x - x, (o.d.z - z) * 1.5))) : 1 - Math.abs(x) * .1 - Math.abs(z);
@@ -954,13 +1002,13 @@ function MaxsenModel(cfg = {}) {
     const editor = {
       layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(START)),
       names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
-      labels: () => Object.fromEntries(ORDER.map(k => [k, SURF[k].label])),
+      labels: () => Object.fromEntries([...ORDER, 'front'].map(k => [k, SURF[k].label])),
       selected: () => info(sel),
       add(type, v) {
         if (!(type in KIND_VARIANTS)) return null;
         if (type === 'ball' && [...items.values()].filter(i => i.d.type === 'ball').length >= 3) return null;
         const vs = KIND_VARIANTS[type];
-        const d = { id: uid(type), type, on: 'top', x: 0, z: 0, r: 0 };
+        const d = { id: uid(type), type, on: type === 'switch' ? 'front' : 'top', x: 0, z: 0, r: 0 };
         if (vs.length) d.v = vs.some(x => x[0] === String(v)) ? String(v) : vs[0][0];
         if (type === 'plant') d.s = 1;
         const it = spawn(d); [d.x, d.z] = freeSpot(it, d.on); place(it);
@@ -979,7 +1027,7 @@ function MaxsenModel(cfg = {}) {
           const nd = Object.assign({}, d, { v: String(patch.v) }); const wasSel = sel === it;
           drop(it); const n = spawn(nd); if (wasSel) select(nd.id); changed(); return;
         }
-        if (patch.on && patch.on !== d.on && ORDER.includes(patch.on) && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
+        if (patch.on && patch.on !== d.on && ORDER.includes(patch.on) && d.type !== 'switch' && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
         if (typeof patch.r === 'number' && isFinite(patch.r)) d.r = patch.r;
         if (typeof patch.x === 'number' && isFinite(patch.x)) d.x = patch.x;
         if (typeof patch.z === 'number' && isFinite(patch.z)) d.z = patch.z;
@@ -1005,7 +1053,12 @@ function MaxsenModel(cfg = {}) {
       }
       return null;
     }
-    function onPlane(ev, y) { aim(ev); plane.constant = -y; return ray.ray.intersectPlane(plane, tmp) ? tmp.clone() : null; }
+    function onPlane(ev, S) {
+      aim(ev);
+      if (S.vertical) { plane.normal.set(0, 0, 1); plane.constant = -S.zf; } else { plane.normal.set(0, 1, 0); plane.constant = -S.y; }
+      return ray.ray.intersectPlane(plane, tmp) ? tmp.clone() : null;
+    }
+    const along = (S, p) => S.vertical ? [p.x, p.y - S.y] : [p.x, p.z];
     let drag = null, down = null;
     const onDown = ev => {
       if (!editing || ev.button !== 0) return;
@@ -1013,16 +1066,17 @@ function MaxsenModel(cfg = {}) {
       const it = pick(ev); if (!it) return;
       ev.stopImmediatePropagation(); ev.preventDefault();
       select(it.d.id);
-      const p = onPlane(ev, SURF[it.d.on].y);
-      drag = { it, off: p ? [it.d.x - p.x, it.d.z - p.z] : [0, 0], moved: false };
+      const S = SURF[it.d.on], p = onPlane(ev, S), q = p && along(S, p);
+      drag = { it, off: q ? [it.d.x - q[0], it.d.z - q[1]] : [0, 0], moved: false };
       renderer.domElement.style.cursor = 'grabbing';
       try { el.setPointerCapture(ev.pointerId); } catch (e) {}
     };
     const onMove = ev => {
       if (!editing) return;
       if (drag) {
-        const p = onPlane(ev, SURF[drag.it.d.on].y); if (!p) return;
-        drag.it.d.x = p.x + drag.off[0]; drag.it.d.z = p.z + drag.off[1]; drag.moved = true; place(drag.it, true);
+        const S = SURF[drag.it.d.on], p = onPlane(ev, S); if (!p) return;
+        const q = along(S, p);
+        drag.it.d.x = q[0] + drag.off[0]; drag.it.d.z = q[1] + drag.off[1]; drag.moved = true; place(drag.it, true);
         ev.stopImmediatePropagation(); return;
       }
       if (ev.buttons === 0 && !hoverBusy) { hoverBusy = true; requestAnimationFrame(() => { hoverBusy = false; renderer.domElement.style.cursor = editing && pick(ev) ? 'grab' : ''; }); }
