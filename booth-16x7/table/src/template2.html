@@ -9,19 +9,19 @@
 :root{
   --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
   --rose:#CFA594; --rose-text:#7E5643;
-  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56; --oakc:#C09A6E; --bodyc:#3E3029; --innerc:#D6C1A6; --stonec:#E8DCCB;
+  --stone:#F2EEE8; --lam:#D9C7AF; --shelf:#C9B293; --bronze:#2B231F; --led:#F2B872; --dimc:#6B5E56; --oakc:#C09A6E; --bodyc:#D2B994; --innerc:#E2D0B4; --stonec:#F4F1EC;
   --serif:"EB Garamond",Garamond,Georgia,serif;
   --sans:"Lato","Helvetica Neue",Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
-  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#5A4639; --innerc:#8C7760; --stonec:#4A4038;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#8C7458; --innerc:#A28C70; --stonec:#4F4A45;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
   --rose:#CFA594; --rose-text:#DDB8A6;
-  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#5A4639; --innerc:#8C7760; --stonec:#4A4038;
+  --stone:#3A332E; --lam:#6E5C4D; --shelf:#83705C; --bronze:#E9DED2; --led:#E8A85C; --dimc:#B3A69C; --oakc:#C09A6E; --bodyc:#8C7458; --innerc:#A28C70; --stonec:#4F4A45;
   color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
@@ -73,7 +73,7 @@ text{font-family:var(--sans)}
 .body{fill:var(--bodyc)}
 .inner{fill:var(--innerc)}
 .sw{fill:#29221F;stroke:var(--fg);stroke-width:2}
-.logo{fill:none;stroke:#FFE7C2;stroke-width:8}
+.lus{fill:#3A2C24;font-family:var(--serif);font-size:66px;font-weight:500;letter-spacing:18px}
 .wordlit{fill:#FFE7C2;font-size:58px;font-weight:700;letter-spacing:12px}
 .door{fill:var(--innerc);stroke:var(--fg);stroke-width:2}
 .lockb{fill:#5a2a1b}
@@ -118,7 +118,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   <header class="head">
     <span class="eyebrow">Maxsen · booth furniture · from your reference</span>
     <h1>The switch counter, <em>in the Maxsen colours.</em></h1>
-    <p class="lede">A 1.4 m standing counter with a porcelain stone top: six live smart switches and the Halo dimmer along its front edge, and three Lenovo smart locks on door panels on top. Below, a Midnight Bronze body with the Maxsen logo lit from behind on its closed centre, straight shelves at the left and curved shelves wrapping the right corner. Addressable RGBCCT LED strips run under the top, under each shelf and under the base.</p>
+    <p class="lede">A 1.4 m standing counter with a white marble top: six live smart switches and the Halo dimmer along its front edge, and three Lenovo smart locks on door panels on top. Below, a light wood body with LUSANO in bronze letters, lit from behind, on its closed centre, and identical open shelves curving round both front corners. Addressable RGBCCT LED strips run under the top, under each shelf and under the base.</p>
     <div class="facts">
       <div><b>1,400 × 600</b><span>length × depth in mm (depth assumed)</span></div>
       <div><b>1,000</b><span>height in mm, standing counter</span></div>
@@ -129,13 +129,13 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 
   <section aria-labelledby="look">
     <figure class="shot">
-      <img src="renders/day-hero.jpg" alt="Render of the counter: a cream stone top with three smart locks on small door panels, and a row of switches with the Halo dimmer along its front edge; below, a dark bronze wood body with the backlit Maxsen logo on its closed centre, straight shelves at the left and curved shelves at the right" width="1600" height="1000">
-      <figcaption><b>Daylight.</b> Porcelain stone, Midnight Bronze, and champagne inside the shelves.</figcaption>
+      <img src="renders/day-hero.jpg" alt="Render of the counter: a white marble top with three smart locks on small door panels, and a row of switches with the Halo dimmer along its front edge; below, a light wood body with LUSANO lit from behind on its closed centre, and open curved shelves at both ends" width="1600" height="1000">
+      <figcaption><b>Daylight.</b> White marble, light wood, and LUSANO in bronze.</figcaption>
     </figure>
     <div class="grid2">
       <figure class="shot">
-        <img src="renders/night-hero.jpg" alt="The same view with the show lights low: warm white LED under the top edge, the lit logo and a pool of light under the base" width="1600" height="1000" loading="lazy">
-        <figcaption><b>Warm white.</b> The everyday setting: the logo and the strips at a soft warm white.</figcaption>
+        <img src="renders/night-hero.jpg" alt="The same view with the show lights low: warm white LED under the top edge, LUSANO glowing from behind, and a pool of light under the base" width="1600" height="1000" loading="lazy">
+        <figcaption><b>Warm white.</b> The everyday setting: LUSANO and the strips at a soft warm white.</figcaption>
       </figure>
       <figure class="shot">
         <img src="renders/colour-hero.jpg" alt="The same view with the LED strips running a flowing colour gradient from pink through violet, blue and green" width="1600" height="1000" loading="lazy">
@@ -153,12 +153,12 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <table>
         <thead><tr><th>Part</th><th>Your reference</th><th>Maxsen version</th></tr></thead>
         <tbody>
-          <tr><td><b>Top</b></td><td>Thick cream stone, rounded corners, glowing lower edge</td><td>Porcelain marble-look stone, 120 mm thick so an 86 mm switch fits its front edge, 150 mm corners, LED line underneath</td></tr>
+          <tr><td><b>Top</b></td><td>Thick cream stone, rounded corners, glowing lower edge</td><td>White marble with grey and soft gold veining, 120 mm thick so an 86 mm switch fits its front edge, 150 mm corners, LED line underneath</td></tr>
           <tr><td><b>Switches</b></td><td>A row of switches set into the top</td><td>Moved to the front edge of the top, as you marked: six switches (Lusano Prestige, Lusano Noble, Nova+ Pro in two styles, Folio, Ark) with the Halo dimmer in the centre</td></tr>
           <tr><td><b>Door locks</b></td><td>Not in the reference</td><td>Three Lenovo smart locks on the top, each fitted to a small door panel: F3 Ultra in Rosewood, Gold Aurora Marble and Shooting Stars</td></tr>
-          <tr><td><b>Body</b></td><td>Dark walnut</td><td>Midnight Bronze wood veneer</td></tr>
-          <tr><td><b>Shelves</b></td><td>Straight at the left, curved at the right, lit</td><td>The same, in champagne, with an RGBCCT strip under each shelf edge</td></tr>
-          <tr><td><b>Centre</b></td><td>An open niche</td><td>Closed with a Midnight Bronze panel, 660 wide, carrying the Maxsen monogram and wordmark, lit from behind</td></tr>
+          <tr><td><b>Body</b></td><td>Dark walnut</td><td>Light wood veneer throughout, outside and in</td></tr>
+          <tr><td><b>Shelves</b></td><td>Straight at the left, curved at the right, lit</td><td>Open and identical at both ends, curving round the front corners, with an RGBCCT strip under each shelf edge</td></tr>
+          <tr><td><b>Centre</b></td><td>An open niche</td><td>Closed with a light wood panel, 660 wide, carrying LUSANO in bronze letters, lit from behind</td></tr>
           <tr><td><b>LED</b></td><td>White strips</td><td>IC RGBCCT strips: tunable white for daily use, and full colour with each pixel addressable for effects</td></tr>
           <tr><td><b>Base</b></td><td>Solid plinth</td><td>A bronze base set back 60 mm, with an RGBCCT strip under it, from your first sketch</td></tr>
         </tbody>
@@ -172,12 +172,12 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <h2 id="more">Front, the right end, the switches, and colour</h2>
     </div>
     <div class="grid2">
-      <figure class="shot"><img src="renders/day-front.jpg" alt="Straight-on front view: shelves at the left, the closed centre with the lit Maxsen logo, curved shelves at the right" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> Shelves, the lit logo, curved shelves.</figcaption></figure>
+      <figure class="shot"><img src="renders/day-front.jpg" alt="Straight-on front view: curved shelves at both ends and the closed centre with LUSANO" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> Matching shelves at both ends, LUSANO in the centre.</figcaption></figure>
       <figure class="shot"><img src="renders/day-end.jpg" alt="Three-quarter view of the right end, showing the curved shelves wrapping the corner" width="1600" height="1000" loading="lazy"><figcaption><b>Right end.</b> The shelves curve round the corner.</figcaption></figure>
       <figure class="shot"><img src="renders/day-detail.jpg" alt="Close-up of the front edge of the top: six switches with the Halo dimmer in the centre" width="1600" height="1000" loading="lazy"><figcaption><b>The front edge, close.</b> Six switches, Halo in the centre.</figcaption></figure>
       <figure class="shot"><img src="renders/day-top.jpg" alt="Top-down view: three locks on door panels across the top" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> Three locks across the top.</figcaption></figure>
     </div>
-    <figure class="shot"><img src="renders/colour-low.jpg" alt="Low front view in colour mode: the RGB pixels visible along the top edge and under the base, with the logo lit in white" width="1600" height="1000" loading="lazy"><figcaption><b>Colour, low view.</b> The pixels of the IC strip along the top edge and the base, with the logo in white.</figcaption></figure>
+    <figure class="shot"><img src="renders/colour-low.jpg" alt="Low front view in colour mode: the RGB pixels visible along the top edge and under the base, with LUSANO lit from behind" width="1600" height="1000" loading="lazy"><figcaption><b>Colour, low view.</b> The pixels of the IC strip along the top edge and the base, with LUSANO lit from behind.</figcaption></figure>
     <div class="viewer">
       <div class="stage" id="stage">
         <img src="renders/day-hero.jpg" alt="" width="1600" height="1000">
@@ -218,15 +218,15 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <h3>Top</h3>
         <ul class="plain">
           <li>1,400 × 600, 150 mm corner radius, 120 mm thick with a crisp, slightly eased edge.</li>
-          <li>Porcelain marble-look sintered stone, 12 mm on a plywood core with a built-up edge, so it stays liftable.</li>
+          <li>White marble, or marble-look sintered stone, 12 mm on a plywood core with a built-up edge, so it stays liftable. Real marble needs sealing against stains.</li>
           <li>Seven cut-outs on the front edge, 125 mm apart and centred 60 mm below the top surface: six 86-type smart switches with the Halo dimmer in the middle. Back boxes sit inside the top's core; wiring runs down through the centre.</li>
           <li>Three lock displays on top: a 220 × 460 mm door panel on a bronze foot, each with a Lenovo smart lock fitted as on a real door. Bolt the feet through the top so they can't be knocked over.</li>
         </ul>
         <h3>Body</h3>
         <ul class="plain">
-          <li>Plywood with Midnight Bronze wood veneer outside and champagne veneer inside the bays and niche.</li>
-          <li>Left bay: two straight shelves. Right bay: two shelves that curve round the front corner. Shelves at 330 and 600.</li>
-          <li>Centre: closed with a removable Midnight Bronze panel, 660 wide. The Maxsen monogram and wordmark are cut through and backed with opal acrylic, lit from behind, so the logo glows.</li>
+          <li>Plywood with a light wood veneer, such as white oak or ash, outside and inside the bays.</li>
+          <li>Both end bays are identical: open, with two shelves that curve round the front corner, at 330 and 600. Only the back half of each end is closed.</li>
+          <li>Centre: closed with a removable light wood panel, 660 wide. LUSANO in bronze-finish letters, about 600 mm wide, stood 15 mm off the panel with a warm LED behind them, so they glow at the edges (halo lighting).</li>
         </ul>
       </div>
       <div>
@@ -235,7 +235,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
           <li>IC RGBCCT LED strip throughout: RGB plus warm and cool white chips, with driver ICs so each pixel or segment can be set on its own.</li>
           <li>Under the top edge all the way round, under the front edge of each shelf, and under the base, in aluminium channels with opal diffusers so the pixels blend into a line.</li>
           <li>Run them from an addressable (SPI) controller linked to the Maxsen gateway: warm white for the show, and colour scenes or flowing effects for launches and photos.</li>
-          <li>The logo is lit separately in white, so it stays on brand whatever the strips are doing.</li>
+          <li>LUSANO is lit separately in warm white, so it stays on brand whatever the strips are doing.</li>
         </ul>
         <h3>Power and height</h3>
         <ul class="plain">

@@ -20,8 +20,7 @@ for x in (370, 1030):
     f.append(f'<rect x="{x-15}" y="{sv(880)}" width="30" height="820" class="body"/>')
 f.append(f'<rect x="15" y="{sv(100)}" width="1370" height="40" class="body"/>')
 f.append(f'<rect x="385" y="{sv(880)}" width="630" height="820" class="body"/>')
-f.append(f'<polygon points="700,{sv(735)} 750,{sv(706)} 750,{sv(648)} 700,{sv(619)} 650,{sv(648)} 650,{sv(706)}" class="logo"/>')
-f.append(t(700, sv(485), "MAXSEN", "wordlit"))
+f.append(t(709, sv(560), "LUSANO", "lus"))
 for h in SH:
     f.append(f'<rect x="35" y="{sv(h+12)}" width="320" height="25" class="shelf"/>')
     f.append(f'<rect x="1045" y="{sv(h+12)}" width="340" height="25" rx="6" class="shelf"/>')
@@ -36,7 +35,7 @@ for x in (280, 700, 1120):
 f.append(f'<rect x="25" y="{sv(880)+2}" width="1350" height="5" class="led"/>')
 f.append(hdim(0, 1400, -560, "1,400"))
 f.append(t(700, H + 230, "front edge: 6 switches + Halo in the centre", "td"))
-f.append(hdim(15, 370, H + 90, "355 shelves", ty=H + 150))
+f.append(hdim(15, 370, H + 90, "355 curved shelves", ty=H + 150))
 f.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
 f.append(hdim(1030, 1385, H + 90, "355 curved shelves", ty=H + 150))
 f.append(vdim(-60, 0, H, "1,000"))
@@ -58,7 +57,11 @@ e = [f'<rect x="-60" y="{H}" width="720" height="10" class="floor"/>',
      f'<rect x="600" y="{sv(983)}" width="6" height="86" class="sw"/>']
 e.append(hdim(0, 600, -560, "600 (to confirm)"))
 e.append(vdim(-60, 0, H, "1,000"))
-e.append(t(300, sv(500), "LEFT END", "tz"))
+e.append(f'<rect x="300" y="{sv(880)}" width="285" height="820" class="inner"/>')
+for h in (330, 600):
+    e.append(f'<rect x="300" y="{sv(h+12)}" width="285" height="25" rx="6" class="shelf"/>')
+e.append(t(158, sv(500), "closed", "td"))
+e.append(t(442, sv(780), "open shelves", "td"))
 end = f'<svg viewBox="-260 -620 1000 1840" class="dwg narrow" role="img" aria-label="End elevation">{"".join(e)}</svg>'
 
 # plan: top down, front at the bottom

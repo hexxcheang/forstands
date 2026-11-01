@@ -55,15 +55,19 @@ window.MaxsenTable = (function () {
   let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
   function tex(THREE, c, rx = 1, ry = 1) { const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; }
-  function stone(THREE) { // porcelain marble with soft champagne veins
+  function stone(THREE) { // white marble with bold grey and soft gold veining
     const [c, g] = canvas(2048, 1024);
-    g.fillStyle = '#E8DCCB'; g.fillRect(0, 0, 2048, 1024);
-    for (let k = 0; k < 30; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 80 + rnd() * 260; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .5 ? '214,196,172' : '244,236,224'},.6)`); f.addColorStop(1, 'rgba(232,220,203,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
-    for (let k = 0; k < 22; k++) {
-      g.strokeStyle = `rgba(${140 + rnd() * 40},${110 + rnd() * 30},${85 + rnd() * 25},${.12 + rnd() * .25})`; g.lineWidth = .5 + rnd() * 2.2;
-      g.beginPath(); let x = -20, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 40;
-      while (x < 2070) { x += 20 + rnd() * 40; y += drift + (rnd() - .5) * 26; g.lineTo(x, y); } g.stroke();
-    }
+    g.fillStyle = '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
+    const vein = (w, a, col, wob) => {
+      g.strokeStyle = `rgba(${col},${a})`; g.lineWidth = w; g.lineCap = 'round';
+      g.beginPath(); let x = -40, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 70;
+      while (x < 2100) { const nx = x + 30 + rnd() * 60, ny = y + drift + (rnd() - .5) * wob; g.quadraticCurveTo(x + (nx - x) / 2, y + (rnd() - .5) * wob, nx, ny); x = nx; y = ny; }
+      g.stroke();
+    };
+    for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, '120,118,116', 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, '96,94,92', 30); }
+    for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, '110,108,106', 50);
+    for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, '176,142,92', 30);
     return c;
   }
   function wood(THREE, base, dark, light) { // straight grain, running along the length
@@ -131,10 +135,10 @@ window.MaxsenTable = (function () {
     // Maxsen colourway: porcelain stone, Midnight Bronze body, champagne-lit interiors
     const stoneMat = new THREE.MeshPhysicalMaterial({ map: tex(THREE, stone(THREE), 1 / L, 1 / D), roughness: .38, clearcoat: .25, clearcoatRoughness: .35, envMapIntensity: night ? .3 : .45 });
     stoneMat.map.offset.set(.5, .5);
-    const bodyWood = wood(THREE, '#3E3029', '24,17,13', '110,86,70');
+    const bodyWood = wood(THREE, '#D2B994', '150,116,78', '238,220,192');
     const bodyMat = std({ map: tex(THREE, bodyWood, 1.2, 1), roughness: .55 });
     const bodyMatV = std({ map: tex(THREE, bodyWood, 1, 1), roughness: .55 }); bodyMatV.map.rotation = Math.PI / 2;
-    const inner = std({ map: tex(THREE, wood(THREE, '#D6C1A6', '150,120,90', '240,226,206'), 1.5, 1), roughness: .55 });
+    const inner = std({ map: tex(THREE, wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'), 1.5, 1), roughness: .55 });
     const bronze = std({ color: 0x29221F, roughness: .4, metalness: .5 });
     // IC RGBCCT strips: every pixel addressable, warm white for daily use, full colour on demand
     const warm = new THREE.Color(night ? 0xffd9a8 : 0xfff0d8);
@@ -204,38 +208,36 @@ window.MaxsenTable = (function () {
     const wallH = Y1 - Y0 - .04;
     const wall = (shape) => add(slab(THREE, shape, wallH), bodyMatV, 0, Y0 + .04, 0);
     wall(arcBand(THREE, -xs, -zs, BR, T, Math.PI, Math.PI * 1.5));        // back left corner
-    wall(arcBand(THREE, -xs, zs, BR, T, Math.PI / 2, Math.PI));           // front left corner
     wall(arcBand(THREE, xs, -zs, BR, T, -Math.PI / 2, 0));               // back right corner
-    add(new THREE.BoxGeometry(T, wallH, 2 * zs), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, 0);      // left end
+    add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // left end, back half
     add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, BL / 2 - T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // right end, back half
     [-DIV, DIV].forEach(x => add(new THREE.BoxGeometry(.03, wallH, BD - T), bodyMat, x, Y0 + .04 + wallH / 2, T / 2));
     // champagne-lit interiors: back faces of the bays and the niche
     add(new THREE.BoxGeometry(2 * xs - .04, wallH - .002, .004), inner, 0, Y0 + .04 + wallH / 2, -BD / 2 + T + .002, { cast: false });
-    // shelves: square in the left bay, rounded where they wrap the front right corner
-    const lx0 = -BL / 2 + T, lx1 = -DIV - .015, rx0 = DIV + .015, rx1 = BL / 2;
+    // shelves: the same at both ends, rounded where they wrap the front corners
+    const lx0 = -BL / 2, lx1 = -DIV - .015, rx0 = DIV + .015, rx1 = BL / 2;
     SHELVES.forEach(y => {
-      add(slab(THREE, endShelf(THREE, -1, lx1, lx0, -BD / 2 + T, BD / 2 - T, BR - T, BR - T), .025), inner, 0, y - .0125, 0);
+      add(slab(THREE, endShelf(THREE, -1, lx1, lx0 + .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       add(slab(THREE, endShelf(THREE, 1, rx0, rx1 - .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       // LED under the front edge of each shelf, lighting the bay below
-      pixels(row(-xs + .01, lx1 - .01, BD / 2 - .03), y - .015, byX);
+      pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), y - .015, byX);
       pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), y - .015, byX);
     });
-    // the closed centre: a Midnight Bronze panel with the Maxsen logo, lit from behind
+    // the closed centre: a light wood panel with LUSANO in bronze letters, lit from behind
     add(new THREE.BoxGeometry(2 * DIV - .03, wallH, T), bodyMat, 0, Y0 + .04 + wallH / 2, BD / 2 - T / 2);
-    const logo = (img, h, y) => {
-      if (!img) return;
-      const w = h * img.width / img.height, zf = BD / 2 + .002;
-      const pad = 60, [gc, gg] = canvas(img.width + pad * 2, img.height + pad * 2);
-      gg.shadowColor = 'rgba(255,214,160,1)'; gg.shadowBlur = 36;
-      for (let k = 0; k < 3; k++) gg.drawImage(img, pad, pad);
-      const glow = new THREE.Mesh(new THREE.PlaneGeometry(w * gc.width / img.width, h * gc.height / img.height), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .75 : .35, color: 0xffd6a0 }));
+    {
+      const word = 'LUSANO', fs = 250, ls = 64;
+      const [mc, mg] = canvas(1700, 300); mg.font = `500 ${fs}px "EB Garamond", Garamond, Georgia, serif`;
+      if (mg.letterSpacing !== undefined) mg.letterSpacing = ls + 'px';
+      mg.textAlign = 'center'; mg.textBaseline = 'middle'; mg.fillStyle = '#fff'; mg.fillText(word, 850 + ls / 2, 160);
+      const [gc, gg] = canvas(1700, 300); gg.shadowColor = 'rgba(255,205,140,1)'; gg.shadowBlur = 40;
+      for (let k = 0; k < 3; k++) gg.drawImage(mc, 0, 0);
+      const w = .6, h = w * 300 / 1700, y = .58, zf = BD / 2 + .002;
+      const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: night ? 0xffcf96 : 0xf2b46a, blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
       glow.position.set(0, y, zf); scene.add(glow);
-      const t = new THREE.Texture(img); t.needsUpdate = true; t.encoding = THREE.sRGBEncoding;
-      const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: t, transparent: true, color: night ? 0xffffff : 0xf3ece2 }));
-      face.position.set(0, y, zf + .001); scene.add(face);
-    };
-    logo(imgs.mono, .13, .67);
-    logo(imgs.word, .064, .5);
+      const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(mc), transparent: true, color: 0x3A2C24, roughness: .35, metalness: .55, envMapIntensity: night ? .2 : .5 }));
+      face.position.set(0, y, zf + .004); scene.add(face);
+    }
 
     // floating base with an LED line that lights the floor
     add(slab(THREE, rr(THREE, BL - .1, BD - .1, BR - .04), BASE - .004), bronze, 0, .002, 0);
@@ -280,7 +282,8 @@ window.MaxsenTable = (function () {
   function loadImage(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
 
   async function mount(THREE, el, opts = {}) {
-    const imgs = { mono: await loadImage(opts.mono || 'assets/monogram-light.png'), word: await loadImage(opts.word || 'assets/wordmark-white.png') };
+    try { await document.fonts.load('500 200px "EB Garamond"'); } catch (e) {}
+    const imgs = {};
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: !!opts.capture });
     renderer.setPixelRatio(opts.ratio || Math.min(2, window.devicePixelRatio || 1));
     renderer.outputEncoding = THREE.sRGBEncoding;
