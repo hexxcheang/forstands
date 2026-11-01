@@ -25,16 +25,19 @@ for h in SH:
     f.append(f'<rect x="35" y="{sv(h+12)}" width="320" height="25" class="shelf"/>')
     f.append(f'<rect x="1045" y="{sv(h+12)}" width="340" height="25" rx="6" class="shelf"/>')
 f.append(f'<rect x="0" y="{sv(1000)}" width="1400" height="120" rx="8" class="stone"/>')
-for i, x in enumerate((325, 450, 575, 700, 825, 950, 1075)):
+LUS = {325: ('#E3D5C7', '#B88A4E'), 450: ('#E4E6E7', '#4a4a4a'), 575: ('#151515', '#555555'), 825: ('#3a3a3a', '#1a0f0d'), 950: ('#A08A74', '#1a0f0d'), 1075: ('#4A4F5C', '#1a0f0d')}
+for x in (325, 450, 575, 700, 825, 950, 1075):
     if x == 700:
         f.append(f'<rect x="{x-43}" y="{sv(940)-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{sv(940)}" r="30" class="halok"/>')
     else:
-        f.append(f'<rect x="{x-43}" y="{sv(940)-43}" width="86" height="86" rx="4" class="sw"/>')
+        face, band = LUS[x]
+        f.append(f'<rect x="{x-43}" y="{sv(940)-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{sv(940)-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{sv(940)-5}" width="86" height="10" fill="#1a0f0d"/>')
+
 for x in (280, 700, 1120):
     f.append(f'<rect x="{x-120}" y="{sv(1012)}" width="240" height="12" class="bronze"/><rect x="{x-110}" y="{sv(1472)}" width="220" height="460" class="door"/><rect x="{x+3}" y="{sv(1427)}" width="74" height="370" rx="10" class="lockb"/>')
 f.append(f'<rect x="25" y="{sv(880)+2}" width="1350" height="5" class="led"/>')
 f.append(hdim(0, 1400, -560, "1,400"))
-f.append(t(700, H + 230, "front edge: 6 switches + Halo in the centre", "td"))
+f.append(t(700, H + 230, "front edge: Lusano Noble · Halo · Lusano Prestige", "td"))
 f.append(hdim(15, 370, H + 90, "355 curved shelves", ty=H + 150))
 f.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
 f.append(hdim(1030, 1385, H + 90, "355 curved shelves", ty=H + 150))
@@ -71,7 +74,7 @@ for x in (280, 700, 1120):
 for x in (325, 450, 575, 700, 825, 950, 1075):
     p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
 p.append(t(700, 75, "3 Lenovo locks on door panels", "td"))
-p.append(t(700, 580, "FRONT EDGE · 6 SWITCHES + HALO", "tz"))
+p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · PRESTIGE", "tz"))
 p.append(hdim(0, 1400, -70, "1,400"))
 p.append(vdim(-60, 0, 500, "500"))
 p.append('<path d="M1400 150 A150 150 0 0 0 1250 0" class="radius"/>')

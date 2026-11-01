@@ -170,7 +170,8 @@ window.MaxsenTable = (function () {
 
     // live Maxsen switches set into the top, in one row down the middle
     // six smart switches and the Halo dimmer in the centre, on the front edge of the top
-    const SW = [['prestige', -.375], ['noble', -.25], ['nova', -.125], ['halo', 0], ['nova2', .125], ['folio', .25], ['ark', .375]];
+    // Lusano Noble on the left, Lusano Prestige on the right, from the product photos
+    const SW = [['noble-champagne', -.375], ['noble-ivory', -.25], ['noble-onyx', -.125], ['halo', 0], ['prestige-onyx', .125], ['prestige-champagne', .25], ['prestige-midnight', .375]];
     const ey = H - TOP / 2, ez = D / 2;
     const edgeMat = std({ color: 0x1a1a1a, roughness: .4 });
     SW.forEach(([k, x]) => {
@@ -181,7 +182,11 @@ window.MaxsenTable = (function () {
         const face = new THREE.CylinderGeometry(.023, .023, .003, 40); face.rotateX(Math.PI / 2);
         add(face, std({ color: 0xF6EEF2, roughness: .25, metalness: .1 }), x, ey, ez + .033);
       } else {
-        const m = std({ map: tex(THREE, switchFace(THREE, k)), roughness: .25, metalness: .1 });
+        const img = (imgs.sw || {})[k];
+        let map;
+        if (img) { map = new THREE.Texture(img); map.needsUpdate = true; map.encoding = THREE.sRGBEncoding; map.anisotropy = 8; }
+        else map = tex(THREE, switchFace(THREE, k.startsWith('prestige') ? 'prestige' : 'noble'));
+        const m = std({ map, roughness: k.startsWith('prestige') ? .22 : .3, metalness: .15 });
         add(new THREE.BoxGeometry(.086, .086, .006), [edgeMat, edgeMat, edgeMat, edgeMat, m, edgeMat], x, ey, ez + .003);
       }
     });
@@ -283,7 +288,9 @@ window.MaxsenTable = (function () {
 
   async function mount(THREE, el, opts = {}) {
     try { await document.fonts.load('500 200px "EB Garamond"'); } catch (e) {}
-    const imgs = {};
+    const imgs = { sw: {} };
+    const base = opts.assets || 'assets/';
+    for (const k of ['noble-champagne', 'noble-ivory', 'noble-onyx', 'prestige-onyx', 'prestige-champagne', 'prestige-midnight']) imgs.sw[k] = await loadImage(base + 'lusano-' + k + '.jpg');
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: !!opts.capture });
     renderer.setPixelRatio(opts.ratio || Math.min(2, window.devicePixelRatio || 1));
     renderer.outputEncoding = THREE.sRGBEncoding;
