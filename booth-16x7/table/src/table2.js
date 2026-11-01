@@ -7,6 +7,7 @@ window.MaxsenTable = (function () {
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
+  const GS = 1.1, GT = 0.01, HG = 1.0 + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
   const SHELVES = [0.33, 0.6];             // shelf heights in both end bays
@@ -167,6 +168,9 @@ window.MaxsenTable = (function () {
 
     // the top: 100 mm thick, rounded corners and softened edges
     add(slab(THREE, rr(THREE, L - .012, D - .012, R - .006), TOP, .006), stoneMat, 0, Y1, 0);
+    // a thin, flat gold top on the marble, following its outline at 1.1x
+    const gold = new THREE.MeshPhysicalMaterial({ color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: night ? .5 : 1.05 });
+    add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
@@ -209,8 +213,8 @@ window.MaxsenTable = (function () {
     {
       const [lvl, k] = BALL;
       const kc = new THREE.Color({ 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
-      const bx = -.6, bz = -.03, br = .1, by = H + .022 + br;
-      add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, bx, H + .011, bz);
+      const bx = -.6, bz = -.03, br = .1, by = HG + .022 + br;
+      add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, bx, HG + .011, bz);
       const ballMat = new THREE.MeshPhysicalMaterial({ color: night ? 0x6e6862 : 0xe8e3dc, emissive: kc, emissiveIntensity: .05 + Math.pow(lvl, 1.3) * 1.25, roughness: .45, clearcoat: .4, envMapIntensity: night ? .15 : .4 });
       add(new THREE.SphereGeometry(br, 48, 32), ballMat, bx, by, bz, { cast: false });
       const [hc, hg] = canvas(128, 128); const hr = hg.createRadialGradient(64, 64, 10, 64, 64, 64);
@@ -222,8 +226,8 @@ window.MaxsenTable = (function () {
 
     function lenovoLock({ x, frame, trim, lower, cam }) {
       // its own stand: a bronze foot and a 150 x 550 slice of a 45 mm door; the lock at true size, about 78 x 410 x 70 mm
-      const z0 = -.05, DT = .045, base = H + .012, PH = .55, PW = .15;
-      add(new THREE.BoxGeometry(PW + .02, .012, .15), bronze, x, H + .006, z0);           // bronze foot
+      const z0 = -.05, DT = .045, base = HG + .012, PH = .55, PW = .15;
+      add(new THREE.BoxGeometry(PW + .02, .012, .15), bronze, x, HG + .006, z0);           // bronze foot
       add(new THREE.BoxGeometry(PW, PH, DT), doorMat, x, base + PH / 2, z0);                // door panel
       const LW = .078, LH = .41, LD = .07, lx = x - .005, ly = base + PH / 2 + .01, lz = z0 + DT / 2;
       // body: a rounded metal frame
@@ -391,7 +395,8 @@ window.MaxsenTable = (function () {
     low:    { pos: [-1.45, 1.2, 2.75], at: [.05, .74, 0], fov: 36 },
     front:  { pos: [0, 1.15, 3.1], at: [0, .7, 0], fov: 33 },
     end:    { pos: [2.35, 1.6, 2.0], at: [.28, .8, .05], fov: 36 },
-    detail: { pos: [.25, 1.08, 1.0], at: [0, .95, .3], fov: 36 },
+    detail: { pos: [.25, 1.1, 1.0], at: [0, .96, .3], fov: 36 },
+    gold:   { pos: [1.05, 1.22, .75], at: [.6, 1.0, .1], fov: 34 },
     locks:  { pos: [.05, 1.36, 1.25], at: [.03, 1.2, -.04], fov: 46 },
     ball:   { pos: [-.15, 1.38, 1.15], at: [-.42, 1.13, -.04], fov: 44 },
     shelf:  { pos: [1.15, 1.05, 1.05], at: [.52, .72, .05], fov: 34 },

@@ -25,6 +25,7 @@ for h in SH:
     f.append(f'<rect x="35" y="{sv(h+12)}" width="320" height="25" rx="6" class="shelf"/>')
     f.append(f'<rect x="1045" y="{sv(h+12)}" width="340" height="25" rx="6" class="shelf"/>')
 f.append(f'<rect x="0" y="{sv(1000)}" width="1400" height="120" rx="8" class="stone"/>')
+f.append(f'<rect x="-70" y="{sv(1010)}" width="1540" height="10" rx="3" class="goldc"/>')
 LUS = {325: ('#E3D5C7', '#B88A4E'), 450: ('#E4E6E7', '#4a4a4a'), 575: ('#151515', '#555555'), 825: ('#3a3a3a', '#1a0f0d'), 950: ('#A08A74', '#1a0f0d'), 1075: ('#4A4F5C', '#1a0f0d')}
 for x in (325, 450, 575, 700, 825, 950, 1075):
     if x == 700:
@@ -36,22 +37,24 @@ for x in (325, 450, 575, 700, 825, 950, 1075):
 LOCKX = (-380, -190, 0, 190, 380, 570)
 for dx in LOCKX:
     x = 700 + dx
-    f.append(f'<rect x="{x-85}" y="{sv(1012)}" width="170" height="12" class="bronze"/><rect x="{x-75}" y="{sv(1562)}" width="150" height="550" class="door"/><rect x="{x-44}" y="{sv(1502)}" width="78" height="410" rx="8" class="lockb"/>')
-f.append(f'<rect x="40" y="{sv(1034)}" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="{sv(1122)}" r="100" class="ballc"/>')
+    f.append(f'<rect x="{x-85}" y="{sv(1022)}" width="170" height="12" class="bronze"/><rect x="{x-75}" y="{sv(1572)}" width="150" height="550" class="door"/><rect x="{x-44}" y="{sv(1512)}" width="78" height="410" rx="8" class="lockb"/>')
+f.append(f'<rect x="40" y="{sv(1044)}" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="{sv(1132)}" r="100" class="ballc"/>')
 f.append(f'<rect x="25" y="{sv(880)+2}" width="1350" height="5" class="led"/>')
-f.append(hdim(0, 1400, -560, "1,400"))
+f.append(hdim(-70, 1470, -600, "1,540 gold top"))
+f.append(hdim(0, 1400, H + 300, "1,400 marble and body", ty=H + 360))
 f.append(t(700, H + 230, "front edge: Lusano Noble · Halo · Lusano Prestige", "td"))
 f.append(hdim(15, 370, H + 90, "355 curved shelves", ty=H + 150))
 f.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
 f.append(hdim(1030, 1385, H + 90, "355 curved shelves", ty=H + 150))
 f.append(vdim(-60, 0, H, "1,000"))
 f.append(vdim(1460, sv(1000), sv(880), "120 top", "right"))
-f.append(vdim(1460, sv(1562), sv(1012), "550 door", "right"))
-f.append(t(1490, sv(1200), "locks 78 × 410", "td", "start"))
+f.append(vdim(1530, sv(1572), sv(1022), "550 door", "right"))
+f.append(t(1530, sv(1005) + 10, "10 gold top", "td", "start"))
+f.append(t(1560, sv(1200), "locks 78 × 410", "td", "start"))
 f.append(vdim(1460, sv(60), H, "60 base", "right"))
 for h in SH:
     f.append(t(1460, sv(h) + 12, f"shelf {h}", "td", "start"))
-front = f'<svg viewBox="-260 -620 2080 1900" class="dwg" role="img" aria-label="Front elevation with dimensions">{"".join(f)}</svg>'
+front = f'<svg viewBox="-260 -660 2160 2060" class="dwg" role="img" aria-label="Front elevation with dimensions">{"".join(f)}</svg>'
 
 # end: z from 0 (back) to 500 (front)
 e = [f'<rect x="-60" y="{H}" width="620" height="10" class="floor"/>',
@@ -60,19 +63,21 @@ e = [f'<rect x="-60" y="{H}" width="620" height="10" class="floor"/>',
      f'<rect x="15" y="{sv(880)}" width="470" height="820" rx="10" class="body"/>',
      f'<rect x="250" y="{sv(880)}" width="235" height="780" class="inner"/>',
      f'<rect x="0" y="{sv(1000)}" width="500" height="120" rx="8" class="stone"/>',
+     f'<rect x="-25" y="{sv(1010)}" width="550" height="10" rx="3" class="goldc"/>',
      f'<rect x="25" y="{sv(880)+2}" width="450" height="5" class="led"/>',
-     f'<rect x="125" y="{sv(1012)}" width="150" height="12" class="bronze"/><rect x="177" y="{sv(1562)}" width="45" height="550" class="door"/><rect x="222" y="{sv(1502)}" width="70" height="410" class="lockb"/><rect x="147" y="{sv(1447)}" width="30" height="320" class="lockb"/>',
+     f'<rect x="125" y="{sv(1022)}" width="150" height="12" class="bronze"/><rect x="177" y="{sv(1572)}" width="45" height="550" class="door"/><rect x="222" y="{sv(1512)}" width="70" height="410" class="lockb"/><rect x="147" y="{sv(1457)}" width="30" height="320" class="lockb"/>',
      f'<rect x="500" y="{sv(983)}" width="6" height="86" class="sw"/>']
 for h in SH:
     e.append(f'<rect x="250" y="{sv(h+12)}" width="235" height="25" rx="6" class="shelf"/>')
 e.append(t(132, sv(500), "closed", "td"))
 e.append(t(368, sv(780), "open", "td"))
-e.append(hdim(0, 500, -560, "500"))
-e.append(vdim(-60, 0, H, "1,000"))
-end = f'<svg viewBox="-260 -620 900 1840" class="dwg narrow" role="img" aria-label="End elevation: 500 deep, closed at the back, open shelves at the front">{"".join(e)}</svg>'
+e.append(hdim(-25, 525, -600, "550 gold top"))
+e.append(hdim(0, 500, H + 90, "500 marble", ty=H + 150))
+e.append(vdim(-80, sv(1010), H, "1,010"))
+end = f'<svg viewBox="-260 -660 900 1900" class="dwg narrow" role="img" aria-label="End elevation: 500 deep, closed at the back, open shelves at the front">{"".join(e)}</svg>'
 
 # plan: top down, front at the bottom
-p = [f'<rect x="0" y="0" width="1400" height="500" rx="150" class="stone"/>']
+p = [f'<rect x="-70" y="-25" width="1540" height="550" rx="165" class="goldc"/>', f'<rect x="0" y="0" width="1400" height="500" rx="150" class="marbleo"/>']
 for dx in (-380, -190, 0, 190, 380, 570):
     x = 700 + dx
     p.append(f'<rect x="{x-85}" y="125" width="170" height="150" class="bronze"/><rect x="{x-75}" y="178" width="150" height="45" class="door"/><rect x="{x-44}" y="223" width="78" height="70" class="lockb"/>')
@@ -80,13 +85,13 @@ p.append('<circle cx="100" cy="220" r="100" class="ballc"/>')
 for x in (325, 450, 575, 700, 825, 950, 1075):
     p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
 p.append(t(800, 75, "6 Lenovo locks, each on its own stand", "td"))
-p.append(t(100, 75, "ball light", "td"))
+p.append(t(100, -60, "ball light", "td"))
 p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · PRESTIGE", "tz"))
-p.append(hdim(0, 1400, -70, "1,400"))
-p.append(vdim(-60, 0, 500, "500"))
-p.append('<path d="M1400 150 A150 150 0 0 0 1250 0" class="radius"/>')
-p.append(t(1430, 80, "R150", "td", "start"))
-plan = f'<svg viewBox="-260 -150 2080 780" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, three locks on door panels on the top, with the switches on the front edge">{"".join(p)}</svg>'
+p.append(hdim(-70, 1470, -110, "1,540 gold top (marble 1,400, dashed)"))
+p.append(vdim(-110, -25, 525, "550"))
+p.append('<path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/>')
+p.append(t(1500, 60, "R165", "td", "start"))
+plan = f'<svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, three locks on door panels on the top, with the switches on the front edge">{"".join(p)}</svg>'
 
 html = open(sys.argv[1]).read()
 html = html.replace("{{FRONT}}", front).replace("{{END}}", end).replace("{{PLAN}}", plan).replace("{{SCENE}}", open("table2.js").read())
