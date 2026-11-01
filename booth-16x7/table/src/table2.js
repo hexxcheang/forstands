@@ -115,7 +115,9 @@ window.MaxsenTable = (function () {
 
   /* ---------- the model ---------- */
   function build(THREE, renderer, mood, imgs = {}) {
-    const colour = mood === 'colour', night = mood === 'night' || colour;
+    const colour = mood === 'colour', night = ['night', 'colour', 'low', 'high'].includes(mood);
+    // the ball light on the top: brightness and colour temperature set from Halo and the switches
+    const BALL = { low: [.16, 2700], high: [1, 4500] }[mood] || [.7, 3000];
     const scene = new THREE.Scene();
     const bgc = night ? 0x1E1915 : 0xE6E0D8;
     scene.background = new THREE.Color(bgc); scene.fog = new THREE.Fog(bgc, 5.5, 13);
@@ -195,17 +197,35 @@ window.MaxsenTable = (function () {
     const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
     doorMat.map.rotation = Math.PI / 2;
     const LOCKS = [
-      { x: -.42, name: 'F3 Ultra · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
-      { x: 0, name: 'F3 Ultra · Gold Aurora Marble', frame: 0x161616, trim: '#C9A46A', lower: 'marble', cam: true },
-      { x: .42, name: 'The Sun · solar', frame: 0xA27E4E, trim: '#D8B27A', lower: 'solar', cam: true }
+      { x: -.56, name: 'F3 Ultra Air View · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
+      { x: -.38, name: 'F3 Ultra Air View · Gold Aurora Marble', frame: 0x161616, trim: '#C9A46A', lower: 'marble', cam: false },
+      { x: -.2, name: 'F3 Ultra camera · Shooting Stars', frame: 0x34373c, trim: '#B8BCC2', lower: 'stars', cam: true },
+      { x: .2, name: 'F3 Ultra camera · Frosted Onyx Marble', frame: 0x1a1a1b, trim: '#B8BCC2', lower: 'onyx', cam: true },
+      { x: .38, name: 'The Sun Air View · solar', frame: 0xA27E4E, trim: '#D8B27A', lower: 'solar', cam: false },
+      { x: .56, name: 'The Sun camera · solar', frame: 0xB8955F, trim: '#E0C08A', lower: 'solar', cam: true }
     ];
     LOCKS.forEach(L0 => lenovoLock(L0));
 
+    {
+      const [lvl, k] = BALL;
+      const kc = new THREE.Color({ 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
+      const bx = 0, bz = -.04, br = .1, by = H + .022 + br;
+      add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, bx, H + .011, bz);
+      const ballMat = new THREE.MeshPhysicalMaterial({ color: night ? 0x6e6862 : 0xe8e3dc, emissive: kc, emissiveIntensity: .05 + Math.pow(lvl, 1.3) * 1.25, roughness: .45, clearcoat: .4, envMapIntensity: night ? .15 : .4 });
+      add(new THREE.SphereGeometry(br, 48, 32), ballMat, bx, by, bz, { cast: false });
+      const [hc, hg] = canvas(128, 128); const hr = hg.createRadialGradient(64, 64, 10, 64, 64, 64);
+      hr.addColorStop(0, 'rgba(255,255,255,.9)'); hr.addColorStop(.4, 'rgba(255,255,255,.35)'); hr.addColorStop(1, 'rgba(255,255,255,0)'); hg.fillStyle = hr; hg.fillRect(0, 0, 128, 128);
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(hc), color: kc, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: (night ? .95 : .45) * Math.pow(lvl, 1.2) }));
+      halo.scale.set(.3 + lvl * .45, .3 + lvl * .45, 1); halo.position.set(bx, by, bz); scene.add(halo);
+      const bl = new THREE.PointLight(kc, (night ? 2.2 : 1.1) * Math.pow(lvl, 1.3), 1.8, 2); bl.position.set(bx, by, bz); scene.add(bl);
+    }
+
     function lenovoLock({ x, frame, trim, lower, cam }) {
-      const z0 = -.06, DT = .036, base = H + .012;
-      add(new THREE.BoxGeometry(.24, .012, .16), bronze, x, H + .006, z0);                // bronze foot
-      add(new THREE.BoxGeometry(.22, .46, DT), doorMat, x, base + .23, z0);                // door panel
-      const LW = .068, LH = .4, LD = .052, lx = x + .045, ly = base + .23, lz = z0 + DT / 2;
+      // a 160 x 550 slice of a 45 mm door; the lock at its true size, about 78 x 410 x 70 mm
+      const z0 = -.05, DT = .045, base = H + .012, PH = .55, PW = .16;
+      add(new THREE.BoxGeometry(PW + .02, .012, .15), bronze, x, H + .006, z0);           // bronze foot
+      add(new THREE.BoxGeometry(PW, PH, DT), doorMat, x, base + PH / 2, z0);                // door panel
+      const LW = .078, LH = .41, LD = .07, lx = x - .005, ly = base + PH / 2 + .01, lz = z0 + DT / 2;
       // body: a rounded metal frame
       const sh = new THREE.Shape(), r = .008, hw = LW / 2, hh = LH / 2;
       sh.moveTo(-hw + r, -hh); sh.lineTo(hw - r, -hh); sh.absarc(hw - r, -hh + r, r, -Math.PI / 2, 0); sh.lineTo(hw, hh - r); sh.absarc(hw - r, hh - r, r, 0, Math.PI / 2);
@@ -215,7 +235,7 @@ window.MaxsenTable = (function () {
       add(bg, frameMat, lx, ly, lz + .002);
       const fz = lz + LD + .0006;                                        // the front face
       // upper glass: camera, lit keypad, fingerprint reader
-      const PX = 4000, gw = LW - .006, gh = .228;
+      const PX = 4000, gw = LW - .006, gh = LH * .555;
       const [gc, g] = canvas(Math.round(gw * PX), Math.round(gh * PX)), [ec, e] = canvas(gc.width, gc.height);
       const W2 = gc.width, H2 = gc.height;
       const gl = g.createLinearGradient(0, 0, W2, H2); gl.addColorStop(0, '#1b1c20'); gl.addColorStop(.5, '#0a0a0c'); gl.addColorStop(1, '#141418');
@@ -247,6 +267,13 @@ window.MaxsenTable = (function () {
       } else if (lower === 'marble') {
         lg.fillStyle = '#0c0c0d'; lg.fillRect(0, 0, LW2, LH2);
         for (let k = 0; k < 9; k++) { lg.strokeStyle = `rgba(${200 + rnd() * 40},${160 + rnd() * 30},${90 + rnd() * 30},${.4 + rnd() * .5})`; lg.lineWidth = .8 + rnd() * 2.4; lg.beginPath(); let xx = rnd() * LW2, yy = 0; lg.moveTo(xx, yy); while (yy < LH2) { xx += (rnd() - .5) * 60; yy += 20 + rnd() * 40; lg.lineTo(xx, yy); } lg.stroke(); }
+      } else if (lower === 'stars') {
+        lg.fillStyle = '#26282c'; lg.fillRect(0, 0, LW2, LH2);
+        for (let k = 0; k < 500; k++) { lg.fillStyle = `rgba(255,255,255,${.15 + rnd() * .6})`; lg.fillRect(rnd() * LW2, rnd() * LH2, 1 + rnd() * 2, 1 + rnd() * 2); }
+        for (let k = 0; k < 14; k++) { lg.strokeStyle = 'rgba(200,205,215,.18)'; lg.lineWidth = 1; lg.beginPath(); const xx = rnd() * LW2, yy = rnd() * LH2; lg.moveTo(xx, yy); lg.lineTo(xx + 40 + rnd() * 60, yy + 80 + rnd() * 120); lg.stroke(); }
+      } else if (lower === 'onyx') {
+        lg.fillStyle = '#2a2b2d'; lg.fillRect(0, 0, LW2, LH2);
+        for (let k = 0; k < 12; k++) { lg.strokeStyle = `rgba(230,232,235,${.15 + rnd() * .4})`; lg.lineWidth = .6 + rnd() * 2; lg.beginPath(); let xx = rnd() * LW2, yy = 0; lg.moveTo(xx, yy); while (yy < LH2) { xx += (rnd() - .5) * 50; yy += 20 + rnd() * 40; lg.lineTo(xx, yy); } lg.stroke(); }
       } else {
         const sg2 = lg.createLinearGradient(0, 0, LW2, LH2); sg2.addColorStop(0, '#0e2a1c'); sg2.addColorStop(.6, '#05140c'); sg2.addColorStop(1, '#0b2116'); lg.fillStyle = sg2; lg.fillRect(0, 0, LW2, LH2);
         lg.strokeStyle = 'rgba(120,200,160,.12)'; lg.lineWidth = 1; for (let yy = 0; yy < LH2; yy += 40) { lg.beginPath(); lg.moveTo(0, yy); lg.lineTo(LW2, yy); lg.stroke(); }
@@ -258,12 +285,12 @@ window.MaxsenTable = (function () {
       // push-pull grip: a recessed slot down the free side of the body
       add(new THREE.BoxGeometry(.003, .14, .024), std({ color: 0x0a0a0a, roughness: .5 }), lx + LW / 2 + .0005, ly - .07, lz + LD / 2 + .004, { cast: false });
       // the inside unit on the back of the door, with a thumb-turn
-      add(new THREE.BoxGeometry(.066, .3, .03), std({ color: 0x1e1e20, roughness: .35, metalness: .4 }), lx, ly, z0 - DT / 2 - .015);
+      add(new THREE.BoxGeometry(.072, .32, .03), std({ color: 0x1e1e20, roughness: .35, metalness: .4 }), lx, ly, z0 - DT / 2 - .015);
       const turn = new THREE.CylinderGeometry(.014, .014, .012, 24); turn.rotateX(Math.PI / 2);
       add(turn, frameMat, lx, ly - .04, z0 - DT / 2 - .036);
       // mortise faceplate and latch on the door's edge
-      add(new THREE.BoxGeometry(.002, .4, .024), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + .111, ly, z0);
-      add(new THREE.BoxGeometry(.012, .02, .014), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + .117, ly + .02, z0);
+      add(new THREE.BoxGeometry(.002, .42, .024), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + PW / 2 + .001, ly, z0);
+      add(new THREE.BoxGeometry(.012, .02, .014), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + PW / 2 + .007, ly + .02, z0);
     }
 
     // body: bottom board, back, dividers and ends, in Midnight Bronze wood
@@ -284,10 +311,22 @@ window.MaxsenTable = (function () {
     SHELVES.forEach(y => {
       add(slab(THREE, endShelf(THREE, -1, lx1, lx0 + .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       add(slab(THREE, endShelf(THREE, 1, rx0, rx1 - .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
-      // LED under the front edge of each shelf, lighting the bay below
-      pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), y - .015, byX);
-      pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), y - .015, byX);
     });
+    // the bottom two bays at each end close as cupboards with push-to-open doors; the top bay stays open
+    const yc0 = Y0 + .04, yc1 = SHELVES[1] - .0125, hC = yc1 - yc0;
+    const seam = std({ color: 0x8C7458, roughness: .6 });
+    [1, -1].forEach(sd => {
+      const fw = xs - DIV - .015;
+      add(new THREE.BoxGeometry(fw, hC, T), bodyMat, sd * (DIV + .015 + fw / 2), yc0 + hC / 2, BD / 2 - T / 2);
+      add(slab(THREE, arcBand(THREE, sd * xs, zs, BR, T, sd > 0 ? 0 : Math.PI / 2, sd > 0 ? Math.PI / 2 : Math.PI), hC), bodyMatV, 0, yc0, 0);
+      add(new THREE.BoxGeometry(T, hC, zs + .002), bodyMat, sd * (BL / 2 - T / 2), yc0 + hC / 2, zs / 2);
+      // door seams: the doors meet at the middle of the front and where the curve begins
+      [[sd * (DIV + .015 + fw / 2), BD / 2 + .0005, .003, .0012], [sd * xs, BD / 2 + .0005, .003, .0012]].forEach(([sx, sz, w, d]) => add(new THREE.BoxGeometry(w, hC - .01, d), seam, sx, yc0 + hC / 2, sz, { cast: false }));
+      add(new THREE.BoxGeometry(.0012, hC - .01, .003), seam, sd * (BL / 2 + .0005), yc0 + hC / 2, zs, { cast: false });
+    });
+    // LED under the top, lighting the open bay and its catalogues
+    pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), Y1 - .01, byX);
+    pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), Y1 - .01, byX);
     // the closed centre: a light wood panel with LUSANO in bronze letters, lit from behind
     add(new THREE.BoxGeometry(2 * DIV - .03, wallH, T), bodyMat, 0, Y0 + .04 + wallH / 2, BD / 2 - T / 2);
     {
@@ -316,22 +355,38 @@ window.MaxsenTable = (function () {
     const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
-    [[(lx0 + lx1) / 2], [(rx0 + rx1) / 2 - .03], [0]].forEach(([x]) => [Y0 + .04, ...SHELVES].forEach((y, i, arr) => {
-      const top = i < arr.length - 1 ? arr[i + 1] : Y1;
-      if (x === 0) return;
-      const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .55 : .16, .55, 2); p.position.set(x, top - .04, .12); scene.add(p);
-    }));
+    [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => {
+      const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .6 : .2, .55, 2); p.position.set(x, Y1 - .04, .12); scene.add(p);
+    });
 
-    // a few things on the shelves
-    const ceramic = std({ color: 0xEDE7DF, roughness: .45 });
+    // catalogues and brochures in the open bays
     const paper = std({ color: 0xF6F1EA, roughness: .9 });
-    const lc = (lx0 + lx1) / 2, rc = (rx0 + rx1) / 2 - .04;
-    add(new THREE.CylinderGeometry(.04, .05, .17, 28), ceramic, lc + .03, SHELVES[1] + .1, -.05);
-    for (let i = 0; i < 4; i++) add(new THREE.BoxGeometry(.21, .006, .2), i % 2 ? paper : bronze, lc, SHELVES[0] + .016 + i * .007, .02);
-    add(new THREE.CylinderGeometry(.05, .045, .1, 28), std({ color: 0x8A7563, roughness: .8 }), lc, Y0 + .04 + .05, 0);
-    [0x1d1b1a, 0xcbb79c, 0x2b2f3a].forEach((c, i) => { const p = add(new THREE.BoxGeometry(.086, .086, .01), std({ color: c, roughness: .3, metalness: .2 }), rc - .1 + i * .095, SHELVES[1] + .058, .02); p.rotation.x = -.18; });
-    for (let i = 0; i < 3; i++) add(new THREE.BoxGeometry(.16, .022, .2), std({ color: [0xCFA594, 0xEDE7DF, 0x29221F][i], roughness: .8 }), rc, SHELVES[0] + .025 + i * .023, -.02);
-    add(new THREE.SphereGeometry(.05, 24, 16), ceramic, rc + .02, Y0 + .04 + .05, 0);
+    const cover = (bg, title, sub, fg, serif) => {
+      const [c, g] = canvas(420, 594); g.fillStyle = bg; g.fillRect(0, 0, 420, 594);
+      g.fillStyle = 'rgba(255,255,255,.08)'; g.fillRect(40, 180, 340, 250);
+      g.fillStyle = fg; g.textAlign = 'center'; g.font = serif ? '500 64px "EB Garamond", Georgia, serif' : '700 40px Lato, Arial, sans-serif';
+      if (g.letterSpacing !== undefined) g.letterSpacing = serif ? '10px' : '14px'; g.fillText(title, 214, 110);
+      if (g.letterSpacing !== undefined) g.letterSpacing = '3px'; g.font = '400 22px Lato, Arial, sans-serif'; g.fillText(sub, 212, 520);
+      const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return std({ map: t, roughness: .5 });
+    };
+    const catMat = cover('#DCCBBB', 'MAXSEN', 'THE COLLECTION 2026', '#29221F', false);
+    const lusMat = cover('#1d1b1a', 'LUSANO', 'SWAROVSKI CRYSTALS', '#E8D3B4', true);
+    const lockMat = cover('#2B231F', 'LENOVO', 'SMART LOCKS · MYDIGITALLOCK', '#DDB8A6', false);
+    const halMat = cover('#F4EEE6', 'HALO', 'THE ROTARY DIMMER', '#7E5643', true);
+    const shelfTop = SHELVES[1] + .0125;
+    [[-1, catMat, lusMat], [1, catMat, lockMat]].forEach(([sd, a, b]) => {
+      const cx = sd * ((rx0 + rx1) / 2 - .02);
+      for (let i = 0; i < 3; i++) {   // a stack of A4 catalogues
+        const m = add(new THREE.BoxGeometry(.21, .008, .297), [paper, paper, i === 2 ? a : paper, paper, paper, paper], cx - sd * .02, shelfTop + .004 + i * .0085, .02);
+        m.rotation.y = sd * .06 * i;
+      }
+      // a clear stand of DL brochures, leaning back
+      add(new THREE.BoxGeometry(.11, .11, .05), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: .9, transparent: true, opacity: .25, roughness: .05 }), cx + sd * .06, shelfTop + .055, -.15, { cast: false });
+      [b, halMat].forEach((mat, i) => {
+        const br2 = add(new THREE.BoxGeometry(.099, .21, .003), [paper, paper, paper, paper, mat, paper], cx + sd * .06 + (i - .5) * .004, shelfTop + .105, -.16 + i * .02);
+        br2.rotation.x = -.12;
+      });
+    });
     return scene;
   }
 
@@ -339,9 +394,11 @@ window.MaxsenTable = (function () {
     hero:   { pos: [-1.6, 1.95, 2.35], at: [.02, .68, 0], fov: 34 },
     low:    { pos: [-1.45, 1.2, 2.75], at: [.05, .74, 0], fov: 36 },
     front:  { pos: [0, 1.15, 3.1], at: [0, .7, 0], fov: 33 },
-    end:    { pos: [2.2, 1.45, 1.85], at: [.3, .68, .05], fov: 34 },
+    end:    { pos: [2.35, 1.6, 2.0], at: [.28, .8, .05], fov: 36 },
     detail: { pos: [.25, 1.08, 1.0], at: [0, .95, .3], fov: 36 },
-    locks:  { pos: [.05, 1.36, 1.12], at: [.03, 1.2, -.04], fov: 38 },
+    locks:  { pos: [.05, 1.36, 1.25], at: [.03, 1.2, -.04], fov: 46 },
+    ball:   { pos: [.3, 1.38, 1.2], at: [0, 1.12, -.04], fov: 44 },
+    shelf:  { pos: [1.15, 1.05, 1.05], at: [.52, .72, .05], fov: 34 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
 
