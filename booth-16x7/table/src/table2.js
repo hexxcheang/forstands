@@ -191,20 +191,80 @@ window.MaxsenTable = (function () {
       }
     });
 
-    // Lenovo smart locks on the top, each on a small door panel so it reads as a real door
+    // Lenovo smart locks on the top, modelled after the product photos, each on a small door panel
     const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
     doorMat.map.rotation = Math.PI / 2;
-    const LOCKS = [[-.42, 0x5a2a1b, 0x9aa0a6], [0, 0x2a2622, 0xb48a4a], [.42, 0x3a3d42, 0x9aa0a6]];
-    LOCKS.forEach(([x, body, trim]) => {
-      const z0 = -.06;
-      add(new THREE.BoxGeometry(.24, .012, .16), bronze, x, H + .006, z0);
-      add(new THREE.BoxGeometry(.22, .46, .036), doorMat, x, H + .012 + .23, z0);
-      const lz = z0 + .018 + .016;
-      add(new THREE.BoxGeometry(.074, .37, .032), std({ color: body, roughness: .3, metalness: .4 }), x + .04, H + .012 + .23, lz);
-      add(new THREE.BoxGeometry(.052, .07, .004), std({ color: 0x0c0c0e, roughness: .15, metalness: .2 }), x + .04, H + .012 + .36, lz + .017);
-      add(new THREE.BoxGeometry(.052, .006, .004), std({ color: trim, roughness: .25, metalness: .8 }), x + .04, H + .012 + .17, lz + .017);
-      add(new THREE.BoxGeometry(.018, .14, .022), std({ color: trim, roughness: .25, metalness: .8 }), x + .04, H + .012 + .26, lz + .027);
-    });
+    const LOCKS = [
+      { x: -.42, name: 'F3 Ultra · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
+      { x: 0, name: 'F3 Ultra · Gold Aurora Marble', frame: 0x161616, trim: '#C9A46A', lower: 'marble', cam: true },
+      { x: .42, name: 'The Sun · solar', frame: 0xA27E4E, trim: '#D8B27A', lower: 'solar', cam: true }
+    ];
+    LOCKS.forEach(L0 => lenovoLock(L0));
+
+    function lenovoLock({ x, frame, trim, lower, cam }) {
+      const z0 = -.06, DT = .036, base = H + .012;
+      add(new THREE.BoxGeometry(.24, .012, .16), bronze, x, H + .006, z0);                // bronze foot
+      add(new THREE.BoxGeometry(.22, .46, DT), doorMat, x, base + .23, z0);                // door panel
+      const LW = .068, LH = .4, LD = .052, lx = x + .045, ly = base + .23, lz = z0 + DT / 2;
+      // body: a rounded metal frame
+      const sh = new THREE.Shape(), r = .008, hw = LW / 2, hh = LH / 2;
+      sh.moveTo(-hw + r, -hh); sh.lineTo(hw - r, -hh); sh.absarc(hw - r, -hh + r, r, -Math.PI / 2, 0); sh.lineTo(hw, hh - r); sh.absarc(hw - r, hh - r, r, 0, Math.PI / 2);
+      sh.lineTo(-hw + r, hh); sh.absarc(-hw + r, hh - r, r, Math.PI / 2, Math.PI); sh.lineTo(-hw, -hh + r); sh.absarc(-hw + r, -hh + r, r, Math.PI, Math.PI * 1.5);
+      const bg = new THREE.ExtrudeGeometry(sh, { depth: LD - .004, bevelEnabled: true, bevelThickness: .002, bevelSize: .0015, bevelSegments: 3, curveSegments: 10 });
+      const frameMat = std({ color: frame, roughness: .28, metalness: .85, envMapIntensity: night ? .3 : .9 });
+      add(bg, frameMat, lx, ly, lz + .002);
+      const fz = lz + LD + .0006;                                        // the front face
+      // upper glass: camera, lit keypad, fingerprint reader
+      const PX = 4000, gw = LW - .006, gh = .228;
+      const [gc, g] = canvas(Math.round(gw * PX), Math.round(gh * PX)), [ec, e] = canvas(gc.width, gc.height);
+      const W2 = gc.width, H2 = gc.height;
+      const gl = g.createLinearGradient(0, 0, W2, H2); gl.addColorStop(0, '#1b1c20'); gl.addColorStop(.5, '#0a0a0c'); gl.addColorStop(1, '#141418');
+      g.fillStyle = gl; g.fillRect(0, 0, W2, H2); e.fillStyle = '#000'; e.fillRect(0, 0, W2, H2);
+      const ring = (ctx, cx, cy, rr, col, w) => { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 7); ctx.stroke(); };
+      if (cam) { g.fillStyle = '#050506'; g.beginPath(); g.arc(W2 / 2, 70, 26, 0, 7); g.fill(); ring(g, W2 / 2, 70, 26, '#3a3a40', 4); g.fillStyle = '#20304a'; g.beginPath(); g.arc(W2 / 2, 70, 11, 0, 7); g.fill(); }
+      else { g.fillStyle = '#2a2a30'; g.beginPath(); g.arc(W2 / 2 + 40, 60, 7, 0, 7); g.fill(); }
+      const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+      e.fillStyle = '#ffffff'; e.textAlign = 'center'; e.textBaseline = 'middle'; e.font = '600 34px Lato, Arial, sans-serif';
+      keys.forEach((k, i) => e.fillText(k, W2 / 2 + (i % 3 - 1) * 62, 210 + Math.floor(i / 3) * 74));
+      ring(e, W2 / 2, 210 + 4 * 74, 14, '#ffffff', 4);                                   // lock key
+      ring(g, W2 / 2, H2 - 95, 30, '#2c2c32', 5); g.fillStyle = '#101013'; g.beginPath(); g.arc(W2 / 2, H2 - 95, 26, 0, 7); g.fill();
+      for (let k = 0; k < 5; k++) ring(g, W2 / 2, H2 - 95, 6 + k * 4, 'rgba(90,90,100,.6)', 1.2);   // fingerprint ridges
+      const gt = new THREE.CanvasTexture(gc); gt.encoding = THREE.sRGBEncoding; const et = new THREE.CanvasTexture(ec);
+      const glass = new THREE.MeshPhysicalMaterial({ map: gt, emissiveMap: et, emissive: new THREE.Color(0xcfe4ff), emissiveIntensity: night ? 1.1 : .75, roughness: .06, metalness: .1, clearcoat: 1, clearcoatRoughness: .05, envMapIntensity: night ? .4 : 1.1 });
+      add(new THREE.PlaneGeometry(gw, gh), glass, lx, ly + LH / 2 - .006 - gh / 2, fz, { cast: false });
+      // trim band with the Lenovo name
+      const [tc, tg] = canvas(256, 48); tg.fillStyle = trim; tg.fillRect(0, 0, 256, 48);
+      tg.fillStyle = '#0d0d0f'; tg.fillRect(0, 10, 256, 28); tg.fillStyle = trim; tg.font = '600 20px Lato, Arial, sans-serif'; tg.textAlign = 'center'; tg.textBaseline = 'middle'; tg.fillText('Lenovo', 128, 25);
+      const tt = new THREE.CanvasTexture(tc); tt.encoding = THREE.sRGBEncoding;
+      const bandY = ly + LH / 2 - .006 - gh - .007;
+      add(new THREE.PlaneGeometry(gw, .012), std({ map: tt, roughness: .3, metalness: .6 }), lx, bandY, fz + .0002, { cast: false });
+      // lower finish panel: Rosewood, Gold Aurora Marble or solar glass
+      const lh = LH - .012 - gh - .014 - .006;
+      const [lc, lg] = canvas(Math.round(gw * PX), Math.round(lh * PX)), LW2 = lc.width, LH2 = lc.height;
+      if (lower === 'rosewood') {
+        const rg = lg.createLinearGradient(0, 0, LW2, LH2); rg.addColorStop(0, '#4a1a10'); rg.addColorStop(.5, '#6b2a18'); rg.addColorStop(1, '#3a120a'); lg.fillStyle = rg; lg.fillRect(0, 0, LW2, LH2);
+        for (let k = 0; k < 40; k++) { lg.strokeStyle = `rgba(${rnd() > .5 ? '20,6,3' : '150,70,40'},${.2 + rnd() * .35})`; lg.lineWidth = 1 + rnd() * 4; lg.beginPath(); let yy = rnd() * LH2; lg.moveTo(0, yy); for (let xx = 0; xx <= LW2; xx += 20) { yy += Math.sin(xx / 30 + k) * 6 + (rnd() - .5) * 8; lg.lineTo(xx, yy); } lg.stroke(); }
+      } else if (lower === 'marble') {
+        lg.fillStyle = '#0c0c0d'; lg.fillRect(0, 0, LW2, LH2);
+        for (let k = 0; k < 9; k++) { lg.strokeStyle = `rgba(${200 + rnd() * 40},${160 + rnd() * 30},${90 + rnd() * 30},${.4 + rnd() * .5})`; lg.lineWidth = .8 + rnd() * 2.4; lg.beginPath(); let xx = rnd() * LW2, yy = 0; lg.moveTo(xx, yy); while (yy < LH2) { xx += (rnd() - .5) * 60; yy += 20 + rnd() * 40; lg.lineTo(xx, yy); } lg.stroke(); }
+      } else {
+        const sg2 = lg.createLinearGradient(0, 0, LW2, LH2); sg2.addColorStop(0, '#0e2a1c'); sg2.addColorStop(.6, '#05140c'); sg2.addColorStop(1, '#0b2116'); lg.fillStyle = sg2; lg.fillRect(0, 0, LW2, LH2);
+        lg.strokeStyle = 'rgba(120,200,160,.12)'; lg.lineWidth = 1; for (let yy = 0; yy < LH2; yy += 40) { lg.beginPath(); lg.moveTo(0, yy); lg.lineTo(LW2, yy); lg.stroke(); }
+        for (let xx = 0; xx < LW2; xx += 62) { lg.beginPath(); lg.moveTo(xx, 0); lg.lineTo(xx, LH2); lg.stroke(); }
+      }
+      const shine = lg.createLinearGradient(0, 0, LW2, LH2 * .6); shine.addColorStop(0, 'rgba(255,255,255,.12)'); shine.addColorStop(.4, 'rgba(255,255,255,0)'); lg.fillStyle = shine; lg.fillRect(0, 0, LW2, LH2);
+      const lt = new THREE.CanvasTexture(lc); lt.encoding = THREE.sRGBEncoding;
+      add(new THREE.PlaneGeometry(gw, lh), new THREE.MeshPhysicalMaterial({ map: lt, roughness: .12, clearcoat: 1, clearcoatRoughness: .08, envMapIntensity: night ? .4 : 1 }), lx, bandY - .007 - lh / 2, fz, { cast: false });
+      // push-pull grip: a recessed slot down the free side of the body
+      add(new THREE.BoxGeometry(.003, .14, .024), std({ color: 0x0a0a0a, roughness: .5 }), lx + LW / 2 + .0005, ly - .07, lz + LD / 2 + .004, { cast: false });
+      // the inside unit on the back of the door, with a thumb-turn
+      add(new THREE.BoxGeometry(.066, .3, .03), std({ color: 0x1e1e20, roughness: .35, metalness: .4 }), lx, ly, z0 - DT / 2 - .015);
+      const turn = new THREE.CylinderGeometry(.014, .014, .012, 24); turn.rotateX(Math.PI / 2);
+      add(turn, frameMat, lx, ly - .04, z0 - DT / 2 - .036);
+      // mortise faceplate and latch on the door's edge
+      add(new THREE.BoxGeometry(.002, .4, .024), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + .111, ly, z0);
+      add(new THREE.BoxGeometry(.012, .02, .014), std({ color: 0xC8C8CC, roughness: .25, metalness: .95 }), x + .117, ly + .02, z0);
+    }
 
     // body: bottom board, back, dividers and ends, in Midnight Bronze wood
     add(slab(THREE, rr(THREE, BL, BD, BR), .04, .004), bodyMat, 0, Y0, 0);
@@ -281,6 +341,7 @@ window.MaxsenTable = (function () {
     front:  { pos: [0, 1.15, 3.1], at: [0, .7, 0], fov: 33 },
     end:    { pos: [2.2, 1.45, 1.85], at: [.3, .68, .05], fov: 34 },
     detail: { pos: [.25, 1.08, 1.0], at: [0, .95, .3], fov: 36 },
+    locks:  { pos: [.05, 1.36, 1.12], at: [.03, 1.2, -.04], fov: 38 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
 
