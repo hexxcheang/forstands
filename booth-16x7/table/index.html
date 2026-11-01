@@ -131,7 +131,15 @@ text{font-family:var(--sans)}
 .items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
 .items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
 .fin-rows{display:grid;gap:12px}
-.fin-row{display:grid;grid-template-columns:minmax(150px,200px) minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+.fin-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+.fin-g{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.slot{display:grid;grid-template-columns:28px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--rule);background:var(--bg);color:var(--fg);border-radius:6px;padding:8px 10px;cursor:pointer;min-height:48px}
+.slot[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.slot .dot{grid-row:1/3;width:28px;height:28px;border-radius:50%;border:1px solid var(--rule)}
+.slot b{font-size:13px;font-weight:700}
+.slot span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fin-for{font-size:22px}
 @media (max-width:640px){.fin-row{grid-template-columns:minmax(0,1fr)}}
 .fin-l{display:grid;gap:2px}
 .fin-l b{font:400 19px/1.2 var(--serif)}
@@ -245,7 +253,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-m="night" aria-pressed="false">Warm white</button>
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
         <button type="button" data-f="round" aria-pressed="true">Rounded</button>
-        <button type="button" data-f="rect" aria-pressed="false">Rectangular</button>
+        <button type="button" data-f="round28" aria-pressed="false">Rounded · 2/8</button>
+        <button type="button" data-f="rect28" aria-pressed="false">Rectangular · 2/8</button>
+        <button type="button" data-f="rect" aria-pressed="false">Rectangular · 3/8</button>
         <button type="button" data-s="open" aria-pressed="true">With shelves</button>
         <button type="button" data-s="closed" aria-pressed="false">Without shelves</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
@@ -293,7 +303,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <div class="arrange" id="finishes" hidden>
         <div class="arr-head">
           <button type="button" class="pill" id="finToggle" aria-pressed="false">Change the finishes</button>
-          <p id="finIntro">White, gloss white, blush, gold, rose gold, champagne, marble, woods and gradient fades from the Maxsen palette, surface by surface.</p>
+          <p id="finIntro">Over 50 finishes, surface by surface: marbles and stones, colours, woods, metals and gradient fades.</p>
           <span class="status" id="finState" role="status" aria-live="polite"></span>
         </div>
         <div class="arr-body" id="finBody" hidden>
@@ -303,9 +313,14 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
             <button type="button" class="pill" data-p="porcelain">Porcelain and rose gold</button>
             <button type="button" class="pill" data-p="rosefade">Rose gold fade</button>
             <button type="button" class="pill" data-p="midnight">Midnight</button>
+            <button type="button" class="pill" data-p="sage">Sage and brass</button>
+            <button type="button" class="pill" data-p="navy">Navy and gold</button>
+            <button type="button" class="pill" data-p="terracotta">Terracotta</button>
           </div>
+          <div class="slots" id="finSlots" role="group" aria-label="Surface to finish"></div>
+          <h3 class="fin-for" id="finFor"></h3>
           <div class="fin-rows" id="finRows"></div>
-          <p class="hint">Gradients run from the bottom of each surface to the top: on the gold layer, from left to right. One set of finishes applies to every form.</p>
+          <p class="hint">Pick a surface, then a finish. Gradients run from the bottom of each surface to the top (on the gold layer, from left to right). One set of finishes applies to every form.</p>
         </div>
       </div>
     </div>
@@ -331,7 +346,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <span class="eyebrow">Option</span>
       <h2 id="rect">Rectangular, with the marble to 3/8</h2>
     </div>
-    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular</b>; it also comes without shelves.</p>
+    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular · 3/8</b>; it also comes without shelves.</p>
     <figure class="shot"><img src="renders/rect-day-hero.jpg" alt="The rectangular counter: a deep white marble block with square corners making up the top 3/8, the switches and Halo dimmer on its face, six staggered locks and the ball light on top, and a light wood body below with LUSANO and trailing plants in the open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular.</b> A 319 mm marble block on a light wood body, no gold.</figcaption></figure>
     <div class="grid2">
       <figure class="shot"><img src="renders/rect-day-top.jpg" alt="Looking straight down on the rectangular counter: a plain white marble rectangle with square corners, the six locks staggered in two rows and the ball light at the front left" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> A clean rectangle of marble.</figcaption></figure>
@@ -343,8 +358,31 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
     <div class="drw">
       <figure class="sheet"><div class="sheet-h"><b>Rectangular · front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -460 2160 1880" class="dwg" role="img" aria-label="Rectangular form, front elevation: 1,400 long, 850 high, the marble the top 319 mm with the switches on its face, a 531 mm wood body with one shelf in each open bay"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="6" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="469" width="1370" height="471" class="body"/><rect x="35" y="489" width="1330" height="411" class="inner"/><rect x="355" y="469" width="30" height="471" class="body"/><rect x="1015" y="469" width="30" height="471" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="469" width="630" height="471" class="body"/><text x="420" y="654" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="672" width="320" height="25" class="shelf"/><rect x="1045" y="672" width="320" height="25" class="shelf"/><rect x="0" y="150" width="1400" height="319" rx="3" class="stone"/><rect x="25" y="471" width="1350" height="5" class="led"/><rect x="282" y="266.5" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="298.5" width="86" height="22" fill="#B88A4E"/><rect x="282" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="266.5" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="298.5" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="266.5" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="298.5" width="86" height="22" fill="#555555"/><rect x="532" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="266.5" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="309.5" r="30" class="halok"/><rect x="782" y="266.5" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="266.5" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="266.5" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="128" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="28" r="100" class="ballc"/><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="150" x2="1460" y2="469"/><line x1="1435" y1="150" x2="1485" y2="150"/><line x1="1435" y1="469" x2="1485" y2="469"/></g><text x="1490" y="323.5" class="td" text-anchor="start">319 marble, 3/8</text><g class="dim"><line x1="1460" y1="469" x2="1460" y2="1000"/><line x1="1435" y1="469" x2="1485" y2="469"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="748.5" class="td" text-anchor="start">531 body</text><text x="1205" y="759" class="td" text-anchor="middle">shelf 316</text></svg></div></figure>
-      <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form from above: a 1,400 by 500 marble rectangle with square corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="279" width="170" height="150" class="bronze"/><rect x="400" y="332" width="150" height="45" class="door"/><rect x="431" y="377" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, square corners</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form from above: a 1,400 by 500 marble top with square corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="278" width="170" height="150" class="bronze"/><rect x="400" y="331" width="150" height="45" class="door"/><rect x="431" y="376" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, square corners</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
     </div>
+  </section>
+
+  <section aria-labelledby="q28">
+    <div class="head">
+      <span class="eyebrow">Option</span>
+      <h2 id="q28">Marble to 2/8: rounded and rectangular</h2>
+    </div>
+    <p class="lede">A lighter marble block: the top 2/8 of the 850 height, about 212 mm, again with no gold layer. The switches and the Halo dimmer sit on its front face at about 745 mm. Below it, a 638 mm wood body with one shelf in each open bay, its top at about 369 mm. The trailing plants are on the shelf and the catalogues on the bay floor. It comes in two forms: rounded, with the same 150 mm corners as the original, or rectangular, with square corners. In the 3D model, choose <b>Rounded · 2/8</b> or <b>Rectangular · 2/8</b>. Both also come without shelves.</p>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/round28-day-hero.jpg" alt="The rounded counter with the marble as the top 2/8: a 212 mm white marble top with rounded corners and the switches on its face, over a light wood body with open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded · 2/8.</b> A 212 mm marble top with 150 mm corners.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-hero.jpg" alt="The rectangular counter with the marble as the top 2/8: a 212 mm square-cornered marble block over a light wood body with open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular · 2/8.</b> The same proportions, square in plan.</figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-top.jpg" alt="Looking down on the rounded 2/8 counter: a white marble top with rounded corners, six staggered locks and the ball light" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, from above.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-top.jpg" alt="Looking down on the rectangular 2/8 counter: a white marble rectangle with square corners, six staggered locks and the ball light" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, from above.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-front.jpg" alt="Front view of the rounded 2/8 counter" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, front.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-front.jpg" alt="Front view of the rectangular 2/8 counter" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, front.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-end.jpg" alt="Three-quarter view of the right end of the rounded 2/8 counter, showing the curved corner and its open bay" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, right end.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-end.jpg" alt="Three-quarter view of the right end of the rectangular 2/8 counter, showing the square corner and its open bay" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, right end.</b></figcaption></figure>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>2/8 · front (both forms)</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -460 2160 1880" class="dwg" role="img" aria-label="Rectangular form, marble to 2/8, front elevation: 1,400 long, 850 high, the marble the top 212 mm with the switches on its face, a 638 mm wood body with one shelf in each open bay"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="6" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="362" width="1370" height="578" class="body"/><rect x="35" y="382" width="1330" height="518" class="inner"/><rect x="355" y="362" width="30" height="578" class="body"/><rect x="1015" y="362" width="30" height="578" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="362" width="630" height="578" class="body"/><text x="420" y="593" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="619" width="320" height="25" class="shelf"/><rect x="1045" y="619" width="320" height="25" class="shelf"/><rect x="0" y="150" width="1400" height="212" rx="3" class="stone"/><rect x="25" y="364" width="1350" height="5" class="led"/><rect x="282" y="213.0" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="245.0" width="86" height="22" fill="#B88A4E"/><rect x="282" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="213.0" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="245.0" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="213.0" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="245.0" width="86" height="22" fill="#555555"/><rect x="532" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="213.0" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="256.0" r="30" class="halok"/><rect x="782" y="213.0" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="245.0" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="213.0" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="245.0" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="213.0" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="245.0" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="251.0" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="128" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="28" r="100" class="ballc"/><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="150" x2="1460" y2="362"/><line x1="1435" y1="150" x2="1485" y2="150"/><line x1="1435" y1="362" x2="1485" y2="362"/></g><text x="1490" y="270.0" class="td" text-anchor="start">212 marble, 2/8</text><g class="dim"><line x1="1460" y1="362" x2="1460" y2="1000"/><line x1="1435" y1="362" x2="1485" y2="362"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="695.0" class="td" text-anchor="start">638 body</text><text x="1205" y="706" class="td" text-anchor="middle">shelf 369</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Rounded · 2/8 · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rounded form, marble to 2/8 from above: a 1,400 by 500 marble top with rounded corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="150" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="278" width="170" height="150" class="bronze"/><rect x="400" y="331" width="150" height="45" class="door"/><rect x="431" y="376" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1181" y="237" width="170" height="150" class="bronze"/><rect x="1191" y="290" width="150" height="45" class="door"/><rect x="1222" y="335" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, 150 mm corner radius</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
+    </div>
+    <figure class="sheet"><div class="sheet-h"><b>Rectangular · 2/8 · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form, marble to 2/8 from above: a 1,400 by 500 marble top with square corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="278" width="170" height="150" class="bronze"/><rect x="400" y="331" width="150" height="45" class="door"/><rect x="431" y="376" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, square corners</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
   </section>
 
   <section aria-labelledby="fin">
@@ -352,13 +390,24 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <span class="eyebrow">Finishes</span>
       <h2 id="fin">The same counter in other Maxsen finishes</h2>
     </div>
-    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from white, gloss white, blush, white or black marble, light or pale oak, walnut, brushed gold, rose gold, champagne and midnight bronze, or a gradient fade. Try them in the 3D model with <b>Change the finishes</b>. Four looks to start from:</p>
+    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from over 50, in five groups:</p>
+    <ul class="plain">
+      <li><b>Stone:</b> white marble, Calacatta gold, Rosa marble, Verde marble, black marble, travertine and terrazzo.</li>
+      <li><b>Colour:</b> white, gloss white, ivory, sand, greige, blush, Maxsen rose, dusty pink, terracotta, lilac, powder blue, sage, forest green, navy, mocha, charcoal and matte black.</li>
+      <li><b>Wood:</b> light oak, pale oak, teak, smoked oak, walnut and ebony.</li>
+      <li><b>Metal:</b> brushed gold, rose gold, champagne, antique brass, copper, brushed silver, gunmetal, black chrome and midnight bronze.</li>
+      <li><b>Gradient fade:</b> white to rose gold, gold or silver; ivory to champagne; blush to gold or rose gold; rose gold to gold; lilac to blush; terracotta to blush; sage or powder blue to white; navy, black or bronze to gold and rose gold.</li>
+    </ul>
+    <p class="lede">Try them in the 3D model with <b>Change the finishes</b>. Seven looks to start from:</p>
     <div class="grid2">
       <figure class="shot"><img src="renders/finish-porcelain.jpg" alt="The rounded counter in gloss white with a rose gold top layer and base, blush shelves and white lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Porcelain and rose gold.</b> Gloss white body, rose gold layer and base, blush bays.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-rosefade.jpg" alt="The rectangular counter with its body fading from white at the floor to rose gold under the marble block" width="1600" height="1000" loading="lazy"><figcaption><b>Rose gold fade.</b> The rectangular form, its body fading from white up to rose gold.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-midnight.jpg" alt="The rounded counter in midnight bronze with a black marble top, gold layer and walnut bays and lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Midnight.</b> Black marble, bronze body, walnut bays and stands, gold layer.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-dusk.jpg" alt="The rounded counter with its body fading from bronze at the floor to rose gold at the top, a champagne top layer and blush bays" width="1600" height="1000" loading="lazy"><figcaption><b>Dusk.</b> Bronze fading up to rose gold, champagne layer, blush bays.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-sage.jpg" alt="The rounded 2/8 counter with a Calacatta gold marble top, a sage body, ivory bays and stands, and an antique brass base" width="1600" height="1000" loading="lazy"><figcaption><b>Sage and brass.</b> Rounded · 2/8: Calacatta gold, sage, ivory, antique brass.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-navy.jpg" alt="The rectangular 2/8 counter with a white marble top, a navy body and lock stands, walnut bays and a gold base" width="1600" height="1000" loading="lazy"><figcaption><b>Navy and gold.</b> Rectangular · 2/8: navy, walnut and gold under white marble.</figcaption></figure>
     </div>
+    <figure class="shot"><img src="renders/finish-terracotta.jpg" alt="The rounded counter with a terrazzo top, copper layer, terracotta body, travertine bays and sand lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Terracotta.</b> Terrazzo, copper, terracotta and travertine.</figcaption></figure>
   </section>
 
   <section aria-labelledby="dwg">
@@ -438,13 +487,13 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
    1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
-// Two forms from the one model: the rounded counter with its gold top (the default), and
-// { rect: true }: square in plan, no gold, the marble the top 3/8 of the 850 height.
+// Forms from the one model: the rounded counter with its gold top (the default), or a marble block
+// taking a share of the 850 height with no gold: { frac: 3/8 or 2/8, rect: square in plan, or rounded }.
 function MaxsenModel(cfg = {}) {
-  const RECT = !!cfg.rect, GOLD = !RECT;
+  const RECT = !!cfg.rect, FRAC = cfg.frac || (RECT ? 3 / 8 : 0), GOLD = !FRAC;
   const L = 1.4, D = 0.5;
-  const H = RECT ? 0.85 : 0.84;            // H: top of the marble; on the rounded form the 10 mm gold top brings it to 850
-  const TOP = RECT ? H * 3 / 8 : 0.12;     // the marble: 120 mm, or 3/8 of the height (about 319 mm) on the rectangular form
+  const H = GOLD ? 0.84 : 0.85;            // H: top of the marble; on the gold form the 10 mm gold top brings it to 850
+  const TOP = GOLD ? 0.12 : H * FRAC;      // the marble: 120 mm under the gold, or 3/8 (319 mm) or 2/8 (212 mm) of the height
   const R = RECT ? 0.006 : 0.15;           // corner radius of the marble in plan; switches sit on its front face
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = RECT ? 0.022 : R - OV;
@@ -453,27 +502,74 @@ function MaxsenModel(cfg = {}) {
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
   // shelf heights in both end bays, evenly spaced in the body below the marble: two shelves, or one on the shorter rectangular body
-  const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
+  const SHELVES = GOLD ? [0.307, 0.513] : [(Y0 + .04 + Y1) / 2 - .0125];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- finishes: the Maxsen palette, for every surface ---------- */
+  // colours are the look you see (sRGB); the metals are tuned to read right under the show lights
+  const mrb = (bg, v1, v2) => `linear-gradient(135deg,${bg} 0 38%,${v1} 40%,${bg} 43% 68%,${v2} 70%,${bg} 72%)`;
+  const grain = (a, b) => `repeating-linear-gradient(0deg,${a} 0 3px,${b} 3px 4px)`;
+  const shine = (a, b, c) => `linear-gradient(135deg,${a},${b},${c})`;
+  const fade = (a, b) => `linear-gradient(0deg,${a},${b})`;
   const FINISHES = {
-    marble:    { name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: 'linear-gradient(135deg,#f4f1ec 0 38%,#cfcac3 40%,#f4f1ec 43% 68%,#c9ad84 70%,#f4f1ec 72%)' },
-    nero:      { name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: 'linear-gradient(135deg,#171615 0 38%,#a9a6a2 40%,#171615 43% 68%,#c9a46a 70%,#171615 72%)' },
-    white:     { name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
-    gloss:     { name: 'Gloss white', color: 0xF6F4F1, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
-    blush:     { name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
-    oak:       { name: 'Light oak', tex: 'oak', roughness: .55, css: 'repeating-linear-gradient(0deg,#d2b994 0 3px,#c3a67d 3px 4px)' },
-    paleoak:   { name: 'Pale oak', tex: 'paleoak', roughness: .55, css: 'repeating-linear-gradient(0deg,#e2d0b4 0 3px,#d3bd9b 3px 4px)' },
-    walnut:    { name: 'Walnut', tex: 'walnut', roughness: .5, css: 'repeating-linear-gradient(0deg,#5a3d2b 0 3px,#3f2a1d 3px 4px)' },
-    gold:      { name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#8f6526,#e0bf7a,#b98a3e)' },
-    rosegold:  { name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#9a6555,#efc8b8,#c08a78)' },
-    champagne: { name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#a8916a,#efe0c2,#cdb58e)' },
-    bronze:    { name: 'Midnight bronze', color: 0x1E1815, metalness: .35, roughness: .42, css: '#29221F' },
-    fadeRose:  { name: 'White to rose gold', grad: [0xF4F1EC, 0xA25844], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#c08a78)' },
-    fadeGold:  { name: 'White to gold', grad: [0xF4F1EC, 0xA47430], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#b98a3e)' },
-    blushGold: { name: 'Blush to gold', grad: [0xE0BFB0, 0xA47430], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#e6c9bc,#b98a3e)' },
-    dusk:      { name: 'Bronze to rose gold', grad: [0x1E1815, 0xA25844], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#29221f,#c08a78)' }
+    // stone
+    marble:     { group: 'Stone', name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: mrb('#f4f1ec', '#cfcac3', '#c9ad84') },
+    calacatta:  { group: 'Stone', name: 'Calacatta gold', tex: 'calacatta', roughness: .35, clearcoat: .3, clearcoatRoughness: .3, css: mrb('#f6f3ee', '#b8955a', '#c9a46a') },
+    rosa:       { group: 'Stone', name: 'Rosa marble', tex: 'rosa', roughness: .35, clearcoat: .3, clearcoatRoughness: .3, css: mrb('#e8cfc8', '#fbf6f4', '#f6ece8') },
+    verde:      { group: 'Stone', name: 'Verde marble', tex: 'verde', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: mrb('#1f3a2e', '#dfe8e2', '#b9cfc2') },
+    nero:       { group: 'Stone', name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: mrb('#171615', '#a9a6a2', '#c9a46a') },
+    travertine: { group: 'Stone', name: 'Travertine', tex: 'travertine', roughness: .6, css: 'repeating-linear-gradient(0deg,#dccbb0 0 5px,#cdb998 5px 7px,#e3d4bc 7px 11px)' },
+    terrazzo:   { group: 'Stone', name: 'Terrazzo', tex: 'terrazzo', roughness: .45, clearcoat: .2, css: 'radial-gradient(circle at 30% 30%,#cfa594 0 3px,transparent 4px),radial-gradient(circle at 70% 60%,#29221f 0 2px,transparent 3px),radial-gradient(circle at 45% 75%,#b98a3e 0 2px,transparent 3px),radial-gradient(circle at 75% 25%,#9a9590 0 3px,transparent 4px),#eee8e0' },
+    // colour
+    white:      { group: 'Colour', name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
+    gloss:      { group: 'Colour', name: 'Gloss white', color: 0xF8F6F3, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
+    ivory:      { group: 'Colour', name: 'Ivory', color: 0xEFE6D6, roughness: .55, css: '#EFE6D6' },
+    sand:       { group: 'Colour', name: 'Sand', color: 0xD8C3A5, roughness: .6, css: '#D8C3A5' },
+    greige:     { group: 'Colour', name: 'Greige', color: 0xB8AB9C, roughness: .6, css: '#B8AB9C' },
+    blush:      { group: 'Colour', name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
+    rose:       { group: 'Colour', name: 'Maxsen rose', color: 0xCFA594, roughness: .55, css: '#CFA594' },
+    dustypink:  { group: 'Colour', name: 'Dusty pink', color: 0xC9928B, roughness: .55, css: '#C9928B' },
+    terracotta: { group: 'Colour', name: 'Terracotta', color: 0xB86B4B, roughness: .6, css: '#B86B4B' },
+    lilac:      { group: 'Colour', name: 'Lilac', color: 0xC4B4CC, roughness: .55, css: '#C4B4CC' },
+    powder:     { group: 'Colour', name: 'Powder blue', color: 0xB9C7D3, roughness: .55, css: '#B9C7D3' },
+    sage:       { group: 'Colour', name: 'Sage', color: 0x9AA58E, roughness: .6, css: '#9AA58E' },
+    forest:     { group: 'Colour', name: 'Forest green', color: 0x2C4638, roughness: .5, css: '#2C4638' },
+    navy:       { group: 'Colour', name: 'Navy', color: 0x1F2A3C, roughness: .5, css: '#1F2A3C' },
+    mocha:      { group: 'Colour', name: 'Mocha', color: 0x6E5444, roughness: .55, css: '#6E5444' },
+    charcoal:   { group: 'Colour', name: 'Charcoal', color: 0x34322F, roughness: .55, css: '#34322F' },
+    black:      { group: 'Colour', name: 'Matte black', color: 0x141414, roughness: .7, css: '#141414' },
+    // wood
+    oak:        { group: 'Wood', name: 'Light oak', tex: 'oak', roughness: .55, css: grain('#d2b994', '#c3a67d') },
+    paleoak:    { group: 'Wood', name: 'Pale oak', tex: 'paleoak', roughness: .55, css: grain('#e2d0b4', '#d3bd9b') },
+    teak:       { group: 'Wood', name: 'Teak', tex: 'teak', roughness: .5, css: grain('#9a6a40', '#7f5530') },
+    smoked:     { group: 'Wood', name: 'Smoked oak', tex: 'smoked', roughness: .5, css: grain('#7b6450', '#634e3d') },
+    walnut:     { group: 'Wood', name: 'Walnut', tex: 'walnut', roughness: .5, css: grain('#5a3d2b', '#3f2a1d') },
+    ebony:      { group: 'Wood', name: 'Ebony', tex: 'ebony', roughness: .45, css: grain('#2a1e18', '#1a120e') },
+    // metal
+    gold:       { group: 'Metal', name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: shine('#8f6526', '#e0bf7a', '#b98a3e') },
+    rosegold:   { group: 'Metal', name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: shine('#9a6555', '#efc8b8', '#c08a78') },
+    champagne:  { group: 'Metal', name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: shine('#a8916a', '#efe0c2', '#cdb58e') },
+    brass:      { group: 'Metal', name: 'Antique brass', color: 0x8C6A33, metalness: 1, roughness: .4, css: shine('#5e4520', '#b9955a', '#8c6a33') },
+    copper:     { group: 'Metal', name: 'Copper', color: 0xB0663E, metalness: 1, roughness: .32, clearcoat: .2, css: shine('#7d4224', '#e3a37a', '#b0663e') },
+    silver:     { group: 'Metal', name: 'Brushed silver', color: 0xC4C4C6, metalness: 1, roughness: .3, css: shine('#8d8d90', '#f2f2f3', '#c4c4c6') },
+    gunmetal:   { group: 'Metal', name: 'Gunmetal', color: 0x4A4C50, metalness: 1, roughness: .35, css: shine('#2b2c2f', '#7d8085', '#4a4c50') },
+    blackchrome:{ group: 'Metal', name: 'Black chrome', color: 0x1C1C1E, metalness: 1, roughness: .18, clearcoat: .5, css: shine('#050505', '#5b5b60', '#1c1c1e') },
+    bronze:     { group: 'Metal', name: 'Midnight bronze', color: 0x29221F, metalness: .5, roughness: .4, css: '#29221F' },
+    // gradient: from the bottom of the surface to the top
+    fadeRose:   { group: 'Gradient', name: 'White to rose gold', grad: [0xF4F1EC, 0xC07F6B], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#c07f6b') },
+    fadeGold:   { group: 'Gradient', name: 'White to gold', grad: [0xF4F1EC, 0xC69A4F], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#c69a4f') },
+    fadeChamp:  { group: 'Gradient', name: 'Ivory to champagne', grad: [0xF4EEE4, 0xCDB58E], metalness: .25, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4eee4', '#cdb58e') },
+    blushGold:  { group: 'Gradient', name: 'Blush to gold', grad: [0xE6C9BC, 0xC69A4F], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: fade('#e6c9bc', '#c69a4f') },
+    blushRose:  { group: 'Gradient', name: 'Blush to rose gold', grad: [0xF1DDD4, 0xB8735E], metalness: .3, roughness: .32, clearcoat: .35, clearcoatRoughness: .2, css: fade('#f1ddd4', '#b8735e') },
+    roseGold2:  { group: 'Gradient', name: 'Rose gold to gold', grad: [0xC07F6B, 0xC69A4F], metalness: .45, roughness: .3, clearcoat: .3, clearcoatRoughness: .2, css: fade('#c07f6b', '#c69a4f') },
+    lilacBlush: { group: 'Gradient', name: 'Lilac to blush', grad: [0xC4B4CC, 0xF1DDD4], roughness: .5, css: fade('#c4b4cc', '#f1ddd4') },
+    sunset:     { group: 'Gradient', name: 'Terracotta to blush', grad: [0xB86B4B, 0xF1DDD4], roughness: .5, css: fade('#b86b4b', '#f1ddd4') },
+    sageFade:   { group: 'Gradient', name: 'Sage to white', grad: [0x9AA58E, 0xF4F1EC], roughness: .5, css: fade('#9aa58e', '#f4f1ec') },
+    skyFade:    { group: 'Gradient', name: 'Powder blue to white', grad: [0xB9C7D3, 0xF4F1EC], roughness: .5, css: fade('#b9c7d3', '#f4f1ec') },
+    silverFade: { group: 'Gradient', name: 'White to silver', grad: [0xF4F1EC, 0xB9BABD], metalness: .35, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#b9babd') },
+    navyGold:   { group: 'Gradient', name: 'Navy to gold', grad: [0x1F2A3C, 0xC69A4F], metalness: .35, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: fade('#1f2a3c', '#c69a4f') },
+    blackGold:  { group: 'Gradient', name: 'Black to gold', grad: [0x141414, 0xC69A4F], metalness: .4, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: fade('#141414', '#c69a4f') },
+    dusk:       { group: 'Gradient', name: 'Bronze to rose gold', grad: [0x2A2320, 0xC07F6B], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: fade('#2a2320', '#c07f6b') }
   };
   const SLOTS = [['top', 'Top'], ...(GOLD ? [['gold', 'Gold layer']] : []), ['body', 'Body'], ['inner', 'Shelves and bays'], ['base', 'Base'], ['stands', 'Lock stands']];
   const FINISH_DEFAULT = { top: 'marble', gold: 'gold', body: 'oak', inner: 'paleoak', base: 'bronze', stands: 'oak' };
@@ -481,7 +577,10 @@ function MaxsenModel(cfg = {}) {
     original: { name: 'As designed', f: FINISH_DEFAULT },
     porcelain: { name: 'Porcelain and rose gold', f: { top: 'marble', gold: 'rosegold', body: 'gloss', inner: 'blush', base: 'rosegold', stands: 'gloss' } },
     rosefade: { name: 'Rose gold fade', f: { top: 'marble', gold: 'rosegold', body: 'fadeRose', inner: 'white', base: 'rosegold', stands: 'white' } },
-    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } }
+    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } },
+    sage: { name: 'Sage and brass', f: { top: 'calacatta', gold: 'brass', body: 'sage', inner: 'ivory', base: 'brass', stands: 'ivory' } },
+    navy: { name: 'Navy and gold', f: { top: 'marble', gold: 'gold', body: 'navy', inner: 'walnut', base: 'gold', stands: 'navy' } },
+    terracotta: { name: 'Terracotta', f: { top: 'terrazzo', gold: 'copper', body: 'terracotta', inner: 'travertine', base: 'bronze', stands: 'sand' } }
   };
   const cleanFinishes = f => { const o = Object.assign({}, FINISH_DEFAULT); if (f && typeof f === 'object') for (const [k, v] of Object.entries(f)) if (k in FINISH_DEFAULT && typeof v === 'string' && v in FINISHES) o[k] = v; return o; };
 
@@ -526,7 +625,7 @@ function MaxsenModel(cfg = {}) {
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
   ];
-  if (RECT) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
+  if (SHELVES.length === 1) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
   // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
   const DEFAULT_CLOSED = [
     ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
@@ -628,20 +727,47 @@ function MaxsenModel(cfg = {}) {
   let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
   function tex(THREE, c, rx = 1, ry = 1) { const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; }
-  function stone(THREE, dark) { // white marble with bold grey and soft gold veining; or black with white and gold
+  const STONES = { // ground, two cloud tones, three vein tones and the accent vein
+    white:     ['#F4F1EC', '228,222,214', '250,248,245', '244,241,236', ['120,118,116', '96,94,92', '110,108,106'], '176,142,92'],
+    nero:      ['#161514', '40,38,36', '12,12,11', '22,21,20', ['150,148,145', '214,212,208', '190,188,184'], '176,142,92'],
+    calacatta: ['#F6F3EE', '232,226,216', '252,250,247', '246,243,238', ['168,140,96', '150,118,70', '160,134,98'], '186,146,72'],
+    rosa:      ['#E8CFC8', '240,222,216', '222,192,184', '232,207,200', ['250,244,242', '255,251,250', '205,172,162'], '190,150,138'],
+    verde:     ['#1F3A2E', '34,66,50', '16,40,30', '31,58,46', ['170,196,182', '226,236,230', '186,206,196'], '214,224,216']
+  };
+  function stone(THREE, kind) { // marble: clouds, soft and sharp veins, and an accent vein
+    const [bg, c1, c2, c0, vc, acc] = STONES[kind === true ? 'nero' : kind || 'white'];
     const [c, g] = canvas(2048, 1024);
-    g.fillStyle = dark ? '#161514' : '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
-    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, dark ? `rgba(${rnd() > .6 ? '40,38,36' : '12,12,11'},.7)` : `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, dark ? 'rgba(22,21,20,0)' : 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
+    g.fillStyle = bg; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .6 ? c1 : c2},.7)`); f.addColorStop(1, `rgba(${c0},0)`); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
     const vein = (w, a, col, wob) => {
       g.strokeStyle = `rgba(${col},${a})`; g.lineWidth = w; g.lineCap = 'round';
       g.beginPath(); let x = -40, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 70;
       while (x < 2100) { const nx = x + 30 + rnd() * 60, ny = y + drift + (rnd() - .5) * wob; g.quadraticCurveTo(x + (nx - x) / 2, y + (rnd() - .5) * wob, nx, ny); x = nx; y = ny; }
       g.stroke();
     };
-    const vc = dark ? ['150,148,145', '214,212,208', '190,188,184'] : ['120,118,116', '96,94,92', '110,108,106'];
     for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, vc[0], 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, vc[1], 30); }
     for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, vc[2], 50);
-    for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, '176,142,92', 30);
+    for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, acc, 30);
+    if (kind === 'calacatta') for (let k = 0; k < 3; k++) { g.filter = 'blur(3px)'; vein(6 + rnd() * 6, .3, acc, 35); g.filter = 'none'; vein(2 + rnd() * 2, .6, acc, 30); }
+    return c;
+  }
+  function travertine(THREE) { // warm beige in soft horizontal bands, with small pits
+    const [c, g] = canvas(2048, 1024);
+    g.fillStyle = '#DCCBB0'; g.fillRect(0, 0, 2048, 1024);
+    for (let y = 0; y < 1024; y += 4 + rnd() * 18) { g.fillStyle = `rgba(${rnd() > .5 ? '196,174,140' : '232,220,198'},${.15 + rnd() * .35})`; g.fillRect(0, y, 2048, 2 + rnd() * 10); }
+    for (let k = 0; k < 900; k++) { g.fillStyle = `rgba(150,124,92,${.25 + rnd() * .4})`; g.beginPath(); g.ellipse(rnd() * 2048, rnd() * 1024, 2 + rnd() * 9, 1 + rnd() * 2.5, 0, 0, 7); g.fill(); }
+    return c;
+  }
+  function terrazzo(THREE) { // pale ground with chips in the Maxsen colours
+    const [c, g] = canvas(2048, 1024);
+    g.fillStyle = '#EEE8E0'; g.fillRect(0, 0, 2048, 1024);
+    const chips = ['#CFA594', '#29221F', '#B98A3E', '#9A9590', '#E6C9BC', '#C9C3BA'];
+    for (let k = 0; k < 2600; k++) {
+      g.fillStyle = chips[Math.floor(rnd() * chips.length)]; g.beginPath();
+      const x = rnd() * 2048, y = rnd() * 1024, r = 3 + rnd() * (rnd() > .9 ? 22 : 9), n = 5 + Math.floor(rnd() * 3);
+      for (let i = 0; i < n; i++) { const a = i / n * 7, rr2 = r * (.6 + rnd() * .5); i ? g.lineTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2) : g.moveTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2); }
+      g.fill();
+    }
     return c;
   }
   function wood(THREE, base, dark, light) { // straight grain, running along the length
@@ -713,7 +839,9 @@ function MaxsenModel(cfg = {}) {
     // every surface that takes a finish has its own material, refinished in place when the finish changes
     const canv = {};
     const texCanvas = k => canv[k] || (canv[k] = {
-      marble: () => stone(THREE), nero: () => stone(THREE, true),
+      marble: () => stone(THREE), nero: () => stone(THREE, 'nero'), calacatta: () => stone(THREE, 'calacatta'), rosa: () => stone(THREE, 'rosa'), verde: () => stone(THREE, 'verde'),
+      travertine: () => travertine(THREE), terrazzo: () => terrazzo(THREE),
+      teak: () => wood(THREE, '#9A6A40', '70,40,20', '190,140,90'), smoked: () => wood(THREE, '#7B6450', '40,28,18', '150,120,96'), ebony: () => wood(THREE, '#2A1E18', '8,5,3', '80,60,50'),
       oak: () => wood(THREE, '#D2B994', '150,116,78', '238,220,192'), paleoak: () => wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'),
       walnut: () => wood(THREE, '#5A3D2B', '30,18,10', '122,86,60')
     }[k]());
@@ -741,11 +869,11 @@ function MaxsenModel(cfg = {}) {
       if (m.map) m.map.dispose();
       m.map = null;
       if (F.tex) { const t = tex(THREE, texCanvas(F.tex), ...(o.rep || [1, 1])); if (o.off) t.offset.set(...o.off); if (o.rot) t.rotation = o.rot; m.map = t; }
-      m.color.set(F.tex || F.grad ? 0xffffff : F.color);
+      m.color.set(F.tex || F.grad ? 0xffffff : F.color); if (!F.tex && !F.grad && (F.metalness || 0) < .5) m.color.convertSRGBToLinear();
       m.metalness = F.metalness || 0; m.roughness = F.roughness ?? .5;
       m.clearcoat = F.clearcoat || 0; m.clearcoatRoughness = F.clearcoatRoughness ?? .3;
       m.envMapIntensity = F.metalness ? (night ? .5 : 1.05) : (night ? .25 : .5);
-      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]); g.b.value.set(F.grad[1]); }
+      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]).convertSRGBToLinear(); g.b.value.set(F.grad[1]).convertSRGBToLinear(); }
       m.needsUpdate = true;
     }
     function setFinish(slot, key) {
@@ -1409,7 +1537,9 @@ function MaxsenModel(cfg = {}) {
   return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize, FINISHES, SLOTS, PRESETS, cleanFinishes };
 }
 window.MaxsenTable = MaxsenModel();
-window.MaxsenTable.rect = MaxsenModel({ rect: true });
+window.MaxsenTable.rect = MaxsenModel({ rect: true, frac: 3 / 8 });
+window.MaxsenTable.rect28 = MaxsenModel({ rect: true, frac: 2 / 8 });
+window.MaxsenTable.round28 = MaxsenModel({ frac: 2 / 8 });
 
 (() => {
   const $ = id => document.getElementById(id);
@@ -1419,9 +1549,9 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
 
   /* ---------- the saved arrangements, one per version: the page's database, else this browser ---------- */
-  let shelves = true, rect = false;
+  let shelves = true, form = 'round';
   const say = t => { $('saveState').textContent = t; };
-  const cur = () => stores[(rect ? 'rect-' : '') + (shelves ? 'open' : 'closed')];
+  const cur = () => stores[(form === 'round' ? '' : form + '-') + (shelves ? 'open' : 'closed')];
   function store(lsKey, docPath) {
     const st = { layout: null, ref: null, lastSaved: null, writing: false, again: false, timer: 0, local: false };
     const mine = () => cur() === st;
@@ -1462,7 +1592,9 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
   }
   const stores = {
     open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed'),
-    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
+    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed'),
+    'round28-open': store('maxsen-counter-layout-round28-v1', 'layout/round28'), 'round28-closed': store('maxsen-counter-layout-round28-closed-v1', 'layout/round28-closed'),
+    'rect28-open': store('maxsen-counter-layout-rect28-v1', 'layout/rect28'), 'rect28-closed': store('maxsen-counter-layout-rect28-closed-v1', 'layout/rect28-closed')
   };
   (async () => {
     await null;   // let the rest of this script set up first
@@ -1501,21 +1633,36 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
     catch (e) { fref = null; fsay('Saved in this browser only: only editors of this page save to it'); }
     finally { fWriting = false; if (fAgain) { fAgain = false; finFlush(); } }
   }
-  const model = () => rect ? MaxsenTable.rect : MaxsenTable;
+  const model = () => ({ round: MaxsenTable, rect: MaxsenTable.rect, round28: MaxsenTable.round28, rect28: MaxsenTable.rect28 })[form] || MaxsenTable;
+  let finSlot = 'body';
   function renderFin() {
-    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES;
-    $('finRows').replaceChildren(...model().SLOTS.map(([slot, label]) => {
+    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES, slots = model().SLOTS;
+    if (!slots.some(x => x[0] === finSlot)) finSlot = 'body';
+    // the surfaces, each with its finish
+    $('finSlots').replaceChildren(...slots.map(([slot, label]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'slot';
+      b.setAttribute('aria-pressed', String(slot === finSlot));
+      const dot = Object.assign(document.createElement('i'), { className: 'dot' }); dot.style.background = F[cur[slot]].css;
+      b.append(dot, Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
+      b.addEventListener('click', () => { finSlot = slot; renderFin(); });
+      return b;
+    }));
+    const label = (slots.find(x => x[0] === finSlot) || [])[1];
+    $('finFor').textContent = label + ': ' + F[cur[finSlot]].name;
+    // the palette, grouped
+    const groups = {};
+    Object.entries(F).forEach(([key, f]) => (groups[f.group] = groups[f.group] || []).push([key, f]));
+    $('finRows').replaceChildren(...Object.entries(groups).map(([gname, list]) => {
       const row = document.createElement('div'); row.className = 'fin-row';
-      const h = document.createElement('div'); h.className = 'fin-l';
-      h.append(Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
-      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' finish');
-      Object.entries(F).forEach(([key, f]) => {
+      row.append(Object.assign(document.createElement('div'), { className: 'fin-g', textContent: gname }));
+      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' · ' + gname);
+      list.forEach(([key, f]) => {
         const b = document.createElement('button'); b.type = 'button'; b.className = 'fsw'; b.style.background = f.css;
-        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[slot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
-        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [slot]: key }); if (viewer) viewer.finish.set(slot, key); finKeep(); renderFin(); });
+        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[finSlot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
+        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [finSlot]: key }); if (viewer) viewer.finish.set(finSlot, key); finKeep(); renderFin(); });
         g.append(b);
       });
-      row.append(h, g); return row;
+      row.append(g); return row;
     }));
   }
   $('presetRow').addEventListener('click', e => {
@@ -1532,7 +1679,7 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
-    viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
+    viewer = await model().mount(THREE, stage, {
       view: current, mood, shelves, layout: st.layout || undefined, finishes: fin || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
@@ -1553,7 +1700,7 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
     if (b.dataset.f) {
-      rect = b.dataset.f === 'rect'; selected = null; renderSel();
+      form = b.dataset.f; selected = null; renderSel();
       bar.querySelectorAll('button[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
     }
     if (b.dataset.s) {

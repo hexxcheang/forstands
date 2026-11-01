@@ -131,7 +131,15 @@ text{font-family:var(--sans)}
 .items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
 .items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
 .fin-rows{display:grid;gap:12px}
-.fin-row{display:grid;grid-template-columns:minmax(150px,200px) minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+.fin-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+.fin-g{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.slot{display:grid;grid-template-columns:28px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--rule);background:var(--bg);color:var(--fg);border-radius:6px;padding:8px 10px;cursor:pointer;min-height:48px}
+.slot[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.slot .dot{grid-row:1/3;width:28px;height:28px;border-radius:50%;border:1px solid var(--rule)}
+.slot b{font-size:13px;font-weight:700}
+.slot span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fin-for{font-size:22px}
 @media (max-width:640px){.fin-row{grid-template-columns:minmax(0,1fr)}}
 .fin-l{display:grid;gap:2px}
 .fin-l b{font:400 19px/1.2 var(--serif)}
@@ -245,7 +253,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-m="night" aria-pressed="false">Warm white</button>
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
         <button type="button" data-f="round" aria-pressed="true">Rounded</button>
-        <button type="button" data-f="rect" aria-pressed="false">Rectangular</button>
+        <button type="button" data-f="round28" aria-pressed="false">Rounded · 2/8</button>
+        <button type="button" data-f="rect28" aria-pressed="false">Rectangular · 2/8</button>
+        <button type="button" data-f="rect" aria-pressed="false">Rectangular · 3/8</button>
         <button type="button" data-s="open" aria-pressed="true">With shelves</button>
         <button type="button" data-s="closed" aria-pressed="false">Without shelves</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
@@ -293,7 +303,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <div class="arrange" id="finishes" hidden>
         <div class="arr-head">
           <button type="button" class="pill" id="finToggle" aria-pressed="false">Change the finishes</button>
-          <p id="finIntro">White, gloss white, blush, gold, rose gold, champagne, marble, woods and gradient fades from the Maxsen palette, surface by surface.</p>
+          <p id="finIntro">Over 50 finishes, surface by surface: marbles and stones, colours, woods, metals and gradient fades.</p>
           <span class="status" id="finState" role="status" aria-live="polite"></span>
         </div>
         <div class="arr-body" id="finBody" hidden>
@@ -303,9 +313,14 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
             <button type="button" class="pill" data-p="porcelain">Porcelain and rose gold</button>
             <button type="button" class="pill" data-p="rosefade">Rose gold fade</button>
             <button type="button" class="pill" data-p="midnight">Midnight</button>
+            <button type="button" class="pill" data-p="sage">Sage and brass</button>
+            <button type="button" class="pill" data-p="navy">Navy and gold</button>
+            <button type="button" class="pill" data-p="terracotta">Terracotta</button>
           </div>
+          <div class="slots" id="finSlots" role="group" aria-label="Surface to finish"></div>
+          <h3 class="fin-for" id="finFor"></h3>
           <div class="fin-rows" id="finRows"></div>
-          <p class="hint">Gradients run from the bottom of each surface to the top: on the gold layer, from left to right. One set of finishes applies to every form.</p>
+          <p class="hint">Pick a surface, then a finish. Gradients run from the bottom of each surface to the top (on the gold layer, from left to right). One set of finishes applies to every form.</p>
         </div>
       </div>
     </div>
@@ -331,7 +346,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       <span class="eyebrow">Option</span>
       <h2 id="rect">Rectangular, with the marble to 3/8</h2>
     </div>
-    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular</b>; it also comes without shelves.</p>
+    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular · 3/8</b>; it also comes without shelves.</p>
     <figure class="shot"><img src="renders/rect-day-hero.jpg" alt="The rectangular counter: a deep white marble block with square corners making up the top 3/8, the switches and Halo dimmer on its face, six staggered locks and the ball light on top, and a light wood body below with LUSANO and trailing plants in the open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular.</b> A 319 mm marble block on a light wood body, no gold.</figcaption></figure>
     <div class="grid2">
       <figure class="shot"><img src="renders/rect-day-top.jpg" alt="Looking straight down on the rectangular counter: a plain white marble rectangle with square corners, the six locks staggered in two rows and the ball light at the front left" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> A clean rectangle of marble.</figcaption></figure>
@@ -347,18 +362,52 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
   </section>
 
+  <section aria-labelledby="q28">
+    <div class="head">
+      <span class="eyebrow">Option</span>
+      <h2 id="q28">Marble to 2/8: rounded and rectangular</h2>
+    </div>
+    <p class="lede">A lighter marble block: the top 2/8 of the 850 height, about 212 mm, again with no gold layer. The switches and the Halo dimmer sit on its front face at about 745 mm. Below it, a 638 mm wood body with one shelf in each open bay, its top at about 369 mm. The trailing plants are on the shelf and the catalogues on the bay floor. It comes in two forms: rounded, with the same 150 mm corners as the original, or rectangular, with square corners. In the 3D model, choose <b>Rounded · 2/8</b> or <b>Rectangular · 2/8</b>. Both also come without shelves.</p>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/round28-day-hero.jpg" alt="The rounded counter with the marble as the top 2/8: a 212 mm white marble top with rounded corners and the switches on its face, over a light wood body with open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded · 2/8.</b> A 212 mm marble top with 150 mm corners.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-hero.jpg" alt="The rectangular counter with the marble as the top 2/8: a 212 mm square-cornered marble block over a light wood body with open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular · 2/8.</b> The same proportions, square in plan.</figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-top.jpg" alt="Looking down on the rounded 2/8 counter: a white marble top with rounded corners, six staggered locks and the ball light" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, from above.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-top.jpg" alt="Looking down on the rectangular 2/8 counter: a white marble rectangle with square corners, six staggered locks and the ball light" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, from above.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-front.jpg" alt="Front view of the rounded 2/8 counter" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, front.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-front.jpg" alt="Front view of the rectangular 2/8 counter" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, front.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/round28-day-end.jpg" alt="Three-quarter view of the right end of the rounded 2/8 counter, showing the curved corner and its open bay" width="1600" height="1000" loading="lazy"><figcaption><b>Rounded, right end.</b></figcaption></figure>
+      <figure class="shot"><img src="renders/rect28-day-end.jpg" alt="Three-quarter view of the right end of the rectangular 2/8 counter, showing the square corner and its open bay" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, right end.</b></figcaption></figure>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>2/8 · front (both forms)</b><span>mm</span></div><div class="scroll">{{R28FRONT}}</div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Rounded · 2/8 · from above</b><span>front at the bottom</span></div><div class="scroll">{{O28PLAN}}</div></figure>
+    </div>
+    <figure class="sheet"><div class="sheet-h"><b>Rectangular · 2/8 · from above</b><span>front at the bottom</span></div><div class="scroll">{{R28PLAN}}</div></figure>
+  </section>
+
   <section aria-labelledby="fin">
     <div class="head">
       <span class="eyebrow">Finishes</span>
       <h2 id="fin">The same counter in other Maxsen finishes</h2>
     </div>
-    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from white, gloss white, blush, white or black marble, light or pale oak, walnut, brushed gold, rose gold, champagne and midnight bronze, or a gradient fade. Try them in the 3D model with <b>Change the finishes</b>. Four looks to start from:</p>
+    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from over 50, in five groups:</p>
+    <ul class="plain">
+      <li><b>Stone:</b> white marble, Calacatta gold, Rosa marble, Verde marble, black marble, travertine and terrazzo.</li>
+      <li><b>Colour:</b> white, gloss white, ivory, sand, greige, blush, Maxsen rose, dusty pink, terracotta, lilac, powder blue, sage, forest green, navy, mocha, charcoal and matte black.</li>
+      <li><b>Wood:</b> light oak, pale oak, teak, smoked oak, walnut and ebony.</li>
+      <li><b>Metal:</b> brushed gold, rose gold, champagne, antique brass, copper, brushed silver, gunmetal, black chrome and midnight bronze.</li>
+      <li><b>Gradient fade:</b> white to rose gold, gold or silver; ivory to champagne; blush to gold or rose gold; rose gold to gold; lilac to blush; terracotta to blush; sage or powder blue to white; navy, black or bronze to gold and rose gold.</li>
+    </ul>
+    <p class="lede">Try them in the 3D model with <b>Change the finishes</b>. Seven looks to start from:</p>
     <div class="grid2">
       <figure class="shot"><img src="renders/finish-porcelain.jpg" alt="The rounded counter in gloss white with a rose gold top layer and base, blush shelves and white lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Porcelain and rose gold.</b> Gloss white body, rose gold layer and base, blush bays.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-rosefade.jpg" alt="The rectangular counter with its body fading from white at the floor to rose gold under the marble block" width="1600" height="1000" loading="lazy"><figcaption><b>Rose gold fade.</b> The rectangular form, its body fading from white up to rose gold.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-midnight.jpg" alt="The rounded counter in midnight bronze with a black marble top, gold layer and walnut bays and lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Midnight.</b> Black marble, bronze body, walnut bays and stands, gold layer.</figcaption></figure>
       <figure class="shot"><img src="renders/finish-dusk.jpg" alt="The rounded counter with its body fading from bronze at the floor to rose gold at the top, a champagne top layer and blush bays" width="1600" height="1000" loading="lazy"><figcaption><b>Dusk.</b> Bronze fading up to rose gold, champagne layer, blush bays.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-sage.jpg" alt="The rounded 2/8 counter with a Calacatta gold marble top, a sage body, ivory bays and stands, and an antique brass base" width="1600" height="1000" loading="lazy"><figcaption><b>Sage and brass.</b> Rounded · 2/8: Calacatta gold, sage, ivory, antique brass.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-navy.jpg" alt="The rectangular 2/8 counter with a white marble top, a navy body and lock stands, walnut bays and a gold base" width="1600" height="1000" loading="lazy"><figcaption><b>Navy and gold.</b> Rectangular · 2/8: navy, walnut and gold under white marble.</figcaption></figure>
     </div>
+    <figure class="shot"><img src="renders/finish-terracotta.jpg" alt="The rounded counter with a terrazzo top, copper layer, terracotta body, travertine bays and sand lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Terracotta.</b> Terrazzo, copper, terracotta and travertine.</figcaption></figure>
   </section>
 
   <section aria-labelledby="dwg">
@@ -444,9 +493,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
 
   /* ---------- the saved arrangements, one per version: the page's database, else this browser ---------- */
-  let shelves = true, rect = false;
+  let shelves = true, form = 'round';
   const say = t => { $('saveState').textContent = t; };
-  const cur = () => stores[(rect ? 'rect-' : '') + (shelves ? 'open' : 'closed')];
+  const cur = () => stores[(form === 'round' ? '' : form + '-') + (shelves ? 'open' : 'closed')];
   function store(lsKey, docPath) {
     const st = { layout: null, ref: null, lastSaved: null, writing: false, again: false, timer: 0, local: false };
     const mine = () => cur() === st;
@@ -487,7 +536,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   }
   const stores = {
     open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed'),
-    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
+    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed'),
+    'round28-open': store('maxsen-counter-layout-round28-v1', 'layout/round28'), 'round28-closed': store('maxsen-counter-layout-round28-closed-v1', 'layout/round28-closed'),
+    'rect28-open': store('maxsen-counter-layout-rect28-v1', 'layout/rect28'), 'rect28-closed': store('maxsen-counter-layout-rect28-closed-v1', 'layout/rect28-closed')
   };
   (async () => {
     await null;   // let the rest of this script set up first
@@ -526,21 +577,36 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     catch (e) { fref = null; fsay('Saved in this browser only: only editors of this page save to it'); }
     finally { fWriting = false; if (fAgain) { fAgain = false; finFlush(); } }
   }
-  const model = () => rect ? MaxsenTable.rect : MaxsenTable;
+  const model = () => ({ round: MaxsenTable, rect: MaxsenTable.rect, round28: MaxsenTable.round28, rect28: MaxsenTable.rect28 })[form] || MaxsenTable;
+  let finSlot = 'body';
   function renderFin() {
-    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES;
-    $('finRows').replaceChildren(...model().SLOTS.map(([slot, label]) => {
+    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES, slots = model().SLOTS;
+    if (!slots.some(x => x[0] === finSlot)) finSlot = 'body';
+    // the surfaces, each with its finish
+    $('finSlots').replaceChildren(...slots.map(([slot, label]) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'slot';
+      b.setAttribute('aria-pressed', String(slot === finSlot));
+      const dot = Object.assign(document.createElement('i'), { className: 'dot' }); dot.style.background = F[cur[slot]].css;
+      b.append(dot, Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
+      b.addEventListener('click', () => { finSlot = slot; renderFin(); });
+      return b;
+    }));
+    const label = (slots.find(x => x[0] === finSlot) || [])[1];
+    $('finFor').textContent = label + ': ' + F[cur[finSlot]].name;
+    // the palette, grouped
+    const groups = {};
+    Object.entries(F).forEach(([key, f]) => (groups[f.group] = groups[f.group] || []).push([key, f]));
+    $('finRows').replaceChildren(...Object.entries(groups).map(([gname, list]) => {
       const row = document.createElement('div'); row.className = 'fin-row';
-      const h = document.createElement('div'); h.className = 'fin-l';
-      h.append(Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
-      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' finish');
-      Object.entries(F).forEach(([key, f]) => {
+      row.append(Object.assign(document.createElement('div'), { className: 'fin-g', textContent: gname }));
+      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' · ' + gname);
+      list.forEach(([key, f]) => {
         const b = document.createElement('button'); b.type = 'button'; b.className = 'fsw'; b.style.background = f.css;
-        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[slot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
-        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [slot]: key }); if (viewer) viewer.finish.set(slot, key); finKeep(); renderFin(); });
+        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[finSlot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
+        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [finSlot]: key }); if (viewer) viewer.finish.set(finSlot, key); finKeep(); renderFin(); });
         g.append(b);
       });
-      row.append(h, g); return row;
+      row.append(g); return row;
     }));
   }
   $('presetRow').addEventListener('click', e => {
@@ -557,7 +623,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
-    viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
+    viewer = await model().mount(THREE, stage, {
       view: current, mood, shelves, layout: st.layout || undefined, finishes: fin || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
@@ -578,7 +644,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
     if (b.dataset.f) {
-      rect = b.dataset.f === 'rect'; selected = null; renderSel();
+      form = b.dataset.f; selected = null; renderSel();
       bar.querySelectorAll('button[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
     }
     if (b.dataset.s) {

@@ -1,13 +1,13 @@
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
    1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
-// Two forms from the one model: the rounded counter with its gold top (the default), and
-// { rect: true }: square in plan, no gold, the marble the top 3/8 of the 850 height.
+// Forms from the one model: the rounded counter with its gold top (the default), or a marble block
+// taking a share of the 850 height with no gold: { frac: 3/8 or 2/8, rect: square in plan, or rounded }.
 function MaxsenModel(cfg = {}) {
-  const RECT = !!cfg.rect, GOLD = !RECT;
+  const RECT = !!cfg.rect, FRAC = cfg.frac || (RECT ? 3 / 8 : 0), GOLD = !FRAC;
   const L = 1.4, D = 0.5;
-  const H = RECT ? 0.85 : 0.84;            // H: top of the marble; on the rounded form the 10 mm gold top brings it to 850
-  const TOP = RECT ? H * 3 / 8 : 0.12;     // the marble: 120 mm, or 3/8 of the height (about 319 mm) on the rectangular form
+  const H = GOLD ? 0.84 : 0.85;            // H: top of the marble; on the gold form the 10 mm gold top brings it to 850
+  const TOP = GOLD ? 0.12 : H * FRAC;      // the marble: 120 mm under the gold, or 3/8 (319 mm) or 2/8 (212 mm) of the height
   const R = RECT ? 0.006 : 0.15;           // corner radius of the marble in plan; switches sit on its front face
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = RECT ? 0.022 : R - OV;
@@ -16,27 +16,74 @@ function MaxsenModel(cfg = {}) {
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
   // shelf heights in both end bays, evenly spaced in the body below the marble: two shelves, or one on the shorter rectangular body
-  const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
+  const SHELVES = GOLD ? [0.307, 0.513] : [(Y0 + .04 + Y1) / 2 - .0125];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- finishes: the Maxsen palette, for every surface ---------- */
+  // colours are the look you see (sRGB); the metals are tuned to read right under the show lights
+  const mrb = (bg, v1, v2) => `linear-gradient(135deg,${bg} 0 38%,${v1} 40%,${bg} 43% 68%,${v2} 70%,${bg} 72%)`;
+  const grain = (a, b) => `repeating-linear-gradient(0deg,${a} 0 3px,${b} 3px 4px)`;
+  const shine = (a, b, c) => `linear-gradient(135deg,${a},${b},${c})`;
+  const fade = (a, b) => `linear-gradient(0deg,${a},${b})`;
   const FINISHES = {
-    marble:    { name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: 'linear-gradient(135deg,#f4f1ec 0 38%,#cfcac3 40%,#f4f1ec 43% 68%,#c9ad84 70%,#f4f1ec 72%)' },
-    nero:      { name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: 'linear-gradient(135deg,#171615 0 38%,#a9a6a2 40%,#171615 43% 68%,#c9a46a 70%,#171615 72%)' },
-    white:     { name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
-    gloss:     { name: 'Gloss white', color: 0xF6F4F1, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
-    blush:     { name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
-    oak:       { name: 'Light oak', tex: 'oak', roughness: .55, css: 'repeating-linear-gradient(0deg,#d2b994 0 3px,#c3a67d 3px 4px)' },
-    paleoak:   { name: 'Pale oak', tex: 'paleoak', roughness: .55, css: 'repeating-linear-gradient(0deg,#e2d0b4 0 3px,#d3bd9b 3px 4px)' },
-    walnut:    { name: 'Walnut', tex: 'walnut', roughness: .5, css: 'repeating-linear-gradient(0deg,#5a3d2b 0 3px,#3f2a1d 3px 4px)' },
-    gold:      { name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#8f6526,#e0bf7a,#b98a3e)' },
-    rosegold:  { name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#9a6555,#efc8b8,#c08a78)' },
-    champagne: { name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#a8916a,#efe0c2,#cdb58e)' },
-    bronze:    { name: 'Midnight bronze', color: 0x1E1815, metalness: .35, roughness: .42, css: '#29221F' },
-    fadeRose:  { name: 'White to rose gold', grad: [0xF4F1EC, 0xA25844], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#c08a78)' },
-    fadeGold:  { name: 'White to gold', grad: [0xF4F1EC, 0xA47430], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#b98a3e)' },
-    blushGold: { name: 'Blush to gold', grad: [0xE0BFB0, 0xA47430], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#e6c9bc,#b98a3e)' },
-    dusk:      { name: 'Bronze to rose gold', grad: [0x1E1815, 0xA25844], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#29221f,#c08a78)' }
+    // stone
+    marble:     { group: 'Stone', name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: mrb('#f4f1ec', '#cfcac3', '#c9ad84') },
+    calacatta:  { group: 'Stone', name: 'Calacatta gold', tex: 'calacatta', roughness: .35, clearcoat: .3, clearcoatRoughness: .3, css: mrb('#f6f3ee', '#b8955a', '#c9a46a') },
+    rosa:       { group: 'Stone', name: 'Rosa marble', tex: 'rosa', roughness: .35, clearcoat: .3, clearcoatRoughness: .3, css: mrb('#e8cfc8', '#fbf6f4', '#f6ece8') },
+    verde:      { group: 'Stone', name: 'Verde marble', tex: 'verde', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: mrb('#1f3a2e', '#dfe8e2', '#b9cfc2') },
+    nero:       { group: 'Stone', name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: mrb('#171615', '#a9a6a2', '#c9a46a') },
+    travertine: { group: 'Stone', name: 'Travertine', tex: 'travertine', roughness: .6, css: 'repeating-linear-gradient(0deg,#dccbb0 0 5px,#cdb998 5px 7px,#e3d4bc 7px 11px)' },
+    terrazzo:   { group: 'Stone', name: 'Terrazzo', tex: 'terrazzo', roughness: .45, clearcoat: .2, css: 'radial-gradient(circle at 30% 30%,#cfa594 0 3px,transparent 4px),radial-gradient(circle at 70% 60%,#29221f 0 2px,transparent 3px),radial-gradient(circle at 45% 75%,#b98a3e 0 2px,transparent 3px),radial-gradient(circle at 75% 25%,#9a9590 0 3px,transparent 4px),#eee8e0' },
+    // colour
+    white:      { group: 'Colour', name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
+    gloss:      { group: 'Colour', name: 'Gloss white', color: 0xF8F6F3, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
+    ivory:      { group: 'Colour', name: 'Ivory', color: 0xEFE6D6, roughness: .55, css: '#EFE6D6' },
+    sand:       { group: 'Colour', name: 'Sand', color: 0xD8C3A5, roughness: .6, css: '#D8C3A5' },
+    greige:     { group: 'Colour', name: 'Greige', color: 0xB8AB9C, roughness: .6, css: '#B8AB9C' },
+    blush:      { group: 'Colour', name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
+    rose:       { group: 'Colour', name: 'Maxsen rose', color: 0xCFA594, roughness: .55, css: '#CFA594' },
+    dustypink:  { group: 'Colour', name: 'Dusty pink', color: 0xC9928B, roughness: .55, css: '#C9928B' },
+    terracotta: { group: 'Colour', name: 'Terracotta', color: 0xB86B4B, roughness: .6, css: '#B86B4B' },
+    lilac:      { group: 'Colour', name: 'Lilac', color: 0xC4B4CC, roughness: .55, css: '#C4B4CC' },
+    powder:     { group: 'Colour', name: 'Powder blue', color: 0xB9C7D3, roughness: .55, css: '#B9C7D3' },
+    sage:       { group: 'Colour', name: 'Sage', color: 0x9AA58E, roughness: .6, css: '#9AA58E' },
+    forest:     { group: 'Colour', name: 'Forest green', color: 0x2C4638, roughness: .5, css: '#2C4638' },
+    navy:       { group: 'Colour', name: 'Navy', color: 0x1F2A3C, roughness: .5, css: '#1F2A3C' },
+    mocha:      { group: 'Colour', name: 'Mocha', color: 0x6E5444, roughness: .55, css: '#6E5444' },
+    charcoal:   { group: 'Colour', name: 'Charcoal', color: 0x34322F, roughness: .55, css: '#34322F' },
+    black:      { group: 'Colour', name: 'Matte black', color: 0x141414, roughness: .7, css: '#141414' },
+    // wood
+    oak:        { group: 'Wood', name: 'Light oak', tex: 'oak', roughness: .55, css: grain('#d2b994', '#c3a67d') },
+    paleoak:    { group: 'Wood', name: 'Pale oak', tex: 'paleoak', roughness: .55, css: grain('#e2d0b4', '#d3bd9b') },
+    teak:       { group: 'Wood', name: 'Teak', tex: 'teak', roughness: .5, css: grain('#9a6a40', '#7f5530') },
+    smoked:     { group: 'Wood', name: 'Smoked oak', tex: 'smoked', roughness: .5, css: grain('#7b6450', '#634e3d') },
+    walnut:     { group: 'Wood', name: 'Walnut', tex: 'walnut', roughness: .5, css: grain('#5a3d2b', '#3f2a1d') },
+    ebony:      { group: 'Wood', name: 'Ebony', tex: 'ebony', roughness: .45, css: grain('#2a1e18', '#1a120e') },
+    // metal
+    gold:       { group: 'Metal', name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: shine('#8f6526', '#e0bf7a', '#b98a3e') },
+    rosegold:   { group: 'Metal', name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: shine('#9a6555', '#efc8b8', '#c08a78') },
+    champagne:  { group: 'Metal', name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: shine('#a8916a', '#efe0c2', '#cdb58e') },
+    brass:      { group: 'Metal', name: 'Antique brass', color: 0x8C6A33, metalness: 1, roughness: .4, css: shine('#5e4520', '#b9955a', '#8c6a33') },
+    copper:     { group: 'Metal', name: 'Copper', color: 0xB0663E, metalness: 1, roughness: .32, clearcoat: .2, css: shine('#7d4224', '#e3a37a', '#b0663e') },
+    silver:     { group: 'Metal', name: 'Brushed silver', color: 0xC4C4C6, metalness: 1, roughness: .3, css: shine('#8d8d90', '#f2f2f3', '#c4c4c6') },
+    gunmetal:   { group: 'Metal', name: 'Gunmetal', color: 0x4A4C50, metalness: 1, roughness: .35, css: shine('#2b2c2f', '#7d8085', '#4a4c50') },
+    blackchrome:{ group: 'Metal', name: 'Black chrome', color: 0x1C1C1E, metalness: 1, roughness: .18, clearcoat: .5, css: shine('#050505', '#5b5b60', '#1c1c1e') },
+    bronze:     { group: 'Metal', name: 'Midnight bronze', color: 0x29221F, metalness: .5, roughness: .4, css: '#29221F' },
+    // gradient: from the bottom of the surface to the top
+    fadeRose:   { group: 'Gradient', name: 'White to rose gold', grad: [0xF4F1EC, 0xC07F6B], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#c07f6b') },
+    fadeGold:   { group: 'Gradient', name: 'White to gold', grad: [0xF4F1EC, 0xC69A4F], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#c69a4f') },
+    fadeChamp:  { group: 'Gradient', name: 'Ivory to champagne', grad: [0xF4EEE4, 0xCDB58E], metalness: .25, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4eee4', '#cdb58e') },
+    blushGold:  { group: 'Gradient', name: 'Blush to gold', grad: [0xE6C9BC, 0xC69A4F], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: fade('#e6c9bc', '#c69a4f') },
+    blushRose:  { group: 'Gradient', name: 'Blush to rose gold', grad: [0xF1DDD4, 0xB8735E], metalness: .3, roughness: .32, clearcoat: .35, clearcoatRoughness: .2, css: fade('#f1ddd4', '#b8735e') },
+    roseGold2:  { group: 'Gradient', name: 'Rose gold to gold', grad: [0xC07F6B, 0xC69A4F], metalness: .45, roughness: .3, clearcoat: .3, clearcoatRoughness: .2, css: fade('#c07f6b', '#c69a4f') },
+    lilacBlush: { group: 'Gradient', name: 'Lilac to blush', grad: [0xC4B4CC, 0xF1DDD4], roughness: .5, css: fade('#c4b4cc', '#f1ddd4') },
+    sunset:     { group: 'Gradient', name: 'Terracotta to blush', grad: [0xB86B4B, 0xF1DDD4], roughness: .5, css: fade('#b86b4b', '#f1ddd4') },
+    sageFade:   { group: 'Gradient', name: 'Sage to white', grad: [0x9AA58E, 0xF4F1EC], roughness: .5, css: fade('#9aa58e', '#f4f1ec') },
+    skyFade:    { group: 'Gradient', name: 'Powder blue to white', grad: [0xB9C7D3, 0xF4F1EC], roughness: .5, css: fade('#b9c7d3', '#f4f1ec') },
+    silverFade: { group: 'Gradient', name: 'White to silver', grad: [0xF4F1EC, 0xB9BABD], metalness: .35, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: fade('#f4f1ec', '#b9babd') },
+    navyGold:   { group: 'Gradient', name: 'Navy to gold', grad: [0x1F2A3C, 0xC69A4F], metalness: .35, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: fade('#1f2a3c', '#c69a4f') },
+    blackGold:  { group: 'Gradient', name: 'Black to gold', grad: [0x141414, 0xC69A4F], metalness: .4, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: fade('#141414', '#c69a4f') },
+    dusk:       { group: 'Gradient', name: 'Bronze to rose gold', grad: [0x2A2320, 0xC07F6B], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: fade('#2a2320', '#c07f6b') }
   };
   const SLOTS = [['top', 'Top'], ...(GOLD ? [['gold', 'Gold layer']] : []), ['body', 'Body'], ['inner', 'Shelves and bays'], ['base', 'Base'], ['stands', 'Lock stands']];
   const FINISH_DEFAULT = { top: 'marble', gold: 'gold', body: 'oak', inner: 'paleoak', base: 'bronze', stands: 'oak' };
@@ -44,7 +91,10 @@ function MaxsenModel(cfg = {}) {
     original: { name: 'As designed', f: FINISH_DEFAULT },
     porcelain: { name: 'Porcelain and rose gold', f: { top: 'marble', gold: 'rosegold', body: 'gloss', inner: 'blush', base: 'rosegold', stands: 'gloss' } },
     rosefade: { name: 'Rose gold fade', f: { top: 'marble', gold: 'rosegold', body: 'fadeRose', inner: 'white', base: 'rosegold', stands: 'white' } },
-    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } }
+    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } },
+    sage: { name: 'Sage and brass', f: { top: 'calacatta', gold: 'brass', body: 'sage', inner: 'ivory', base: 'brass', stands: 'ivory' } },
+    navy: { name: 'Navy and gold', f: { top: 'marble', gold: 'gold', body: 'navy', inner: 'walnut', base: 'gold', stands: 'navy' } },
+    terracotta: { name: 'Terracotta', f: { top: 'terrazzo', gold: 'copper', body: 'terracotta', inner: 'travertine', base: 'bronze', stands: 'sand' } }
   };
   const cleanFinishes = f => { const o = Object.assign({}, FINISH_DEFAULT); if (f && typeof f === 'object') for (const [k, v] of Object.entries(f)) if (k in FINISH_DEFAULT && typeof v === 'string' && v in FINISHES) o[k] = v; return o; };
 
@@ -89,7 +139,7 @@ function MaxsenModel(cfg = {}) {
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
   ];
-  if (RECT) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
+  if (SHELVES.length === 1) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
   // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
   const DEFAULT_CLOSED = [
     ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
@@ -191,20 +241,47 @@ function MaxsenModel(cfg = {}) {
   let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
   function tex(THREE, c, rx = 1, ry = 1) { const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; }
-  function stone(THREE, dark) { // white marble with bold grey and soft gold veining; or black with white and gold
+  const STONES = { // ground, two cloud tones, three vein tones and the accent vein
+    white:     ['#F4F1EC', '228,222,214', '250,248,245', '244,241,236', ['120,118,116', '96,94,92', '110,108,106'], '176,142,92'],
+    nero:      ['#161514', '40,38,36', '12,12,11', '22,21,20', ['150,148,145', '214,212,208', '190,188,184'], '176,142,92'],
+    calacatta: ['#F6F3EE', '232,226,216', '252,250,247', '246,243,238', ['168,140,96', '150,118,70', '160,134,98'], '186,146,72'],
+    rosa:      ['#E8CFC8', '240,222,216', '222,192,184', '232,207,200', ['250,244,242', '255,251,250', '205,172,162'], '190,150,138'],
+    verde:     ['#1F3A2E', '34,66,50', '16,40,30', '31,58,46', ['170,196,182', '226,236,230', '186,206,196'], '214,224,216']
+  };
+  function stone(THREE, kind) { // marble: clouds, soft and sharp veins, and an accent vein
+    const [bg, c1, c2, c0, vc, acc] = STONES[kind === true ? 'nero' : kind || 'white'];
     const [c, g] = canvas(2048, 1024);
-    g.fillStyle = dark ? '#161514' : '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
-    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, dark ? `rgba(${rnd() > .6 ? '40,38,36' : '12,12,11'},.7)` : `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, dark ? 'rgba(22,21,20,0)' : 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
+    g.fillStyle = bg; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .6 ? c1 : c2},.7)`); f.addColorStop(1, `rgba(${c0},0)`); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
     const vein = (w, a, col, wob) => {
       g.strokeStyle = `rgba(${col},${a})`; g.lineWidth = w; g.lineCap = 'round';
       g.beginPath(); let x = -40, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 70;
       while (x < 2100) { const nx = x + 30 + rnd() * 60, ny = y + drift + (rnd() - .5) * wob; g.quadraticCurveTo(x + (nx - x) / 2, y + (rnd() - .5) * wob, nx, ny); x = nx; y = ny; }
       g.stroke();
     };
-    const vc = dark ? ['150,148,145', '214,212,208', '190,188,184'] : ['120,118,116', '96,94,92', '110,108,106'];
     for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, vc[0], 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, vc[1], 30); }
     for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, vc[2], 50);
-    for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, '176,142,92', 30);
+    for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, acc, 30);
+    if (kind === 'calacatta') for (let k = 0; k < 3; k++) { g.filter = 'blur(3px)'; vein(6 + rnd() * 6, .3, acc, 35); g.filter = 'none'; vein(2 + rnd() * 2, .6, acc, 30); }
+    return c;
+  }
+  function travertine(THREE) { // warm beige in soft horizontal bands, with small pits
+    const [c, g] = canvas(2048, 1024);
+    g.fillStyle = '#DCCBB0'; g.fillRect(0, 0, 2048, 1024);
+    for (let y = 0; y < 1024; y += 4 + rnd() * 18) { g.fillStyle = `rgba(${rnd() > .5 ? '196,174,140' : '232,220,198'},${.15 + rnd() * .35})`; g.fillRect(0, y, 2048, 2 + rnd() * 10); }
+    for (let k = 0; k < 900; k++) { g.fillStyle = `rgba(150,124,92,${.25 + rnd() * .4})`; g.beginPath(); g.ellipse(rnd() * 2048, rnd() * 1024, 2 + rnd() * 9, 1 + rnd() * 2.5, 0, 0, 7); g.fill(); }
+    return c;
+  }
+  function terrazzo(THREE) { // pale ground with chips in the Maxsen colours
+    const [c, g] = canvas(2048, 1024);
+    g.fillStyle = '#EEE8E0'; g.fillRect(0, 0, 2048, 1024);
+    const chips = ['#CFA594', '#29221F', '#B98A3E', '#9A9590', '#E6C9BC', '#C9C3BA'];
+    for (let k = 0; k < 2600; k++) {
+      g.fillStyle = chips[Math.floor(rnd() * chips.length)]; g.beginPath();
+      const x = rnd() * 2048, y = rnd() * 1024, r = 3 + rnd() * (rnd() > .9 ? 22 : 9), n = 5 + Math.floor(rnd() * 3);
+      for (let i = 0; i < n; i++) { const a = i / n * 7, rr2 = r * (.6 + rnd() * .5); i ? g.lineTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2) : g.moveTo(x + Math.cos(a) * rr2, y + Math.sin(a) * rr2); }
+      g.fill();
+    }
     return c;
   }
   function wood(THREE, base, dark, light) { // straight grain, running along the length
@@ -276,7 +353,9 @@ function MaxsenModel(cfg = {}) {
     // every surface that takes a finish has its own material, refinished in place when the finish changes
     const canv = {};
     const texCanvas = k => canv[k] || (canv[k] = {
-      marble: () => stone(THREE), nero: () => stone(THREE, true),
+      marble: () => stone(THREE), nero: () => stone(THREE, 'nero'), calacatta: () => stone(THREE, 'calacatta'), rosa: () => stone(THREE, 'rosa'), verde: () => stone(THREE, 'verde'),
+      travertine: () => travertine(THREE), terrazzo: () => terrazzo(THREE),
+      teak: () => wood(THREE, '#9A6A40', '70,40,20', '190,140,90'), smoked: () => wood(THREE, '#7B6450', '40,28,18', '150,120,96'), ebony: () => wood(THREE, '#2A1E18', '8,5,3', '80,60,50'),
       oak: () => wood(THREE, '#D2B994', '150,116,78', '238,220,192'), paleoak: () => wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'),
       walnut: () => wood(THREE, '#5A3D2B', '30,18,10', '122,86,60')
     }[k]());
@@ -304,11 +383,11 @@ function MaxsenModel(cfg = {}) {
       if (m.map) m.map.dispose();
       m.map = null;
       if (F.tex) { const t = tex(THREE, texCanvas(F.tex), ...(o.rep || [1, 1])); if (o.off) t.offset.set(...o.off); if (o.rot) t.rotation = o.rot; m.map = t; }
-      m.color.set(F.tex || F.grad ? 0xffffff : F.color);
+      m.color.set(F.tex || F.grad ? 0xffffff : F.color); if (!F.tex && !F.grad && (F.metalness || 0) < .5) m.color.convertSRGBToLinear();
       m.metalness = F.metalness || 0; m.roughness = F.roughness ?? .5;
       m.clearcoat = F.clearcoat || 0; m.clearcoatRoughness = F.clearcoatRoughness ?? .3;
       m.envMapIntensity = F.metalness ? (night ? .5 : 1.05) : (night ? .25 : .5);
-      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]); g.b.value.set(F.grad[1]); }
+      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]).convertSRGBToLinear(); g.b.value.set(F.grad[1]).convertSRGBToLinear(); }
       m.needsUpdate = true;
     }
     function setFinish(slot, key) {
@@ -972,4 +1051,6 @@ function MaxsenModel(cfg = {}) {
   return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize, FINISHES, SLOTS, PRESETS, cleanFinishes };
 }
 window.MaxsenTable = MaxsenModel();
-window.MaxsenTable.rect = MaxsenModel({ rect: true });
+window.MaxsenTable.rect = MaxsenModel({ rect: true, frac: 3 / 8 });
+window.MaxsenTable.rect28 = MaxsenModel({ rect: true, frac: 2 / 8 });
+window.MaxsenTable.round28 = MaxsenModel({ frac: 2 / 8 });
