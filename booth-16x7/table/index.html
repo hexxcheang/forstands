@@ -148,10 +148,10 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   <header class="head">
     <span class="eyebrow">Maxsen · booth furniture · from your reference</span>
     <h1>The switch counter, <em>in the Maxsen colours.</em></h1>
-    <p class="lede">A 1.4 m standing counter with a white marble top under a thin, flat gold top: Lusano Swarovski crystal switches and the Halo dimmer along its front edge, six Lenovo smart locks on top, each on its own stand and staggered in two rows, and a ball light at the front left that the Halo dimmer and the switches control. Below, a light wood body with LUSANO in bronze letters, lit from behind, on its closed centre, and identical open shelves curving round both front corners, with catalogues on the top shelves and trailing plants spilling over the middle ones. Addressable RGBCCT LED strips run under the top, under each shelf and under the base.</p>
+    <p class="lede">A 1.4 m counter, 850 mm high, with a white marble top under a thin, flat gold top: Lusano Swarovski crystal switches and the Halo dimmer along its front edge, six Lenovo smart locks on top, each on its own stand and staggered in two rows, and a ball light at the front left that the Halo dimmer and the switches control. Below, a light wood body with LUSANO in bronze letters, lit from behind, on its closed centre, and identical open shelves curving round both front corners, with catalogues on the top shelves and trailing plants spilling over the middle ones. Addressable RGBCCT LED strips run under the top, under each shelf and under the base.</p>
     <div class="facts">
       <div><b>1,400 × 500</b><span>body and marble, under a 1,540 × 550 gold top</span></div>
-      <div><b>1,010</b><span>height in mm with the gold top, standing counter</span></div>
+      <div><b>850</b><span>height in mm to the top of the gold</span></div>
       <div><b>3 + Halo + 3</b><span>Lusano Noble left, Halo centre, Lusano Prestige right</span></div>
       <div><b>RGBCCT IC</b><span>addressable LED: tunable white and full colour</span></div>
     </div>
@@ -234,6 +234,8 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-v="top" aria-pressed="false">From above</button>
         <button type="button" data-m="night" aria-pressed="false">Warm white</button>
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
+        <button type="button" data-s="open" aria-pressed="true">With shelves</button>
+        <button type="button" data-s="closed" aria-pressed="false">Without shelves</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
       </div>
       <div class="arrange" id="arrange" hidden>
@@ -279,16 +281,31 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
   </section>
 
+  <section aria-labelledby="noshelf">
+    <div class="head">
+      <span class="eyebrow">Option</span>
+      <h2 id="noshelf">Without the shelves</h2>
+    </div>
+    <p class="lede">The same counter with the end bays closed: the light wood wraps all four corners as one quiet block, with a 6 mm shadow gap either side of the LUSANO panel. Everything on the top stays where it is. With nowhere for catalogues, they come off. Trailing pothos and ivy sit at the two back corners of the gold top and hang down the closed ends. It is simpler to build and easier to keep tidy at a show, but it loses the catalogue display and the lit bays. Switch between the two in the 3D model above; each keeps its own arrangement.</p>
+    <figure class="shot"><img src="renders/closed-day-hero.jpg" alt="The counter without shelves: closed light wood ends wrapping the corners, LUSANO in the centre of the front, six staggered locks and the ball light on the gold top, and trailing pothos hanging down the left end" width="1600" height="1000" loading="lazy"><figcaption><b>Without shelves.</b> Closed ends; plants at the back corners of the top.</figcaption></figure>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/closed-day-front.jpg" alt="Straight-on front view of the counter without shelves: one wood front in three panels, LUSANO in the middle" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> One wood front, the LUSANO panel set between two side panels.</figcaption></figure>
+      <figure class="shot"><img src="renders/closed-day-end.jpg" alt="Three-quarter view of the right end without shelves: the closed rounded end, with English ivy hanging from the corner of the gold top" width="1600" height="1000" loading="lazy"><figcaption><b>Right end.</b> Ivy falls from the gold top down the closed end.</figcaption></figure>
+      <figure class="shot"><img src="renders/closed-night-hero.jpg" alt="The counter without shelves with the show lights low: warm light under the top edge and the base, LUSANO glowing" width="1600" height="1000" loading="lazy"><figcaption><b>Warm white.</b> Light under the top and the base only.</figcaption></figure>
+      <figure class="shot"><img src="renders/closed-colour-hero.jpg" alt="The counter without shelves in colour mode, the LED strips running a colour gradient" width="1600" height="1000" loading="lazy"><figcaption><b>Colour effect.</b> The same strips, top edge and base.</figcaption></figure>
+    </div>
+  </section>
+
   <section aria-labelledby="dwg">
     <div class="head">
       <span class="eyebrow">Drawings</span>
       <h2 id="dwg">To scale, in millimetres</h2>
     </div>
     <div class="drw">
-      <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -660 2160 2060" class="dwg" role="img" aria-label="Front elevation with dimensions"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="20" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="120" width="1370" height="820" rx="10" class="body"/><rect x="35" y="140" width="1330" height="760" class="inner"/><rect x="355" y="120" width="30" height="820" class="body"/><rect x="1015" y="120" width="30" height="820" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="120" width="630" height="820" class="body"/><text x="420" y="460" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="658" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="658" width="340" height="25" rx="6" class="shelf"/><rect x="35" y="388" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="388" width="340" height="25" rx="6" class="shelf"/><rect x="0" y="0" width="1400" height="120" rx="8" class="stone"/><rect x="-70" y="-10" width="1540" height="10" rx="3" class="goldc"/><rect x="282" y="17" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="49" width="86" height="22" fill="#B88A4E"/><rect x="282" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="17" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="49" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="17" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="49" width="86" height="22" fill="#555555"/><rect x="532" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="17" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="60" r="30" class="halok"/><rect x="782" y="17" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="49" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="17" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="49" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="17" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="49" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="55" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="-22" width="170" height="12" class="bronze"/><rect x="595" y="-572" width="150" height="550" class="door"/><rect x="626" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="-22" width="170" height="12" class="bronze"/><rect x="180" y="-572" width="150" height="550" class="door"/><rect x="211" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="-22" width="170" height="12" class="bronze"/><rect x="1016" y="-572" width="150" height="550" class="door"/><rect x="1047" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="-22" width="170" height="12" class="bronze"/><rect x="813" y="-572" width="150" height="550" class="door"/><rect x="844" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="-22" width="170" height="12" class="bronze"/><rect x="1226" y="-572" width="150" height="550" class="door"/><rect x="1257" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="-22" width="170" height="12" class="bronze"/><rect x="400" y="-572" width="150" height="550" class="door"/><rect x="431" y="-512" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="-44" width="120" height="22" rx="6" class="bronze"/><circle cx="92" cy="-132" r="100" class="ballc"/><rect x="25" y="122" width="1350" height="5" class="led"/><g class="dim"><line x1="-70" y1="-600" x2="1470" y2="-600"/><line x1="-70" y1="-625" x2="-70" y2="-575"/><line x1="1470" y1="-625" x2="1470" y2="-575"/></g><text x="700.0" y="-622" class="td" text-anchor="middle">1,540 gold top</text><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><text x="700" y="1230" class="td" text-anchor="middle">front edge: Lusano Noble · Halo · Lusano Prestige</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="1000"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="514.0" class="td" text-anchor="end">1,000</text><g class="dim"><line x1="1460" y1="0" x2="1460" y2="120"/><line x1="1435" y1="0" x2="1485" y2="0"/><line x1="1435" y1="120" x2="1485" y2="120"/></g><text x="1490" y="74.0" class="td" text-anchor="start">120 top</text><g class="dim"><line x1="1530" y1="-572" x2="1530" y2="-22"/><line x1="1505" y1="-572" x2="1555" y2="-572"/><line x1="1505" y1="-22" x2="1555" y2="-22"/></g><text x="1560" y="-283.0" class="td" text-anchor="start">550 door</text><text x="1530" y="5" class="td" text-anchor="start">10 gold top</text><text x="1560" y="-200" class="td" text-anchor="start">locks 78 × 410</text><g class="dim"><line x1="1460" y1="940" x2="1460" y2="1000"/><line x1="1435" y1="940" x2="1485" y2="940"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="984.0" class="td" text-anchor="start">60 base</text><text x="1460" y="682" class="td" text-anchor="start">shelf 330</text><text x="1460" y="412" class="td" text-anchor="start">shelf 600</text></svg></div></figure>
-      <figure class="sheet"><div class="sheet-h"><b>End</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -660 900 1900" class="dwg narrow" role="img" aria-label="End elevation: 500 deep, closed at the back, open shelves at the front"><rect x="-60" y="1000" width="620" height="10" class="floor"/><rect x="65" y="940" width="370" height="58" rx="20" class="bronze"/><rect x="75" y="952" width="350" height="5" class="led"/><rect x="15" y="120" width="470" height="820" rx="10" class="body"/><rect x="250" y="120" width="235" height="780" class="inner"/><rect x="0" y="0" width="500" height="120" rx="8" class="stone"/><rect x="-25" y="-10" width="550" height="10" rx="3" class="goldc"/><rect x="25" y="122" width="450" height="5" class="led"/><rect x="125" y="-22" width="150" height="12" class="bronze"/><rect x="177" y="-572" width="45" height="550" class="door"/><rect x="222" y="-512" width="70" height="410" class="lockb"/><rect x="147" y="-457" width="30" height="320" class="lockb"/><rect x="500" y="17" width="6" height="86" class="sw"/><rect x="250" y="658" width="235" height="25" rx="6" class="shelf"/><rect x="250" y="388" width="235" height="25" rx="6" class="shelf"/><text x="132" y="500" class="td" text-anchor="middle">closed</text><text x="368" y="220" class="td" text-anchor="middle">open</text><g class="dim"><line x1="-25" y1="-600" x2="525" y2="-600"/><line x1="-25" y1="-625" x2="-25" y2="-575"/><line x1="525" y1="-625" x2="525" y2="-575"/></g><text x="250.0" y="-622" class="td" text-anchor="middle">550 gold top</text><g class="dim"><line x1="0" y1="1090" x2="500" y2="1090"/><line x1="0" y1="1065" x2="0" y2="1115"/><line x1="500" y1="1065" x2="500" y2="1115"/></g><text x="250.0" y="1150" class="td" text-anchor="middle">500 marble</text><g class="dim"><line x1="-80" y1="-10" x2="-80" y2="1000"/><line x1="-105" y1="-10" x2="-55" y2="-10"/><line x1="-105" y1="1000" x2="-55" y2="1000"/></g><text x="-108" y="509.0" class="td" text-anchor="end">1,010</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -510 2160 1910" class="dwg" role="img" aria-label="Front elevation with dimensions"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="20" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="280" width="1370" height="660" rx="10" class="body"/><rect x="35" y="300" width="1330" height="600" class="inner"/><rect x="355" y="280" width="30" height="660" class="body"/><rect x="1015" y="280" width="30" height="660" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="280" width="630" height="660" class="body"/><text x="420" y="547" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="681" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="681" width="340" height="25" rx="6" class="shelf"/><rect x="35" y="475" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="475" width="340" height="25" rx="6" class="shelf"/><rect x="0" y="160" width="1400" height="120" rx="8" class="stone"/><rect x="-70" y="150" width="1540" height="10" rx="3" class="goldc"/><rect x="282" y="177" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="209" width="86" height="22" fill="#B88A4E"/><rect x="282" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="177" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="209" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="177" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="209" width="86" height="22" fill="#555555"/><rect x="532" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="177" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="220" r="30" class="halok"/><rect x="782" y="177" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="177" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="177" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="116" width="120" height="22" rx="6" class="bronze"/><circle cx="92" cy="28" r="100" class="ballc"/><rect x="25" y="282" width="1350" height="5" class="led"/><g class="dim"><line x1="-70" y1="-450" x2="1470" y2="-450"/><line x1="-70" y1="-475" x2="-70" y2="-425"/><line x1="1470" y1="-475" x2="1470" y2="-425"/></g><text x="700.0" y="-472" class="td" text-anchor="middle">1,540 gold top</text><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><text x="700" y="1230" class="td" text-anchor="middle">front edge: Lusano Noble · Halo · Lusano Prestige</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="160" x2="1460" y2="280"/><line x1="1435" y1="160" x2="1485" y2="160"/><line x1="1435" y1="280" x2="1485" y2="280"/></g><text x="1490" y="234.0" class="td" text-anchor="start">120 top</text><g class="dim"><line x1="1530" y1="-412" x2="1530" y2="138"/><line x1="1505" y1="-412" x2="1555" y2="-412"/><line x1="1505" y1="138" x2="1555" y2="138"/></g><text x="1560" y="-123.0" class="td" text-anchor="start">550 door</text><text x="1575" y="165" class="td" text-anchor="start">10 gold top</text><text x="1560" y="-40" class="td" text-anchor="start">locks 78 × 410</text><g class="dim"><line x1="1460" y1="940" x2="1460" y2="1000"/><line x1="1435" y1="940" x2="1485" y2="940"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="984.0" class="td" text-anchor="start">60 base</text><text x="1460" y="705" class="td" text-anchor="start">shelf 307</text><text x="1460" y="499" class="td" text-anchor="start">shelf 513</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>End</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -510 900 1750" class="dwg narrow" role="img" aria-label="End elevation: 500 deep, closed at the back, open shelves at the front"><rect x="-60" y="1000" width="620" height="10" class="floor"/><rect x="65" y="940" width="370" height="58" rx="20" class="bronze"/><rect x="75" y="952" width="350" height="5" class="led"/><rect x="15" y="280" width="470" height="660" rx="10" class="body"/><rect x="250" y="280" width="235" height="620" class="inner"/><rect x="0" y="160" width="500" height="120" rx="8" class="stone"/><rect x="-25" y="150" width="550" height="10" rx="3" class="goldc"/><rect x="25" y="282" width="450" height="5" class="led"/><rect x="125" y="138" width="150" height="12" class="bronze"/><rect x="177" y="-412" width="45" height="550" class="door"/><rect x="222" y="-352" width="70" height="410" class="lockb"/><rect x="147" y="-297" width="30" height="320" class="lockb"/><rect x="500" y="177" width="6" height="86" class="sw"/><rect x="250" y="681" width="235" height="25" rx="6" class="shelf"/><rect x="250" y="475" width="235" height="25" rx="6" class="shelf"/><text x="132" y="580" class="td" text-anchor="middle">closed</text><text x="368" y="370" class="td" text-anchor="middle">open</text><g class="dim"><line x1="-25" y1="-450" x2="525" y2="-450"/><line x1="-25" y1="-475" x2="-25" y2="-425"/><line x1="525" y1="-475" x2="525" y2="-425"/></g><text x="250.0" y="-472" class="td" text-anchor="middle">550 gold top</text><g class="dim"><line x1="0" y1="1090" x2="500" y2="1090"/><line x1="0" y1="1065" x2="0" y2="1115"/><line x1="500" y1="1065" x2="500" y2="1115"/></g><text x="250.0" y="1150" class="td" text-anchor="middle">500 marble</text><g class="dim"><line x1="-80" y1="150" x2="-80" y2="1000"/><line x1="-105" y1="150" x2="-55" y2="150"/><line x1="-105" y1="1000" x2="-55" y2="1000"/></g><text x="-108" y="589.0" class="td" text-anchor="end">850</text></svg></div></figure>
     </div>
-    <figure class="sheet"><div class="sheet-h"><b>Plan from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, six locks staggered in two rows and the ball light at the front left on the top, with the switches on the front edge"><rect x="-70" y="-25" width="1540" height="550" rx="165" class="goldc"/><rect x="0" y="0" width="1400" height="500" rx="150" class="marbleo"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="279" width="170" height="150" class="bronze"/><rect x="400" y="332" width="150" height="45" class="door"/><rect x="431" y="377" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="92" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><text x="800" y="-60" class="td" text-anchor="middle">6 Lenovo locks, staggered in two rows</text><text x="-100" y="380" class="td" text-anchor="end">ball light</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT EDGE · NOBLE · HALO · PRESTIGE</text><g class="dim"><line x1="-70" y1="-110" x2="1470" y2="-110"/><line x1="-70" y1="-135" x2="-70" y2="-85"/><line x1="1470" y1="-135" x2="1470" y2="-85"/></g><text x="700.0" y="-132" class="td" text-anchor="middle">1,540 gold top (marble 1,400, dashed)</text><g class="dim"><line x1="-110" y1="-25" x2="-110" y2="525"/><line x1="-135" y1="-25" x2="-85" y2="-25"/><line x1="-135" y1="525" x2="-85" y2="525"/></g><text x="-138" y="264.0" class="td" text-anchor="end">550</text><path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/><text x="1500" y="60" class="td" text-anchor="start">R165</text></svg></div></figure>
+    <figure class="sheet"><div class="sheet-h"><b>Plan from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, six locks staggered in two rows and the ball light at the front left on the top, with the switches on the front edge"><rect x="-70" y="-25" width="1540" height="550" rx="165" class="goldc"/><rect x="0" y="0" width="1400" height="500" rx="150" class="marbleo"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="279" width="170" height="150" class="bronze"/><rect x="400" y="332" width="150" height="45" class="door"/><rect x="431" y="377" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="92" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><text x="800" y="-60" class="td" text-anchor="middle">6 Lenovo locks, staggered in two rows</text><text x="100" y="580" class="td" text-anchor="middle">ball light</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT EDGE · NOBLE · HALO · PRESTIGE</text><g class="dim"><line x1="-70" y1="-110" x2="1470" y2="-110"/><line x1="-70" y1="-135" x2="-70" y2="-85"/><line x1="1470" y1="-135" x2="1470" y2="-85"/></g><text x="700.0" y="-132" class="td" text-anchor="middle">1,540 gold top (marble 1,400, dashed)</text><g class="dim"><line x1="-110" y1="-25" x2="-110" y2="525"/><line x1="-135" y1="-25" x2="-85" y2="-25"/><line x1="-135" y1="525" x2="-85" y2="525"/></g><text x="-138" y="264.0" class="td" text-anchor="end">550</text><path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/><text x="1500" y="60" class="td" text-anchor="start">R165</text></svg></div></figure>
   </section>
 
   <section aria-labelledby="spec">
@@ -311,7 +328,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <h3>Body</h3>
         <ul class="plain">
           <li>Plywood with a light wood veneer, such as white oak or ash, outside and inside the bays.</li>
-          <li>Both end bays are identical and open: shelves at 330 and 600 that curve round the front corner, with only the back half of each end closed. A4 catalogues on the top shelves.</li>
+          <li>Both end bays are identical and open: shelves at 307 and 513, evenly spaced, that curve round the front corner, with only the back half of each end closed. A4 catalogues on the top shelves.</li>
           <li>Trailing plants on the middle shelves, in 100–120 mm pots set near the front edge so the vines fall clear of the shelves below. For a show of a few days real plants are fine; for longer, use good artificial trailing plants, since the bay LEDs won't keep real ones healthy. Keep vines clear of the base LED line.</li>
           <li>Centre: closed with a removable light wood panel, 660 wide. LUSANO in bronze-finish letters, 560 mm wide with letters about 100 mm tall, stood 15 mm off the panel with a warm LED behind them, so they glow at the edges (halo lighting).</li>
         </ul>
@@ -327,7 +344,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <h3>Power and height</h3>
         <ul class="plain">
           <li>One 13 A point, entering through the base. The 24 V power supply, the SPI controller and the gateway sit behind the centre panel.</li>
-          <li>About 1,010 mm with the gold top is right for a standing counter: the body fills the space below, so there is no knee room for sitting.</li>
+          <li>850 mm to the top of the gold: the 120 mm marble top sits on a 720 mm body, and the gold adds 10 mm. That is worktop height, easy for anyone to reach the switches and the Halo dimmer. It also puts each lock's keypad at about 1.15 m, close to where it sits on a real door. The tallest point is the lock stands, at about 1.41 m. The body fills the space below, so there is no knee room for sitting.</li>
         </ul>
       </div>
     </div>
@@ -354,18 +371,18 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 
 <script>
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
-   1,400 long, 600 deep (assumed), 1,000 high. Units are metres: x along the length,
+   1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
 window.MaxsenTable = (function () {
-  const L = 1.4, D = 0.5, H = 1.0;
+  const L = 1.4, D = 0.5, H = 0.84;       // H: top of the marble; the 10 mm gold top brings the counter to 850
   const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
-  const GS = 1.1, GT = 0.01, HG = 1.0 + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
+  const GS = 1.1, GT = 0.01, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
-  const SHELVES = [0.33, 0.6];             // shelf heights in both end bays
+  const SHELVES = [0.307, 0.513];          // shelf heights in both end bays, evenly spaced in the lower body
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
@@ -408,6 +425,12 @@ window.MaxsenTable = (function () {
     { id: 'ivy1', type: 'plant', v: 'ivy', on: 'L1', x: -.43, z: .16, r: .6, s: 1 },
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
+  ];
+  // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
+  const DEFAULT_CLOSED = [
+    ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
+    { id: 'pothos3', type: 'plant', v: 'pothos', on: 'top', x: -.66, z: -.13, r: 0, s: 1 },
+    { id: 'ivy3', type: 'plant', v: 'ivy', on: 'top', x: .66, z: -.13, r: 0, s: 1 }
   ];
   function itemName(d) {
     if (d.type === 'lock') return 'Lenovo ' + (LOCK_VARIANTS[+d.v] || LOCK_VARIANTS[0]).name;
@@ -563,7 +586,7 @@ window.MaxsenTable = (function () {
   }
 
   /* ---------- the model ---------- */
-  function build(THREE, renderer, mood, imgs = {}) {
+  function build(THREE, renderer, mood, imgs = {}, shelves = true) {
     const colour = mood === 'colour', night = ['night', 'colour', 'low', 'high'].includes(mood);
     // the ball light on the top: brightness and colour temperature set from Halo and the switches
     const BALL = { low: [.16, 2700], high: [1, 4500] }[mood] || [.7, 3000];
@@ -731,14 +754,24 @@ window.MaxsenTable = (function () {
     const wall = (shape) => add(slab(THREE, shape, wallH), bodyMatV, 0, Y0 + .04, 0);
     wall(arcBand(THREE, -xs, -zs, BR, T, Math.PI, Math.PI * 1.5));        // back left corner
     wall(arcBand(THREE, xs, -zs, BR, T, -Math.PI / 2, 0));               // back right corner
-    add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // left end, back half
-    add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, BL / 2 - T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // right end, back half
+    if (shelves) {
+      add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // left end, back half
+      add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, BL / 2 - T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // right end, back half
+    } else {
+      // no shelves: the ends close, and the wood wraps all four corners
+      [-1, 1].forEach(sd => {
+        add(new THREE.BoxGeometry(T, wallH, 2 * zs + .002), bodyMat, sd * (BL / 2 - T / 2), Y0 + .04 + wallH / 2, 0);                  // full end
+        wall(arcBand(THREE, sd * xs, zs, BR, T, sd > 0 ? 0 : Math.PI / 2, sd > 0 ? Math.PI / 2 : Math.PI));                       // front corner
+        const x0 = DIV - .015 + .006, w = xs - x0;                                                                                     // a 6 mm shadow gap beside the centre panel
+        add(new THREE.BoxGeometry(w, wallH, T), bodyMat, sd * (x0 + w / 2), Y0 + .04 + wallH / 2, BD / 2 - T / 2);
+      });
+    }
     [-DIV, DIV].forEach(x => add(new THREE.BoxGeometry(.03, wallH, BD - T), bodyMat, x, Y0 + .04 + wallH / 2, T / 2));
     // champagne-lit interiors: back faces of the bays and the niche
     add(new THREE.BoxGeometry(2 * xs - .04, wallH - .002, .004), inner, 0, Y0 + .04 + wallH / 2, -BD / 2 + T + .002, { cast: false });
     // shelves: the same at both ends, rounded where they wrap the front corners
     const lx0 = -BL / 2, lx1 = -DIV - .015, rx0 = DIV + .015, rx1 = BL / 2;
-    SHELVES.forEach(y => {
+    if (shelves) SHELVES.forEach(y => {
       add(slab(THREE, endShelf(THREE, -1, lx1, lx0 + .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       add(slab(THREE, endShelf(THREE, 1, rx0, rx1 - .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       // LED under the front edge of each shelf, lighting the bay below
@@ -746,8 +779,10 @@ window.MaxsenTable = (function () {
       pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), y - .015, byX);
     });
     // LED under the top, lighting the top bay
-    pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), Y1 - .01, byX);
-    pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), Y1 - .01, byX);
+    if (shelves) {
+      pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), Y1 - .01, byX);
+      pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), Y1 - .01, byX);
+    }
     // the closed centre: a light wood panel with LUSANO in bronze letters, lit from behind
     add(new THREE.BoxGeometry(2 * DIV - .03, wallH, T), bodyMat, 0, Y0 + .04 + wallH / 2, BD / 2 - T / 2);
     {
@@ -757,7 +792,7 @@ window.MaxsenTable = (function () {
       mg.textAlign = 'center'; mg.textBaseline = 'middle'; mg.fillStyle = '#fff'; mg.fillText(word, 850 + ls / 2, 160);
       const [gc, gg] = canvas(1700, 300); gg.shadowColor = 'rgba(255,205,140,1)'; gg.shadowBlur = 40;
       for (let k = 0; k < 3; k++) gg.drawImage(mc, 0, 0);
-      const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = .58, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
+      const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = Y0 + .04 + (Y1 - Y0 - .04) * .615, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
       const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: night ? 0xffcf96 : 0xf2b46a, blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
       glow.position.set(0, y, zf); scene.add(glow);
       const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(mc), transparent: true, color: 0x3A2C24, roughness: .35, metalness: .55, envMapIntensity: night ? .2 : .5 }));
@@ -776,7 +811,7 @@ window.MaxsenTable = (function () {
     const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
-    [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
+    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
       const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .5 : .16, .5, 2); p.position.set(x, y - .04, .12); scene.add(p);
     }));
 
@@ -971,7 +1006,7 @@ window.MaxsenTable = (function () {
         const list = [];
         for (let k = 0; k < (T.beads ? 10 : 7); k++) {
           const a = k / (T.beads ? 10 : 7) * Math.PI * 2 + r() * .5, o = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
-          const c = new THREE.CatmullRomCurve3([new THREE.Vector3(0, h - .01, 0), o.clone().multiplyScalar(rt * .45).setY(h + .04 + r() * .04), o.clone().multiplyScalar(rt * 1.05).setY(h + .01)]);
+          const c = new THREE.CatmullRomCurve3([new THREE.Vector3(0, h - .01, 0), o.clone().multiplyScalar(rt * .5).setY(h + .022 + r() * .018), o.clone().multiplyScalar(rt * 1.05).setY(h + .01)]);
           strandLeaves(T, c, o, list, r, t => T.size[0] * (1 - t * .3));
         }
         parent.add(leafMesh(T, list));
@@ -984,10 +1019,13 @@ window.MaxsenTable = (function () {
         let sd = [...id].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 233280, 17); const r = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
         const [rt, , h] = T.pot.map(v => v * sc), none = { x0: 0, x1: 0, z0: 0, z1: 0 };
         const inside = (px, pz) => { const [qx, qz] = clampTo(S, px, pz, none); return Math.abs(qx - px) < 1e-4 && Math.abs(qz - pz) < 1e-4; };
-        const shelf = S !== SURF.top, maxHang = Math.min(shelf ? .32 : .26, S.y - .03);
+        const shelf = S !== SURF.top, maxHang = Math.min(shelf ? .32 : .42, S.y - .03);
         const list = [], stem = std({ color: T.stem, roughness: .7 });
+        const reach = a => { let e = rt; while (e < 1 && inside(x + Math.sin(a) * (e + .005), z + Math.cos(a) * (e + .005))) e += .005; return e; };
+        let aim = 0;
+        if (!shelf) { let best = 9; for (let a = -Math.PI; a < Math.PI; a += Math.PI / 24) { const e = reach(a); if (e < best - 1e-6) { best = e; aim = a; } } }
         for (let k = 0; k < T.strands; k++) {
-          const th = (k / (T.strands - 1) - .5) * 2.4 + (r() - .5) * .3, out = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
+          const th = aim + (k / (T.strands - 1) - .5) * 2.4 + (r() - .5) * .3, out = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
           let e = rt; while (e < .5 && inside(x + out.x * (e + .005), z + out.z * (e + .005))) e += .005;
           const ex = x + out.x * e, ez = z + out.z * e;
           const open = !shelf || (ez > .03 && Math.abs(ex) > DIV + .03);
@@ -1035,6 +1073,8 @@ window.MaxsenTable = (function () {
     shelf:  { pos: [1.3, .95, 1.3], at: [.5, .5, .08], fov: 38 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
+  // the cameras were framed for a 1,000 counter: move them down with it
+  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += H - 1; v.at[1] += H - 1; });
 
   function loadImage(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
 
@@ -1049,7 +1089,8 @@ window.MaxsenTable = (function () {
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = opts.mood && opts.mood !== 'day' ? 1.0 : .88;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     el.appendChild(renderer.domElement);
-    const { scene, make } = build(THREE, renderer, opts.mood, imgs);
+    const shelves = opts.shelves !== false, ORDER = shelves ? SURF_ORDER : ['top'], START = shelves ? DEFAULT_LAYOUT : DEFAULT_CLOSED;
+    const { scene, make } = build(THREE, renderer, opts.mood, imgs, shelves);
     const cam = new THREE.PerspectiveCamera(32, 1, .02, 60);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) { controls = new THREE.OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .5; controls.maxDistance = 7; }
@@ -1082,7 +1123,7 @@ window.MaxsenTable = (function () {
     function spawn(d) {
       const g = make(d); g.userData.id = d.id;
       const it = { d, g, box: localBox(g) };
-      if (!fits(it, d.on)) d.on = SURF_ORDER.find(k => fits(it, k)) || 'top';
+      if (!ORDER.includes(d.on) || !fits(it, d.on)) d.on = ORDER.find(k => fits(it, k)) || 'top';
       items.set(d.id, it); scene.add(g); place(it); return it;
     }
     function drop(it) {
@@ -1101,7 +1142,7 @@ window.MaxsenTable = (function () {
     function info(it) {
       if (!it) return null;
       const d = it.d;
-      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: SURF_ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
+      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
     }
     function select(id) {
       sel = (id && items.get(id)) || null; helper.visible = !!sel; if (sel) frame();
@@ -1126,7 +1167,7 @@ window.MaxsenTable = (function () {
     }
     const uid = t => t + Date.now().toString(36).slice(-5) + Math.random().toString(36).slice(2, 5);
     const editor = {
-      layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(DEFAULT_LAYOUT)),
+      layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(START)),
       names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
       selected: () => info(sel),
       add(type, v) {
@@ -1152,7 +1193,7 @@ window.MaxsenTable = (function () {
           const nd = Object.assign({}, d, { v: String(patch.v) }); const wasSel = sel === it;
           drop(it); const n = spawn(nd); if (wasSel) select(nd.id); changed(); return;
         }
-        if (patch.on && patch.on !== d.on && SURF[patch.on] && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
+        if (patch.on && patch.on !== d.on && ORDER.includes(patch.on) && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
         if (typeof patch.r === 'number' && isFinite(patch.r)) d.r = patch.r;
         if (typeof patch.x === 'number' && isFinite(patch.x)) d.x = patch.x;
         if (typeof patch.z === 'number' && isFinite(patch.z)) d.z = patch.z;
@@ -1209,7 +1250,7 @@ window.MaxsenTable = (function () {
     const LISTEN = [['pointerdown', onDown], ['pointermove', onMove], ['pointerup', end], ['pointercancel', end]];
     LISTEN.forEach(([t, f]) => el.addEventListener(t, f, true));
 
-    setLayout(opts.layout || DEFAULT_LAYOUT);
+    setLayout(opts.layout || START);
     size(); view(opts.view || 'hero');
     let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); if (controls) controls.update(); renderer.render(scene, cam); };
     if (!opts.capture) loop();
@@ -1220,7 +1261,7 @@ window.MaxsenTable = (function () {
       stop() { editing = false; cancelAnimationFrame(raf); window.removeEventListener('resize', size); LISTEN.forEach(([t, f]) => el.removeEventListener(t, f, true)); if (controls) controls.dispose(); renderer.dispose(); }
     };
   }
-  return { mount, VIEWS, DEFAULT_LAYOUT, sanitize };
+  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
 })();
 
 (() => {
@@ -1230,56 +1271,66 @@ window.MaxsenTable = (function () {
   const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
 
-  /* ---------- the saved arrangement: the page's database, else this browser ---------- */
-  const LS = 'maxsen-counter-layout-v1';
-  let layout = null, ref = null, lastSaved = null, writing = false, again = false, timer = 0, local = false;
+  /* ---------- the saved arrangements, one per version: the page's database, else this browser ---------- */
+  let shelves = true;
   const say = t => { $('saveState').textContent = t; };
-  try { const t = localStorage.getItem(LS); if (t) layout = MaxsenTable.sanitize(JSON.parse(t)); } catch (e) {}
-  async function connect() {
+  const cur = () => stores[shelves ? 'open' : 'closed'];
+  function store(lsKey, docPath) {
+    const st = { layout: null, ref: null, lastSaved: null, writing: false, again: false, timer: 0, local: false };
+    const mine = () => cur() === st;
+    try { const t = localStorage.getItem(lsKey); if (t) st.layout = MaxsenTable.sanitize(JSON.parse(t)); } catch (e) {}
+    st.connect = db => {
+      if (!db) { st.local = true; if (mine()) say('Saved in this browser only'); return; }
+      st.ref = db.doc(docPath);
+      const slow = setTimeout(() => { if (mine()) say('Cannot reach the saved layout yet; changes are kept in this browser'); }, 10000);
+      st.ref.onSnapshot(snap => {
+        if (!snap.fromCache) clearTimeout(slow);
+        if (!snap.exists) { st.lastSaved = null; if (!snap.fromCache && mine()) say(''); return; }
+        const items = MaxsenTable.sanitize((snap.data() || {}).items);
+        if (!items) return;
+        const json = JSON.stringify(items); st.lastSaved = json;
+        if (json !== JSON.stringify(st.layout)) { st.layout = items; if (viewer && mine()) { viewer.editor.setLayout(items); renderList(); } }
+        if (!snap.fromCache && !st.writing && mine()) say('Saved');
+      }, () => { clearTimeout(slow); st.ref = null; st.local = true; if (mine()) say('Saved in this browser only'); });
+    };
+    st.keep = () => {
+      try { localStorage.setItem(lsKey, JSON.stringify(st.layout)); } catch (e) {}
+      if (!st.ref) { say(st.local ? 'Saved in this browser only' : ''); return; }
+      say('Saving…'); clearTimeout(st.timer); st.timer = setTimeout(() => st.flush(), 700);
+    };
+    st.flush = async retried => {
+      if (!st.ref) return;
+      if (st.writing) { st.again = true; return; }
+      const json = JSON.stringify(st.layout);
+      if (json === st.lastSaved) { if (mine()) say('Saved'); return; }
+      st.writing = true;
+      try { await st.ref.set({ items: st.layout, updatedAt: Date.now() }); st.lastSaved = json; if (mine()) say('Saved'); }
+      catch (e) {
+        if (e && e.code === 'unavailable' && !retried) { st.writing = false; setTimeout(() => st.flush(true), 600 + Math.random() * 900); return; }
+        st.ref = null; st.local = true; if (mine()) say('Saved in this browser only: you can look, but only editors of this page save to it');
+      } finally { st.writing = false; if (st.again) { st.again = false; st.flush(); } }
+    };
+    st.status = () => say(st.local ? 'Saved in this browser only' : st.ref ? (st.lastSaved ? 'Saved' : '') : '');
+    return st;
+  }
+  const stores = { open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed') };
+  (async () => {
     let db = null;
     try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
-    if (!db) { local = true; say('Saved in this browser only'); return; }
-    ref = db.doc('layout/current');
-    const slow = setTimeout(() => say('Cannot reach the saved layout yet; changes are kept in this browser'), 10000);
-    ref.onSnapshot(snap => {
-      if (!snap.fromCache) clearTimeout(slow);
-      if (!snap.exists) { lastSaved = null; if (!snap.fromCache) say(''); return; }
-      const items = MaxsenTable.sanitize((snap.data() || {}).items);
-      if (!items) return;
-      const json = JSON.stringify(items); lastSaved = json;
-      if (json !== JSON.stringify(layout)) { layout = items; if (viewer) viewer.editor.setLayout(items); renderList(); }
-      if (!snap.fromCache && !writing) say('Saved');
-    }, () => { clearTimeout(slow); ref = null; local = true; say('Saved in this browser only'); });
-  }
-  connect();
-  function keep() {
-    try { localStorage.setItem(LS, JSON.stringify(layout)); } catch (e) {}
-    if (!ref) { say(local ? 'Saved in this browser only' : ''); return; }
-    say('Saving…'); clearTimeout(timer); timer = setTimeout(flush, 700);
-  }
-  async function flush(retried) {
-    if (!ref) return;
-    if (writing) { again = true; return; }
-    const json = JSON.stringify(layout);
-    if (json === lastSaved) { say('Saved'); return; }
-    writing = true;
-    try { await ref.set({ items: layout, updatedAt: Date.now() }); lastSaved = json; say('Saved'); }
-    catch (e) {
-      if (e && e.code === 'unavailable' && !retried) { writing = false; setTimeout(() => flush(true), 600 + Math.random() * 900); return; }
-      ref = null; local = true; say('Saved in this browser only: you can look, but only editors of this page save to it');
-    } finally { writing = false; if (again) { again = false; flush(); } }
-  }
+    stores.open.connect(db); stores.closed.connect(db);
+  })();
 
   /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
+    const st = cur();
     viewer = await MaxsenTable.mount(THREE, stage, {
-      view: current, mood, layout: layout || undefined,
-      onChange: l => { layout = l; keep(); renderList(); },
+      view: current, mood, shelves, layout: st.layout || undefined,
+      onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
     });
     viewer.editor.setEnabled(arranging);
-    renderList();
+    st.status(); renderList();
   }
   btn.addEventListener('click', async () => {
     btn.disabled = true; btn.textContent = 'Loading the model';
@@ -1293,6 +1344,10 @@ window.MaxsenTable = (function () {
   });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
+    if (b.dataset.s) {
+      shelves = b.dataset.s === 'open'; selected = null; renderSel();
+      bar.querySelectorAll('button[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
+    }
     if (b.dataset.m) {
       mood = mood === b.dataset.m ? 'day' : b.dataset.m;
       bar.querySelectorAll('button[data-m]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.m === mood))); start(); return;
@@ -1328,7 +1383,7 @@ window.MaxsenTable = (function () {
     const r = $('arrReset'); if (!ed()) return;
     if (!resetArmed) { r.textContent = 'Press again to clear your changes'; r.classList.add('dark'); resetArmed = setTimeout(() => { resetArmed = 0; r.textContent = 'Back to the original layout'; r.classList.remove('dark'); }, 4000); return; }
     clearTimeout(resetArmed); resetArmed = 0; r.textContent = 'Back to the original layout'; r.classList.remove('dark');
-    ed().setLayout(ed().defaults()); layout = ed().layout(); keep(); renderList();
+    ed().setLayout(ed().defaults()); cur().layout = ed().layout(); cur().keep(); renderList();
   });
   document.addEventListener('keydown', e => {
     if (!arranging || !selected || !ed() || e.metaKey || e.ctrlKey || e.altKey) return;

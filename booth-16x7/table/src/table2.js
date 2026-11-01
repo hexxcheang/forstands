@@ -1,16 +1,16 @@
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
-   1,400 long, 600 deep (assumed), 1,000 high. Units are metres: x along the length,
+   1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
 window.MaxsenTable = (function () {
-  const L = 1.4, D = 0.5, H = 1.0;
+  const L = 1.4, D = 0.5, H = 0.84;       // H: top of the marble; the 10 mm gold top brings the counter to 850
   const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
-  const GS = 1.1, GT = 0.01, HG = 1.0 + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
+  const GS = 1.1, GT = 0.01, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
-  const SHELVES = [0.33, 0.6];             // shelf heights in both end bays
+  const SHELVES = [0.307, 0.513];          // shelf heights in both end bays, evenly spaced in the lower body
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
@@ -53,6 +53,12 @@ window.MaxsenTable = (function () {
     { id: 'ivy1', type: 'plant', v: 'ivy', on: 'L1', x: -.43, z: .16, r: .6, s: 1 },
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
+  ];
+  // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
+  const DEFAULT_CLOSED = [
+    ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
+    { id: 'pothos3', type: 'plant', v: 'pothos', on: 'top', x: -.66, z: -.13, r: 0, s: 1 },
+    { id: 'ivy3', type: 'plant', v: 'ivy', on: 'top', x: .66, z: -.13, r: 0, s: 1 }
   ];
   function itemName(d) {
     if (d.type === 'lock') return 'Lenovo ' + (LOCK_VARIANTS[+d.v] || LOCK_VARIANTS[0]).name;
@@ -208,7 +214,7 @@ window.MaxsenTable = (function () {
   }
 
   /* ---------- the model ---------- */
-  function build(THREE, renderer, mood, imgs = {}) {
+  function build(THREE, renderer, mood, imgs = {}, shelves = true) {
     const colour = mood === 'colour', night = ['night', 'colour', 'low', 'high'].includes(mood);
     // the ball light on the top: brightness and colour temperature set from Halo and the switches
     const BALL = { low: [.16, 2700], high: [1, 4500] }[mood] || [.7, 3000];
@@ -376,14 +382,24 @@ window.MaxsenTable = (function () {
     const wall = (shape) => add(slab(THREE, shape, wallH), bodyMatV, 0, Y0 + .04, 0);
     wall(arcBand(THREE, -xs, -zs, BR, T, Math.PI, Math.PI * 1.5));        // back left corner
     wall(arcBand(THREE, xs, -zs, BR, T, -Math.PI / 2, 0));               // back right corner
-    add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // left end, back half
-    add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, BL / 2 - T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // right end, back half
+    if (shelves) {
+      add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, -BL / 2 + T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // left end, back half
+      add(new THREE.BoxGeometry(T, wallH, zs + .02), bodyMat, BL / 2 - T / 2, Y0 + .04 + wallH / 2, -zs / 2 + .01); // right end, back half
+    } else {
+      // no shelves: the ends close, and the wood wraps all four corners
+      [-1, 1].forEach(sd => {
+        add(new THREE.BoxGeometry(T, wallH, 2 * zs + .002), bodyMat, sd * (BL / 2 - T / 2), Y0 + .04 + wallH / 2, 0);                  // full end
+        wall(arcBand(THREE, sd * xs, zs, BR, T, sd > 0 ? 0 : Math.PI / 2, sd > 0 ? Math.PI / 2 : Math.PI));                       // front corner
+        const x0 = DIV - .015 + .006, w = xs - x0;                                                                                     // a 6 mm shadow gap beside the centre panel
+        add(new THREE.BoxGeometry(w, wallH, T), bodyMat, sd * (x0 + w / 2), Y0 + .04 + wallH / 2, BD / 2 - T / 2);
+      });
+    }
     [-DIV, DIV].forEach(x => add(new THREE.BoxGeometry(.03, wallH, BD - T), bodyMat, x, Y0 + .04 + wallH / 2, T / 2));
     // champagne-lit interiors: back faces of the bays and the niche
     add(new THREE.BoxGeometry(2 * xs - .04, wallH - .002, .004), inner, 0, Y0 + .04 + wallH / 2, -BD / 2 + T + .002, { cast: false });
     // shelves: the same at both ends, rounded where they wrap the front corners
     const lx0 = -BL / 2, lx1 = -DIV - .015, rx0 = DIV + .015, rx1 = BL / 2;
-    SHELVES.forEach(y => {
+    if (shelves) SHELVES.forEach(y => {
       add(slab(THREE, endShelf(THREE, -1, lx1, lx0 + .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       add(slab(THREE, endShelf(THREE, 1, rx0, rx1 - .002, -BD / 2 + T, BD / 2 - .002, BR - T, BR), .025), inner, 0, y - .0125, 0);
       // LED under the front edge of each shelf, lighting the bay below
@@ -391,8 +407,10 @@ window.MaxsenTable = (function () {
       pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), y - .015, byX);
     });
     // LED under the top, lighting the top bay
-    pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), Y1 - .01, byX);
-    pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), Y1 - .01, byX);
+    if (shelves) {
+      pixels(row(lx0 + BR, lx1 - .01, BD / 2 - .03), Y1 - .01, byX);
+      pixels(row(rx0 + .01, rx1 - BR, BD / 2 - .03), Y1 - .01, byX);
+    }
     // the closed centre: a light wood panel with LUSANO in bronze letters, lit from behind
     add(new THREE.BoxGeometry(2 * DIV - .03, wallH, T), bodyMat, 0, Y0 + .04 + wallH / 2, BD / 2 - T / 2);
     {
@@ -402,7 +420,7 @@ window.MaxsenTable = (function () {
       mg.textAlign = 'center'; mg.textBaseline = 'middle'; mg.fillStyle = '#fff'; mg.fillText(word, 850 + ls / 2, 160);
       const [gc, gg] = canvas(1700, 300); gg.shadowColor = 'rgba(255,205,140,1)'; gg.shadowBlur = 40;
       for (let k = 0; k < 3; k++) gg.drawImage(mc, 0, 0);
-      const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = .58, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
+      const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = Y0 + .04 + (Y1 - Y0 - .04) * .615, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
       const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: night ? 0xffcf96 : 0xf2b46a, blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
       glow.position.set(0, y, zf); scene.add(glow);
       const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(mc), transparent: true, color: 0x3A2C24, roughness: .35, metalness: .55, envMapIntensity: night ? .2 : .5 }));
@@ -421,7 +439,7 @@ window.MaxsenTable = (function () {
     const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
-    [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
+    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
       const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .5 : .16, .5, 2); p.position.set(x, y - .04, .12); scene.add(p);
     }));
 
@@ -616,7 +634,7 @@ window.MaxsenTable = (function () {
         const list = [];
         for (let k = 0; k < (T.beads ? 10 : 7); k++) {
           const a = k / (T.beads ? 10 : 7) * Math.PI * 2 + r() * .5, o = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
-          const c = new THREE.CatmullRomCurve3([new THREE.Vector3(0, h - .01, 0), o.clone().multiplyScalar(rt * .45).setY(h + .04 + r() * .04), o.clone().multiplyScalar(rt * 1.05).setY(h + .01)]);
+          const c = new THREE.CatmullRomCurve3([new THREE.Vector3(0, h - .01, 0), o.clone().multiplyScalar(rt * .5).setY(h + .022 + r() * .018), o.clone().multiplyScalar(rt * 1.05).setY(h + .01)]);
           strandLeaves(T, c, o, list, r, t => T.size[0] * (1 - t * .3));
         }
         parent.add(leafMesh(T, list));
@@ -629,10 +647,13 @@ window.MaxsenTable = (function () {
         let sd = [...id].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 233280, 17); const r = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
         const [rt, , h] = T.pot.map(v => v * sc), none = { x0: 0, x1: 0, z0: 0, z1: 0 };
         const inside = (px, pz) => { const [qx, qz] = clampTo(S, px, pz, none); return Math.abs(qx - px) < 1e-4 && Math.abs(qz - pz) < 1e-4; };
-        const shelf = S !== SURF.top, maxHang = Math.min(shelf ? .32 : .26, S.y - .03);
+        const shelf = S !== SURF.top, maxHang = Math.min(shelf ? .32 : .42, S.y - .03);
         const list = [], stem = std({ color: T.stem, roughness: .7 });
+        const reach = a => { let e = rt; while (e < 1 && inside(x + Math.sin(a) * (e + .005), z + Math.cos(a) * (e + .005))) e += .005; return e; };
+        let aim = 0;
+        if (!shelf) { let best = 9; for (let a = -Math.PI; a < Math.PI; a += Math.PI / 24) { const e = reach(a); if (e < best - 1e-6) { best = e; aim = a; } } }
         for (let k = 0; k < T.strands; k++) {
-          const th = (k / (T.strands - 1) - .5) * 2.4 + (r() - .5) * .3, out = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
+          const th = aim + (k / (T.strands - 1) - .5) * 2.4 + (r() - .5) * .3, out = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
           let e = rt; while (e < .5 && inside(x + out.x * (e + .005), z + out.z * (e + .005))) e += .005;
           const ex = x + out.x * e, ez = z + out.z * e;
           const open = !shelf || (ez > .03 && Math.abs(ex) > DIV + .03);
@@ -680,6 +701,8 @@ window.MaxsenTable = (function () {
     shelf:  { pos: [1.3, .95, 1.3], at: [.5, .5, .08], fov: 38 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
+  // the cameras were framed for a 1,000 counter: move them down with it
+  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += H - 1; v.at[1] += H - 1; });
 
   function loadImage(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
 
@@ -694,7 +717,8 @@ window.MaxsenTable = (function () {
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = opts.mood && opts.mood !== 'day' ? 1.0 : .88;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     el.appendChild(renderer.domElement);
-    const { scene, make } = build(THREE, renderer, opts.mood, imgs);
+    const shelves = opts.shelves !== false, ORDER = shelves ? SURF_ORDER : ['top'], START = shelves ? DEFAULT_LAYOUT : DEFAULT_CLOSED;
+    const { scene, make } = build(THREE, renderer, opts.mood, imgs, shelves);
     const cam = new THREE.PerspectiveCamera(32, 1, .02, 60);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) { controls = new THREE.OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .5; controls.maxDistance = 7; }
@@ -727,7 +751,7 @@ window.MaxsenTable = (function () {
     function spawn(d) {
       const g = make(d); g.userData.id = d.id;
       const it = { d, g, box: localBox(g) };
-      if (!fits(it, d.on)) d.on = SURF_ORDER.find(k => fits(it, k)) || 'top';
+      if (!ORDER.includes(d.on) || !fits(it, d.on)) d.on = ORDER.find(k => fits(it, k)) || 'top';
       items.set(d.id, it); scene.add(g); place(it); return it;
     }
     function drop(it) {
@@ -746,7 +770,7 @@ window.MaxsenTable = (function () {
     function info(it) {
       if (!it) return null;
       const d = it.d;
-      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: SURF_ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
+      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
     }
     function select(id) {
       sel = (id && items.get(id)) || null; helper.visible = !!sel; if (sel) frame();
@@ -771,7 +795,7 @@ window.MaxsenTable = (function () {
     }
     const uid = t => t + Date.now().toString(36).slice(-5) + Math.random().toString(36).slice(2, 5);
     const editor = {
-      layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(DEFAULT_LAYOUT)),
+      layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(START)),
       names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
       selected: () => info(sel),
       add(type, v) {
@@ -797,7 +821,7 @@ window.MaxsenTable = (function () {
           const nd = Object.assign({}, d, { v: String(patch.v) }); const wasSel = sel === it;
           drop(it); const n = spawn(nd); if (wasSel) select(nd.id); changed(); return;
         }
-        if (patch.on && patch.on !== d.on && SURF[patch.on] && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
+        if (patch.on && patch.on !== d.on && ORDER.includes(patch.on) && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
         if (typeof patch.r === 'number' && isFinite(patch.r)) d.r = patch.r;
         if (typeof patch.x === 'number' && isFinite(patch.x)) d.x = patch.x;
         if (typeof patch.z === 'number' && isFinite(patch.z)) d.z = patch.z;
@@ -854,7 +878,7 @@ window.MaxsenTable = (function () {
     const LISTEN = [['pointerdown', onDown], ['pointermove', onMove], ['pointerup', end], ['pointercancel', end]];
     LISTEN.forEach(([t, f]) => el.addEventListener(t, f, true));
 
-    setLayout(opts.layout || DEFAULT_LAYOUT);
+    setLayout(opts.layout || START);
     size(); view(opts.view || 'hero');
     let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); if (controls) controls.update(); renderer.render(scene, cam); };
     if (!opts.capture) loop();
@@ -865,5 +889,5 @@ window.MaxsenTable = (function () {
       stop() { editing = false; cancelAnimationFrame(raf); window.removeEventListener('resize', size); LISTEN.forEach(([t, f]) => el.removeEventListener(t, f, true)); if (controls) controls.dispose(); renderer.dispose(); }
     };
   }
-  return { mount, VIEWS, DEFAULT_LAYOUT, sanitize };
+  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
 })();
