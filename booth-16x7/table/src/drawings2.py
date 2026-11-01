@@ -34,11 +34,14 @@ for x in (325, 450, 575, 700, 825, 950, 1075):
         face, band = LUS[x]
         f.append(f'<rect x="{x-43}" y="{sv(940)-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{sv(940)-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{sv(940)-5}" width="86" height="10" fill="#1a0f0d"/>')
 
-LOCKX = (-380, -190, 0, 190, 380, 570)
-for dx in LOCKX:
+# the standard layout: six locks staggered, back row and front row, in mm (x along, z towards the front)
+LOCKS = ((-445, -77), (-225, 104), (-30, -79), (188, 92), (391, -69), (601, 99))
+BALL = (-608, 116)
+for dx, dz in sorted(LOCKS, key=lambda l: l[1]):   # back row first, so the front row draws over it
     x = 700 + dx
     f.append(f'<rect x="{x-85}" y="{sv(1022)}" width="170" height="12" class="bronze"/><rect x="{x-75}" y="{sv(1572)}" width="150" height="550" class="door"/><rect x="{x-44}" y="{sv(1512)}" width="78" height="410" rx="8" class="lockb"/>')
-f.append(f'<rect x="40" y="{sv(1044)}" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="{sv(1132)}" r="100" class="ballc"/>')
+bx = 700 + BALL[0]
+f.append(f'<rect x="{bx-60}" y="{sv(1044)}" width="120" height="22" rx="6" class="bronze"/><circle cx="{bx}" cy="{sv(1132)}" r="100" class="ballc"/>')
 f.append(f'<rect x="25" y="{sv(880)+2}" width="1350" height="5" class="led"/>')
 f.append(hdim(-70, 1470, -600, "1,540 gold top"))
 f.append(hdim(0, 1400, H + 300, "1,400 marble and body", ty=H + 360))
@@ -78,20 +81,20 @@ end = f'<svg viewBox="-260 -660 900 1900" class="dwg narrow" role="img" aria-lab
 
 # plan: top down, front at the bottom
 p = [f'<rect x="-70" y="-25" width="1540" height="550" rx="165" class="goldc"/>', f'<rect x="0" y="0" width="1400" height="500" rx="150" class="marbleo"/>']
-for dx in (-380, -190, 0, 190, 380, 570):
-    x = 700 + dx
-    p.append(f'<rect x="{x-85}" y="125" width="170" height="150" class="bronze"/><rect x="{x-75}" y="178" width="150" height="45" class="door"/><rect x="{x-44}" y="223" width="78" height="70" class="lockb"/>')
-p.append('<circle cx="100" cy="220" r="100" class="ballc"/>')
+for dx, dz in LOCKS:
+    x, y = 700 + dx, 250 + dz
+    p.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
+p.append(f'<circle cx="{700 + BALL[0]}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
 for x in (325, 450, 575, 700, 825, 950, 1075):
     p.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
-p.append(t(800, 75, "6 Lenovo locks, each on its own stand", "td"))
-p.append(t(100, -60, "ball light", "td"))
+p.append(t(800, -60, "6 Lenovo locks, staggered in two rows", "td"))
+p.append(t(-100, 380, "ball light", "td", "end"))
 p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · PRESTIGE", "tz"))
 p.append(hdim(-70, 1470, -110, "1,540 gold top (marble 1,400, dashed)"))
 p.append(vdim(-110, -25, 525, "550"))
 p.append('<path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/>')
 p.append(t(1500, 60, "R165", "td", "start"))
-plan = f'<svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, three locks on door panels on the top, with the switches on the front edge">{"".join(p)}</svg>'
+plan = f'<svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, six locks staggered in two rows and the ball light at the front left on the top, with the switches on the front edge">{"".join(p)}</svg>'
 
 html = open(sys.argv[1]).read()
 html = html.replace("{{FRONT}}", front).replace("{{END}}", end).replace("{{PLAN}}", plan).replace("{{SCENE}}", open("table2.js").read())

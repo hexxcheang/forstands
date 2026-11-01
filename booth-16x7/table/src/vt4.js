@@ -1,0 +1,21 @@
+const { chromium } = require('playwright');
+const fs = require('fs'), path = require('path');
+const npm = path.join(__dirname, '..', '..', 'npm3', 'package');
+(async () => {
+  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--allow-file-access-from-files'] });
+  const p = await (await b.newContext({ viewport: { width: 1200, height: 900 } })).newPage();
+  const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+  await p.route('https://cdn.jsdelivr.net/npm/three@0.128.0/**', r => { const u = new URL(r.request().url()).pathname.replace('/npm/three@0.128.0/', ''); r.fulfill({ body: fs.readFileSync(path.join(npm, u)), contentType: 'text/javascript' }); });
+  await p.route('https://fonts.googleapis.com/**', r => r.fulfill({ body: '', contentType: 'text/css' }));
+  await p.goto('file:///home/user/forstands/booth-16x7/table/index.html');
+  await p.click('#open3d'); await p.waitForSelector('#stage canvas', { timeout: 120000 }); await p.waitForTimeout(3000);
+  await p.click('#arrToggle'); await p.click('#listSum');
+  console.log((await p.$$eval('#items button.it', bs => bs.map(b => b.textContent))).join(' / '));
+  await p.click('button[data-add="plant"][data-v="ivy"]'); await p.waitForTimeout(800);
+  console.log('added', await p.textContent('#selName'));
+  await p.selectOption('#selOn', 'L0'); await p.waitForTimeout(800);
+  await p.evaluate(() => document.getElementById('stage').scrollIntoView({ block: 'start' })); await p.waitForTimeout(800);
+  const sb = await p.locator('#stage').boundingBox(); console.log('frame ms', await p.evaluate(() => new Promise(r => { let n = 0, t0 = performance.now(); const f = () => { if (++n === 4) r((performance.now() - t0) / 3); else requestAnimationFrame(f); }; requestAnimationFrame(f); }))); await p.screenshot({ path: path.join(__dirname, 'out-ed', 'live.png'), clip: sb, timeout: 120000 });
+  console.log('errors', errs);
+  await b.close();
+})();

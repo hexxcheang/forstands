@@ -24,7 +24,7 @@ window.MaxsenTable = (function () {
   ];
   const CATALOGUES = { maxsen: 'Maxsen catalogues', lusano: 'Lusano catalogues', lenovo: 'Lenovo lock catalogues', halo: 'Halo catalogues' };
   const BROCHURES = { lenovo: 'Lenovo brochure stand', lusano: 'Lusano brochure stand', maxsen: 'Maxsen brochure stand' };
-  const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid' };
+  const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid', pothos: 'Golden pothos (trailing)', ivy: 'English ivy (trailing)', pearls: 'String of pearls (trailing)' };
   const KIND_VARIANTS = { lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
   // each surface: its height, its plan outline (corner radii back-left, back-right, front-right, front-left) and the clear height above it
   const shelfY = [Y0 + .04, SHELVES[0] + .0125, SHELVES[1] + .0125];
@@ -37,17 +37,22 @@ window.MaxsenTable = (function () {
     SURF['R' + i] = { label: 'Right bay · ' + nm + ' shelf', y: shelfY[i], x0: DIV + .015, x1: BL / 2 - .004, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [0, BR - T, BR, 0], h: shelfH[i] };
   });
   const SURF_ORDER = ['top', 'L2', 'L1', 'L0', 'R2', 'R1', 'R0'];
+  // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
+  // and trailing plants on the middle shelves, their vines hanging over the front edges
   const DEFAULT_LAYOUT = [
-    ...[-.38, -.19, 0, .19, .38, .57].map((x, i) => ({ id: 'lock' + (i + 1), type: 'lock', v: String(i), on: 'top', x, z: -.05, r: 0 })),
-    { id: 'ball1', type: 'ball', on: 'top', x: -.6, z: -.03, r: 0 },
-    { id: 'cat1', type: 'catalogues', v: 'lusano', on: 'L1', x: -.495, z: .03, r: .05 },
-    { id: 'cat2', type: 'catalogues', v: 'lenovo', on: 'R1', x: .495, z: .03, r: -.05 },
-    { id: 'cat3', type: 'catalogues', v: 'maxsen', on: 'L0', x: -.495, z: .03, r: .05 },
-    { id: 'cat4', type: 'catalogues', v: 'halo', on: 'R0', x: .495, z: .03, r: -.05 },
-    { id: 'cat5', type: 'catalogues', v: 'maxsen', on: 'L2', x: -.475, z: .02, r: 0, n: 3 },
-    { id: 'cat6', type: 'catalogues', v: 'maxsen', on: 'R2', x: .475, z: .02, r: 0, n: 3 },
-    { id: 'bro1', type: 'brochures', v: 'lusano', on: 'L2', x: -.555, z: -.15, r: 0 },
-    { id: 'bro2', type: 'brochures', v: 'lenovo', on: 'R2', x: .555, z: -.15, r: 0 }
+    { id: 'lock1', type: 'lock', v: '0', on: 'top', x: -.445, z: -.077, r: 0 },
+    { id: 'lock2', type: 'lock', v: '1', on: 'top', x: -.225, z: .104, r: 0 },
+    { id: 'lock3', type: 'lock', v: '2', on: 'top', x: -.03, z: -.079, r: 0 },
+    { id: 'lock4', type: 'lock', v: '3', on: 'top', x: .188, z: .092, r: 0 },
+    { id: 'lock5', type: 'lock', v: '4', on: 'top', x: .391, z: -.069, r: 0 },
+    { id: 'lock6', type: 'lock', v: '5', on: 'top', x: .601, z: .099, r: 0 },
+    { id: 'ball1', type: 'ball', on: 'top', x: -.608, z: .116, r: 0 },
+    { id: 'cat1', type: 'catalogues', v: 'maxsen', on: 'L2', x: -.498, z: .056, r: 0, n: 4 },
+    { id: 'cat2', type: 'catalogues', v: 'lusano', on: 'R2', x: .526, z: .035, r: 0, n: 4 },
+    { id: 'pothos1', type: 'plant', v: 'pothos', on: 'L1', x: -.6, z: .15, r: 0, s: 1 },
+    { id: 'ivy1', type: 'plant', v: 'ivy', on: 'L1', x: -.43, z: .16, r: .6, s: 1 },
+    { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
+    { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
   ];
   function itemName(d) {
     if (d.type === 'lock') return 'Lenovo ' + (LOCK_VARIANTS[+d.v] || LOCK_VARIANTS[0]).name;
@@ -569,10 +574,90 @@ window.MaxsenTable = (function () {
       centres.forEach(P => add(new THREE.SphereGeometry(.0035, 10, 8), std({ color: 0xC2557A, roughness: .5 }), P.x, P.y - .006, P.z + .008, { cast: false }));
     });
 
+    /* trailing plants: a small pot with a mound of leaves, and vines that run to the open edge of the surface and hang over it */
+    const heartGeo = (() => { const s = new THREE.Shape(); s.moveTo(0, 0); s.bezierCurveTo(-.25, -.08, -.55, .1, -.42, .42); s.bezierCurveTo(-.3, .72, -.08, .85, 0, 1); s.bezierCurveTo(.08, .85, .3, .72, .42, .42); s.bezierCurveTo(.55, .1, .25, -.08, 0, 0); return new THREE.ShapeGeometry(s, 8); })();
+    const ivyGeo = (() => {   // five pointed lobes
+      const s = new THREE.Shape(); const pts = [];
+      for (let k = 0; k <= 10; k++) { const a = -Math.PI / 2 - Math.PI * .1 + k / 10 * Math.PI * 1.2 - Math.PI * .5, lobe = k % 2 ? .55 : [.6, .8, 1, .8, .6, .6][k / 2]; pts.push([Math.cos(a + Math.PI) * lobe * .62, .32 + Math.sin(a + Math.PI) * lobe * .68]); }
+      s.moveTo(0, 0); pts.forEach(([x, y]) => s.lineTo(x, y)); s.lineTo(0, 0); return new THREE.ShapeGeometry(s);
+    })();
+    const pearlGeo = new THREE.SphereGeometry(1, 10, 8);
+    const TRAIL = {
+      pothos: { leaf: heartGeo, size: [.05, .028], strands: 7, step: .032, stem: 0x6f8f3e, colour: r => new THREE.Color().setHSL(.28 + r() * .05, .62, .17 + r() * .07).lerp(new THREE.Color(0xcfc45a), r() * r() * .4), pot: [.06, .05, .08], potMat: () => potStone },
+      ivy: { leaf: ivyGeo, size: [.036, .02], strands: 9, step: .026, stem: 0x5a4a35, colour: r => new THREE.Color().setHSL(.31 + r() * .04, .42, .14 + r() * .07), pot: [.055, .046, .075], potMat: () => bronze },
+      pearls: { leaf: pearlGeo, size: [.0048, .0038], strands: 14, step: .0085, stem: 0x6e7d4a, colour: r => new THREE.Color().setHSL(.25 + r() * .05, .38, .5 + r() * .1), pot: [.05, .042, .07], potMat: () => potStone, beads: true }
+    };
+    const up = new THREE.Vector3(0, 1, 0);
+    function strandLeaves(T, curve, out, list, r, scaleAt) {
+      const side = new THREE.Vector3().crossVectors(up, out).normalize(), len = curve.getLength(), n = Math.max(2, Math.floor(len / T.step));
+      for (let i = 1; i <= n; i++) {
+        const t = i / n, P = curve.getPointAt(t), Tg = curve.getTangentAt(t), sc = scaleAt(t) * (.8 + r() * .4);
+        if (T.beads) { list.push({ m: new THREE.Matrix4().compose(P.clone().add(side.clone().multiplyScalar((r() - .5) * .006)), new THREE.Quaternion(), new THREE.Vector3(sc, sc, sc)), c: T.colour(r) }); continue; }
+        const s = i % 2 ? 1 : -1, h = Math.min(1, Math.max(0, -Tg.y));
+        const u = Tg.clone().multiplyScalar(.5).add(side.clone().multiplyScalar(s * .85)).add(new THREE.Vector3(0, .3 * (1 - h), 0)).add(new THREE.Vector3(r() - .5, r() - .5, r() - .5).multiplyScalar(.4)).normalize();
+        const nb = up.clone().multiplyScalar(1 - h).add(out.clone().multiplyScalar(h + .15)).add(new THREE.Vector3(r() - .5, r() - .5, r() - .5).multiplyScalar(.5)).normalize();
+        const nn = nb.sub(u.clone().multiplyScalar(nb.dot(u))).normalize(), X = new THREE.Vector3().crossVectors(u, nn);
+        const m = new THREE.Matrix4().makeBasis(X, u, nn).scale(new THREE.Vector3(sc, sc, sc)).setPosition(P.clone().add(X.clone().multiplyScalar(s * .004)).add(nn.clone().multiplyScalar(.002)));
+        list.push({ m, c: T.colour(r) });
+      }
+    }
+    function leafMesh(T, list) {
+      const m = new THREE.InstancedMesh(T.leaf, std({ color: 0xffffff, roughness: T.beads ? .35 : .5, side: THREE.DoubleSide }), list.length);
+      list.forEach((q, i) => { m.setMatrixAt(i, q.m); m.setColorAt(i, q.c); });
+      m.instanceColor.needsUpdate = true; m.castShadow = true; m.receiveShadow = true; return m;
+    }
+    const makeTrailing = (v, id) => {
+      const T = TRAIL[v];
+      const g = group(() => {
+        const [rt, rb, h] = T.pot;
+        pot(rt, rb, h, T.potMat());
+        // the mound: leaves rising out of the pot
+        const r = (() => { let sd = [...id].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 233280, 3); return () => (sd = (sd * 9301 + 49297) % 233280) / 233280; })();
+        const list = [];
+        for (let k = 0; k < (T.beads ? 10 : 7); k++) {
+          const a = k / (T.beads ? 10 : 7) * Math.PI * 2 + r() * .5, o = new THREE.Vector3(Math.cos(a), 0, Math.sin(a));
+          const c = new THREE.CatmullRomCurve3([new THREE.Vector3(0, h - .01, 0), o.clone().multiplyScalar(rt * .45).setY(h + .04 + r() * .04), o.clone().multiplyScalar(rt * 1.05).setY(h + .01)]);
+          strandLeaves(T, c, o, list, r, t => T.size[0] * (1 - t * .3));
+        }
+        parent.add(leafMesh(T, list));
+      });
+      const drape = new THREE.Group(); g.add(drape); g.userData.drapeRoot = drape;
+      // vines: rebuilt whenever the pot settles somewhere new, in the room's own directions
+      g.userData.drape = (S, x, z, rot, sc) => {
+        drape.children.forEach(o => { o.geometry && o.geometry !== T.leaf && o.geometry.dispose(); }); drape.clear();
+        drape.rotation.y = -rot; drape.scale.setScalar(1 / sc);
+        let sd = [...id].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 233280, 17); const r = () => (sd = (sd * 9301 + 49297) % 233280) / 233280;
+        const [rt, , h] = T.pot.map(v => v * sc), none = { x0: 0, x1: 0, z0: 0, z1: 0 };
+        const inside = (px, pz) => { const [qx, qz] = clampTo(S, px, pz, none); return Math.abs(qx - px) < 1e-4 && Math.abs(qz - pz) < 1e-4; };
+        const shelf = S !== SURF.top, maxHang = Math.min(shelf ? .32 : .26, S.y - .03);
+        const list = [], stem = std({ color: T.stem, roughness: .7 });
+        for (let k = 0; k < T.strands; k++) {
+          const th = (k / (T.strands - 1) - .5) * 2.4 + (r() - .5) * .3, out = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
+          let e = rt; while (e < .5 && inside(x + out.x * (e + .005), z + out.z * (e + .005))) e += .005;
+          const ex = x + out.x * e, ez = z + out.z * e;
+          const open = !shelf || (ez > .03 && Math.abs(ex) > DIV + .03);
+          const pts = [out.clone().multiplyScalar(rt * .8).setY(h - .006), out.clone().multiplyScalar(rt + .012).setY(h + .004)];
+          if (e > rt + .05) pts.push(out.clone().multiplyScalar(rt + .035).setY(.008), out.clone().multiplyScalar(e - .01).setY(.006));
+          else pts.push(out.clone().multiplyScalar(e - .004).setY(.01));
+          if (open) {
+            const L = maxHang * (.35 + r() * .65), sw = (r() - .5) * .05, sideV = new THREE.Vector3(out.z, 0, -out.x);
+            pts.push(out.clone().multiplyScalar(e + .012).setY(-.004), out.clone().multiplyScalar(e + .02).setY(-.04));
+            for (let j = 1; j <= 3; j++) pts.push(out.clone().multiplyScalar(e + .022 + j * .004).add(sideV.clone().multiplyScalar(sw * j / 3)).setY(-.04 - L * j / 3));
+          } else pts.push(out.clone().multiplyScalar(Math.max(e - .03, rt + .02)).add(new THREE.Vector3(out.z, 0, -out.x).multiplyScalar(.03 * (r() - .5))).setY(.006));
+          const c = new THREE.CatmullRomCurve3(pts);
+          const m = new THREE.Mesh(new THREE.TubeGeometry(c, 48, T.beads ? .0008 : .0014, 5), stem); m.castShadow = true; drape.add(m);
+          const before = list.length; strandLeaves(T, c, out, list, r, t => T.size[0] + (T.size[1] - T.size[0]) * t);
+          if (T.beads) list.splice(before, Math.min(4, list.length - before));   // bare stem over the pot rim
+        }
+        drape.add(leafMesh(T, list));
+      };
+      return g;
+    };
+
     const KINDS = {
       lock: d => makeLock(d.v), ball: () => makeBall(),
       catalogues: d => makeCatalogues(d.v, d.n || 4), brochures: d => makeBrochures(d.v),
-      plant: d => ({ olive: makeOlive, monstera: makeMonstera, succulent: makeSucculent, orchid: makeOrchid }[d.v] || makeOlive)()
+      plant: d => TRAIL[d.v] ? makeTrailing(d.v, d.id) : ({ olive: makeOlive, monstera: makeMonstera, succulent: makeSucculent, orchid: makeOrchid }[d.v] || makeOlive)()
     };
     function make(d) {
       // the same item always comes out the same, whatever else is on the counter
@@ -592,7 +677,7 @@ window.MaxsenTable = (function () {
     gold:   { pos: [1.05, 1.22, .75], at: [.6, 1.0, .1], fov: 34 },
     locks:  { pos: [.05, 1.36, 1.25], at: [.03, 1.2, -.04], fov: 46 },
     ball:   { pos: [-.15, 1.38, 1.15], at: [-.42, 1.13, -.04], fov: 44 },
-    shelf:  { pos: [1.15, 1.05, 1.05], at: [.52, .72, .05], fov: 34 },
+    shelf:  { pos: [1.3, .95, 1.3], at: [.5, .5, .08], fov: 38 },
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
 
@@ -624,6 +709,7 @@ window.MaxsenTable = (function () {
       const b = new THREE.Box3(); g.updateMatrixWorld(true);
       g.traverse(o => {
         if (!o.isMesh || !o.geometry) return;
+        for (let q = o; q && q !== g; q = q.parent) if (q === g.userData.drapeRoot) return;
         if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
         if (o.isInstancedMesh) for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, im); im.premultiply(o.matrixWorld); b.union(tmpBox.copy(o.geometry.boundingBox).applyMatrix4(im)); }
         else b.union(tmpBox.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld));
@@ -631,10 +717,11 @@ window.MaxsenTable = (function () {
       return b;
     }
     const fits = (it, on) => it.box.max.y * (it.d.s || 1) <= SURF[on].h + .001;
-    function place(it) {
+    function place(it, moving) {
       const d = it.d, S = SURF[d.on], sc = d.s || 1;
       [d.x, d.z] = clampTo(S, d.x, d.z, footprint(it.box, d.r || 0, sc));
       it.g.position.set(d.x, S.y, d.z); it.g.rotation.y = d.r || 0; it.g.scale.setScalar(sc);
+      if (it.g.userData.drape && !moving) it.g.userData.drape(S, d.x, d.z, d.r || 0, sc);
       if (sel === it) frame();
     }
     function spawn(d) {
@@ -753,14 +840,14 @@ window.MaxsenTable = (function () {
       if (!editing) return;
       if (drag) {
         const p = onPlane(ev, SURF[drag.it.d.on].y); if (!p) return;
-        drag.it.d.x = p.x + drag.off[0]; drag.it.d.z = p.z + drag.off[1]; drag.moved = true; place(drag.it);
+        drag.it.d.x = p.x + drag.off[0]; drag.it.d.z = p.z + drag.off[1]; drag.moved = true; place(drag.it, true);
         ev.stopImmediatePropagation(); return;
       }
       if (ev.buttons === 0 && !hoverBusy) { hoverBusy = true; requestAnimationFrame(() => { hoverBusy = false; renderer.domElement.style.cursor = editing && pick(ev) ? 'grab' : ''; }); }
     };
     let hoverBusy = false;
     const end = ev => {
-      if (drag) { const moved = drag.moved; drag = null; renderer.domElement.style.cursor = 'grab'; try { el.releasePointerCapture(ev.pointerId); } catch (e) {} if (moved) changed(); ev.stopImmediatePropagation(); return; }
+      if (drag) { const moved = drag.moved; if (moved) place(drag.it); drag = null; renderer.domElement.style.cursor = 'grab'; try { el.releasePointerCapture(ev.pointerId); } catch (e) {} if (moved) changed(); ev.stopImmediatePropagation(); return; }
       if (editing && down && ev.type === 'pointerup' && Math.hypot(ev.clientX - down[0], ev.clientY - down[1]) < 5) select(null);   // a click on empty space lets go
       down = null;
     };
