@@ -98,7 +98,56 @@ p.append('<path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/>')
 p.append(t(1500, 60, "R165", "td", "start"))
 plan = f'<svg viewBox="-300 -190 2160 840" class="dwg" role="img" aria-label="Plan from above: 1,400 by 500, six locks staggered in two rows and the ball light at the front left on the top, with the switches on the front edge">{"".join(p)}</svg>'
 
+
+# ---------- the rectangular form: square in plan, no gold, marble the top 3/8 of 850 ----------
+RZ = 850; RT = round(RZ * 3 / 8); RU = RZ - RT          # 319 marble on a 531 body
+RS = round((100 + RU) / 2)                              # the one shelf in each bay, top at about 316
+r = [f'<rect x="-60" y="{H}" width="1520" height="10" class="floor"/>',
+     f'<rect x="65" y="{sv(60)}" width="1270" height="58" rx="6" class="bronze"/>',
+     f'<rect x="75" y="{sv(48)}" width="1250" height="5" class="led"/>',
+     f'<rect x="15" y="{sv(RU)}" width="1370" height="{RU - 60}" class="body"/>',
+     f'<rect x="35" y="{sv(RU - 20)}" width="1330" height="{RU - 120}" class="inner"/>']
+for x in (370, 1030):
+    r.append(f'<rect x="{x-15}" y="{sv(RU)}" width="30" height="{RU - 60}" class="body"/>')
+r.append(f'<rect x="15" y="{sv(100)}" width="1370" height="40" class="body"/>')
+r.append(f'<rect x="385" y="{sv(RU)}" width="630" height="{RU - 60}" class="body"/>')
+r.append(f'<text x="420" y="{sv(round(100 + (RU - 100) * .57))}" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text>')
+r.append(f'<rect x="35" y="{sv(RS + 12)}" width="320" height="25" class="shelf"/><rect x="1045" y="{sv(RS + 12)}" width="320" height="25" class="shelf"/>')
+r.append(f'<rect x="0" y="{sv(RZ)}" width="1400" height="{RT}" rx="3" class="stone"/>')
+r.append(f'<rect x="25" y="{sv(RU)+2}" width="1350" height="5" class="led"/>')
+for x in (325, 450, 575, 700, 825, 950, 1075):
+    if x == 700:
+        r.append(f'<rect x="{x-43}" y="{sv(RZ - RT / 2)-43}" width="86" height="86" rx="4" class="halop"/><circle cx="{x}" cy="{sv(RZ - RT / 2)}" r="30" class="halok"/>')
+    else:
+        face, band = LUS[x]
+        y = sv(RZ - RT / 2)
+        r.append(f'<rect x="{x-43}" y="{y-43}" width="86" height="86" rx="3" fill="{face}" stroke="#29221F" stroke-width="2"/><rect x="{x-43}" y="{y-11}" width="86" height="22" fill="{band}"/><rect x="{x-43}" y="{y-5}" width="86" height="10" fill="#1a0f0d"/>')
+for dx, dz in sorted(LOCKS, key=lambda l: l[1]):
+    x = 700 + dx
+    r.append(f'<rect x="{x-85}" y="{sv(RZ+12)}" width="170" height="12" class="bronze"/><rect x="{x-75}" y="{sv(RZ+562)}" width="150" height="550" class="door"/><rect x="{x-44}" y="{sv(RZ+502)}" width="78" height="410" rx="8" class="lockb"/>')
+r.append(f'<rect x="{bx-60}" y="{sv(RZ+22)}" width="120" height="22" rx="6" class="bronze"/><circle cx="{bx + 8}" cy="{sv(RZ+122)}" r="100" class="ballc"/>')
+r.append(hdim(0, 1400, H + 300, "1,400 marble and body", ty=H + 360))
+r.append(hdim(15, 370, H + 90, "355 open bay", ty=H + 150))
+r.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
+r.append(hdim(1030, 1385, H + 90, "355 open bay", ty=H + 150))
+r.append(vdim(-60, sv(RZ), H, "850"))
+r.append(vdim(1460, sv(RZ), sv(RU), f"{RT} marble, 3/8", "right"))
+r.append(vdim(1460, sv(RU), H, f"{RU} body", "right"))
+r.append(t(1205, sv(RS) + 75, f"shelf {RS}", "td"))
+rfront = f'<svg viewBox="-260 -460 2160 1880" class="dwg" role="img" aria-label="Rectangular form, front elevation: 1,400 long, 850 high, the marble the top {RT} mm with the switches on its face, a {RU} mm wood body with one shelf in each open bay">{"".join(r)}</svg>'
+q = ['<rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/>']
+for dx, dz in LOCKS:
+    x, y = 700 + dx, 250 + dz
+    q.append(f'<rect x="{x-85}" y="{y-75}" width="170" height="150" class="bronze"/><rect x="{x-75}" y="{y-22}" width="150" height="45" class="door"/><rect x="{x-44}" y="{y+23}" width="78" height="70" class="lockb"/>')
+q.append(f'<circle cx="{bx + 8}" cy="{250 + BALL[1]}" r="100" class="ballc"/>')
+for x in (325, 450, 575, 700, 825, 950, 1075):
+    q.append(f'<rect x="{x-43}" y="500" width="86" height="8" class="{"halop" if x == 700 else "sw"}"/>')
+q.append(hdim(0, 1400, -60, "1,400 marble, square corners"))
+q.append(vdim(-60, 0, 500, "500"))
+q.append(t(700, 580, "FRONT FACE · NOBLE · HALO · PRESTIGE", "tz"))
+rplan = f'<svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form from above: a 1,400 by 500 marble rectangle with square corners, the six staggered locks and the ball light">{"".join(q)}</svg>'
+
 html = open(sys.argv[1]).read()
-html = html.replace("{{FRONT}}", front).replace("{{END}}", end).replace("{{PLAN}}", plan).replace("{{SCENE}}", open("table2.js").read())
+html = html.replace("{{FRONT}}", front).replace("{{END}}", end).replace("{{PLAN}}", plan).replace("{{RFRONT}}", rfront).replace("{{RPLAN}}", rplan).replace("{{SCENE}}", open("table2.js").read())
 open(sys.argv[2], "w").write(html)
 print("ok", len(html))

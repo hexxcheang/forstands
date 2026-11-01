@@ -70,6 +70,7 @@ text{font-family:var(--sans)}
 .word{fill:#29221F;font-size:30px;font-weight:700;letter-spacing:14px}
 .floor{fill:var(--muted)}
 .stone{fill:var(--stonec);stroke:var(--fg);stroke-width:4}
+.stonep{fill:var(--stonec);stroke:var(--fg);stroke-width:4}
 .body{fill:var(--bodyc)}
 .inner{fill:var(--innerc)}
 .sw{fill:#29221F;stroke:var(--fg);stroke-width:2}
@@ -234,6 +235,8 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-v="top" aria-pressed="false">From above</button>
         <button type="button" data-m="night" aria-pressed="false">Warm white</button>
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
+        <button type="button" data-f="round" aria-pressed="true">Rounded</button>
+        <button type="button" data-f="rect" aria-pressed="false">Rectangular</button>
         <button type="button" data-s="open" aria-pressed="true">With shelves</button>
         <button type="button" data-s="closed" aria-pressed="false">Without shelves</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
@@ -296,10 +299,31 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
   </section>
 
+  <section aria-labelledby="rect">
+    <div class="head">
+      <span class="eyebrow">Option</span>
+      <h2 id="rect">Rectangular, with the marble to 3/8</h2>
+    </div>
+    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular</b>; it also comes without shelves.</p>
+    <figure class="shot"><img src="renders/rect-day-hero.jpg" alt="The rectangular counter: a deep white marble block with square corners making up the top 3/8, the switches and Halo dimmer on its face, six staggered locks and the ball light on top, and a light wood body below with LUSANO and trailing plants in the open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular.</b> A 319 mm marble block on a light wood body, no gold.</figcaption></figure>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/rect-day-top.jpg" alt="Looking straight down on the rectangular counter: a plain white marble rectangle with square corners, the six locks staggered in two rows and the ball light at the front left" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> A clean rectangle of marble.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-front.jpg" alt="Straight-on front view of the rectangular counter: the marble band with seven switches across it, LUSANO below, plants in both bays" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> The switches sit in the marble at hand height.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-end.jpg" alt="Three-quarter view of the right end of the rectangular counter, showing the square corner and the open bay with its one shelf" width="1600" height="1000" loading="lazy"><figcaption><b>Right end.</b> Square corners, one shelf in each bay.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-shelf.jpg" alt="Close view of the right bay of the rectangular counter: string of pearls and golden pothos on the shelf hanging down, catalogues on the bay floor" width="1600" height="1000" loading="lazy"><figcaption><b>The bay.</b> Plants on the shelf, catalogues below.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-night-hero.jpg" alt="The rectangular counter with the show lights low: warm light under the marble block and the base, LUSANO glowing" width="1600" height="1000" loading="lazy"><figcaption><b>Warm white.</b> The LED line now runs under the marble block.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-closed-day-hero.jpg" alt="The rectangular counter without shelves: closed wood body under the marble block, trailing plants at the back corners of the top" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, without shelves.</b> Closed body, plants at the back corners.</figcaption></figure>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>Rectangular · front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -460 2160 1880" class="dwg" role="img" aria-label="Rectangular form, front elevation: 1,400 long, 850 high, the marble the top 319 mm with the switches on its face, a 531 mm wood body with one shelf in each open bay"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="6" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="469" width="1370" height="471" class="body"/><rect x="35" y="489" width="1330" height="411" class="inner"/><rect x="355" y="469" width="30" height="471" class="body"/><rect x="1015" y="469" width="30" height="471" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="469" width="630" height="471" class="body"/><text x="420" y="654" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="672" width="320" height="25" class="shelf"/><rect x="1045" y="672" width="320" height="25" class="shelf"/><rect x="0" y="150" width="1400" height="319" rx="3" class="stone"/><rect x="25" y="471" width="1350" height="5" class="led"/><rect x="282" y="266.5" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="298.5" width="86" height="22" fill="#B88A4E"/><rect x="282" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="266.5" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="298.5" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="266.5" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="298.5" width="86" height="22" fill="#555555"/><rect x="532" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="266.5" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="309.5" r="30" class="halok"/><rect x="782" y="266.5" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="266.5" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="266.5" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="128" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="28" r="100" class="ballc"/><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="150" x2="1460" y2="469"/><line x1="1435" y1="150" x2="1485" y2="150"/><line x1="1435" y1="469" x2="1485" y2="469"/></g><text x="1490" y="323.5" class="td" text-anchor="start">319 marble, 3/8</text><g class="dim"><line x1="1460" y1="469" x2="1460" y2="1000"/><line x1="1435" y1="469" x2="1485" y2="469"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="748.5" class="td" text-anchor="start">531 body</text><text x="1205" y="759" class="td" text-anchor="middle">shelf 316</text></svg></div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form from above: a 1,400 by 500 marble rectangle with square corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="279" width="170" height="150" class="bronze"/><rect x="400" y="332" width="150" height="45" class="door"/><rect x="431" y="377" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, square corners</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
+    </div>
+  </section>
+
   <section aria-labelledby="dwg">
     <div class="head">
       <span class="eyebrow">Drawings</span>
-      <h2 id="dwg">To scale, in millimetres</h2>
+      <h2 id="dwg">To scale, in millimetres: the rounded counter</h2>
     </div>
     <div class="drw">
       <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -510 2160 1910" class="dwg" role="img" aria-label="Front elevation with dimensions"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="20" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="280" width="1370" height="660" rx="10" class="body"/><rect x="35" y="300" width="1330" height="600" class="inner"/><rect x="355" y="280" width="30" height="660" class="body"/><rect x="1015" y="280" width="30" height="660" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="280" width="630" height="660" class="body"/><text x="420" y="547" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="681" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="681" width="340" height="25" rx="6" class="shelf"/><rect x="35" y="475" width="320" height="25" rx="6" class="shelf"/><rect x="1045" y="475" width="340" height="25" rx="6" class="shelf"/><rect x="0" y="160" width="1400" height="120" rx="8" class="stone"/><rect x="-70" y="150" width="1540" height="10" rx="3" class="goldc"/><rect x="282" y="177" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="209" width="86" height="22" fill="#B88A4E"/><rect x="282" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="177" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="209" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="177" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="209" width="86" height="22" fill="#555555"/><rect x="532" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="177" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="220" r="30" class="halok"/><rect x="782" y="177" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="177" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="177" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="209" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="215" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="116" width="120" height="22" rx="6" class="bronze"/><circle cx="92" cy="28" r="100" class="ballc"/><rect x="25" y="282" width="1350" height="5" class="led"/><g class="dim"><line x1="-70" y1="-450" x2="1470" y2="-450"/><line x1="-70" y1="-475" x2="-70" y2="-425"/><line x1="1470" y1="-475" x2="1470" y2="-425"/></g><text x="700.0" y="-472" class="td" text-anchor="middle">1,540 gold top</text><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><text x="700" y="1230" class="td" text-anchor="middle">front edge: Lusano Noble · Halo · Lusano Prestige</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 curved shelves</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="160" x2="1460" y2="280"/><line x1="1435" y1="160" x2="1485" y2="160"/><line x1="1435" y1="280" x2="1485" y2="280"/></g><text x="1490" y="234.0" class="td" text-anchor="start">120 top</text><g class="dim"><line x1="1530" y1="-412" x2="1530" y2="138"/><line x1="1505" y1="-412" x2="1555" y2="-412"/><line x1="1505" y1="138" x2="1555" y2="138"/></g><text x="1560" y="-123.0" class="td" text-anchor="start">550 door</text><text x="1575" y="165" class="td" text-anchor="start">10 gold top</text><text x="1560" y="-40" class="td" text-anchor="start">locks 78 × 410</text><g class="dim"><line x1="1460" y1="940" x2="1460" y2="1000"/><line x1="1435" y1="940" x2="1485" y2="940"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="984.0" class="td" text-anchor="start">60 base</text><text x="1460" y="705" class="td" text-anchor="start">shelf 307</text><text x="1460" y="499" class="td" text-anchor="start">shelf 513</text></svg></div></figure>
@@ -373,16 +397,22 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
    1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
-window.MaxsenTable = (function () {
-  const L = 1.4, D = 0.5, H = 0.84;       // H: top of the marble; the 10 mm gold top brings the counter to 850
-  const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
+// Two forms from the one model: the rounded counter with its gold top (the default), and
+// { rect: true }: square in plan, no gold, the marble the top 3/8 of the 850 height.
+function MaxsenModel(cfg = {}) {
+  const RECT = !!cfg.rect, GOLD = !RECT;
+  const L = 1.4, D = 0.5;
+  const H = RECT ? 0.85 : 0.84;            // H: top of the marble; on the rounded form the 10 mm gold top brings it to 850
+  const TOP = RECT ? H * 3 / 8 : 0.12;     // the marble: 120 mm, or 3/8 of the height (about 319 mm) on the rectangular form
+  const R = RECT ? 0.006 : 0.15;           // corner radius of the marble in plan; switches sit on its front face
   const OV = 0.015;                        // the top overhangs the body by 15 mm
-  const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
+  const BL = L - 2 * OV, BD = D - 2 * OV, BR = RECT ? 0.022 : R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
-  const GS = 1.1, GT = 0.01, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
+  const GS = GOLD ? 1.1 : 1, GT = GOLD ? 0.01 : 0, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
-  const SHELVES = [0.307, 0.513];          // shelf heights in both end bays, evenly spaced in the lower body
+  // shelf heights in both end bays, evenly spaced in the body below the marble: two shelves, or one on the shorter rectangular body
+  const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
@@ -399,16 +429,16 @@ window.MaxsenTable = (function () {
   const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid', pothos: 'Golden pothos (trailing)', ivy: 'English ivy (trailing)', pearls: 'String of pearls (trailing)' };
   const KIND_VARIANTS = { lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
   // each surface: its height, its plan outline (corner radii back-left, back-right, front-right, front-left) and the clear height above it
-  const shelfY = [Y0 + .04, SHELVES[0] + .0125, SHELVES[1] + .0125];
-  const shelfH = [SHELVES[0] - .0185 - shelfY[0], SHELVES[1] - .0185 - shelfY[1], Y1 - .012 - shelfY[2]];
+  const shelfY = [Y0 + .04, ...SHELVES.map(y => y + .0125)];
+  const shelfH = shelfY.map((y, i) => (i < SHELVES.length ? SHELVES[i] - .0185 : Y1 - .012) - y);
   const SURF = {
-    top: { label: 'Gold top', y: HG, x0: -L * GS / 2, x1: L * GS / 2, z0: -D * GS / 2, z1: D * GS / 2, rc: [R * GS, R * GS, R * GS, R * GS], h: 1.8 - HG }
+    top: { label: GOLD ? 'Gold top' : 'Marble top', y: HG, x0: -L * GS / 2, x1: L * GS / 2, z0: -D * GS / 2, z1: D * GS / 2, rc: [R * GS, R * GS, R * GS, R * GS], h: 1.8 - HG }
   };
-  ['bottom', 'middle', 'top'].forEach((nm, i) => {
+  (shelfY.length === 2 ? ['lower', 'upper'] : ['bottom', 'middle', 'top']).forEach((nm, i) => {
     SURF['L' + i] = { label: 'Left bay · ' + nm + ' shelf', y: shelfY[i], x0: -BL / 2 + .004, x1: -DIV - .015, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [BR - T, 0, 0, BR], h: shelfH[i] };
     SURF['R' + i] = { label: 'Right bay · ' + nm + ' shelf', y: shelfY[i], x0: DIV + .015, x1: BL / 2 - .004, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [0, BR - T, BR, 0], h: shelfH[i] };
   });
-  const SURF_ORDER = ['top', 'L2', 'L1', 'L0', 'R2', 'R1', 'R0'];
+  const SURF_ORDER = ['top', ...shelfY.map((y, i) => 'L' + i).reverse(), ...shelfY.map((y, i) => 'R' + i).reverse()];
   // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
   // and trailing plants on the middle shelves, their vines hanging over the front edges
   const DEFAULT_LAYOUT = [
@@ -426,6 +456,7 @@ window.MaxsenTable = (function () {
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
   ];
+  if (RECT) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
   // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
   const DEFAULT_CLOSED = [
     ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
@@ -639,10 +670,10 @@ window.MaxsenTable = (function () {
     const byX = p => (p.x + L / 2) / L * .9;
 
     // the top: 100 mm thick, rounded corners and softened edges
-    add(slab(THREE, rr(THREE, L - .012, D - .012, R - .006), TOP, .006), stoneMat, 0, Y1, 0);
+    add(slab(THREE, rr(THREE, L - .012, D - .012, Math.max(.003, R - .006)), TOP, RECT ? .003 : .006), stoneMat, 0, Y1, 0);
     // a thin, flat gold top on the marble, following its outline at 1.1x
     const gold = new THREE.MeshPhysicalMaterial({ color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: night ? .5 : 1.05 });
-    add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
+    if (GOLD) add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
@@ -800,8 +831,8 @@ window.MaxsenTable = (function () {
     }
 
     // floating base with an LED line that lights the floor
-    add(slab(THREE, rr(THREE, BL - .1, BD - .1, BR - .04), BASE - .004), bronze, 0, .002, 0);
-    pixels(perimeter(BL - .09, BD - .09, BR - .035, .016), BASE - .012);
+    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), bronze, 0, .002, 0);
+    pixels(perimeter(BL - .09, BD - .09, Math.max(.013, BR - .035), .016), BASE - .012);
     const gl = new THREE.Mesh(new THREE.PlaneGeometry(BL + .7, BD + .55), new THREE.MeshBasicMaterial({ map: floorGlow(THREE, colour), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .9 : .4 }));
     gl.rotation.x = -Math.PI / 2; gl.position.y = .002; scene.add(gl);
 
@@ -811,7 +842,7 @@ window.MaxsenTable = (function () {
     const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
-    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
+    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [...SHELVES, Y1 + .0125].forEach(y => {
       const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .5 : .16, .5, 2); p.position.set(x, y - .04, .12); scene.add(p);
     }));
 
@@ -1074,7 +1105,7 @@ window.MaxsenTable = (function () {
     top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
   };
   // the cameras were framed for a 1,000 counter: move them down with it
-  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += H - 1; v.at[1] += H - 1; });
+  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += HG - 1.01; v.at[1] += HG - 1.01; });
 
   function loadImage(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
 
@@ -1169,6 +1200,7 @@ window.MaxsenTable = (function () {
     const editor = {
       layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(START)),
       names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
+      labels: () => Object.fromEntries(ORDER.map(k => [k, SURF[k].label])),
       selected: () => info(sel),
       add(type, v) {
         if (!(type in KIND_VARIANTS)) return null;
@@ -1262,7 +1294,9 @@ window.MaxsenTable = (function () {
     };
   }
   return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
-})();
+}
+window.MaxsenTable = MaxsenModel();
+window.MaxsenTable.rect = MaxsenModel({ rect: true });
 
 (() => {
   const $ = id => document.getElementById(id);
@@ -1272,9 +1306,9 @@ window.MaxsenTable = (function () {
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
 
   /* ---------- the saved arrangements, one per version: the page's database, else this browser ---------- */
-  let shelves = true;
+  let shelves = true, rect = false;
   const say = t => { $('saveState').textContent = t; };
-  const cur = () => stores[shelves ? 'open' : 'closed'];
+  const cur = () => stores[(rect ? 'rect-' : '') + (shelves ? 'open' : 'closed')];
   function store(lsKey, docPath) {
     const st = { layout: null, ref: null, lastSaved: null, writing: false, again: false, timer: 0, local: false };
     const mine = () => cur() === st;
@@ -1313,18 +1347,21 @@ window.MaxsenTable = (function () {
     st.status = () => say(st.local ? 'Saved in this browser only' : st.ref ? (st.lastSaved ? 'Saved' : '') : '');
     return st;
   }
-  const stores = { open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed') };
+  const stores = {
+    open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed'),
+    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
+  };
   (async () => {
     let db = null;
     try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
-    stores.open.connect(db); stores.closed.connect(db);
+    Object.values(stores).forEach(st => st.connect(db));
   })();
 
   /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
-    viewer = await MaxsenTable.mount(THREE, stage, {
+    viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
       view: current, mood, shelves, layout: st.layout || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
@@ -1344,6 +1381,10 @@ window.MaxsenTable = (function () {
   });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
+    if (b.dataset.f) {
+      rect = b.dataset.f === 'rect'; selected = null; renderSel();
+      bar.querySelectorAll('button[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
+    }
     if (b.dataset.s) {
       shelves = b.dataset.s === 'open'; selected = null; renderSel();
       bar.querySelectorAll('button[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
@@ -1412,16 +1453,16 @@ window.MaxsenTable = (function () {
     $('selSWrap').hidden = s.type !== 'plant';
     if (s.type === 'plant') { if (document.activeElement !== $('selS')) $('selS').value = Math.round((s.s || 1) * 100); $('selSOut').textContent = Math.round((s.s || 1) * 100) + '%'; }
   }
-  const SURF_NAME = { top: 'gold top', L2: 'left, top shelf', L1: 'left, middle shelf', L0: 'left, bottom shelf', R2: 'right, top shelf', R1: 'right, middle shelf', R0: 'right, bottom shelf' };
   function renderList() {
     if (!viewer) return;
     const list = viewer.editor.layout(), ul = $('items');
     $('listSum').textContent = `Everything on the counter (${list.length})`;
-    const names = viewer.editor.names();
+    const names = viewer.editor.names(), labels = viewer.editor.labels();
+    const where = k => (labels[k] || '').toLowerCase().replace(' bay · ', ', ');
     ul.replaceChildren(...list.map(d => {
       const li = document.createElement('li');
       const a = document.createElement('button'); a.type = 'button'; a.className = 'it';
-      a.append(names[d.id] + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + SURF_NAME[d.on] }));
+      a.append(names[d.id] + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + where(d.on) }));
       a.setAttribute('aria-current', String(!!selected && selected.id === d.id));
       a.addEventListener('click', () => { if (!arranging) $('arrToggle').click(); viewer.editor.select(d.id); });
       const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = 'Take off';

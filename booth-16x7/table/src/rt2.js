@@ -19,12 +19,13 @@ const jobs = (process.argv[3] || 'day:hero').split(',').map(s => s.split(':'));
   const moods = [...new Set(jobs.map(j => j[0]))];
   for (const mood of moods) {
     const t0 = Date.now();
-    const shots = await p.evaluate(async ({ mood, views, W, H, layout, dbg, shelvesOff }) => {
-      if (dbg) MaxsenTable.VIEWS.dbg = dbg;
+    const shots = await p.evaluate(async ({ mood, views, W, H, layout, dbg, shelvesOff, rect }) => {
+      const M = rect ? MaxsenTable.rect : MaxsenTable;
+      if (dbg) M.VIEWS.dbg = dbg;
       const el = document.createElement('div'); el.style.cssText = `width:${W}px;height:${H}px`; document.body.appendChild(el);
-      const v = await MaxsenTable.mount(THREE, el, { capture: true, ratio: 1, w: W, h: H, mood, layout, shelves: !shelvesOff });
+      const v = await M.mount(THREE, el, { capture: true, ratio: 1, w: W, h: H, mood, layout, shelves: !shelvesOff });
       const r = views.map(k => [k, v.capture(k)]); el.remove(); return r;
-    }, { mood, views: jobs.filter(j => j[0] === mood).map(j => j[1]), W, H: Hh, layout: LAYOUT, dbg: process.env.DBG ? JSON.parse(process.env.DBG) : null, shelvesOff: process.env.SHELVES === '0' });
+    }, { mood, views: jobs.filter(j => j[0] === mood).map(j => j[1]), W, H: Hh, layout: LAYOUT, dbg: process.env.DBG ? JSON.parse(process.env.DBG) : null, shelvesOff: process.env.SHELVES === '0', rect: process.env.RECT === '1' });
     for (const [k, d] of shots) fs.writeFileSync(path.join(out, `${mood}-${k}.png`), Buffer.from(d.split(',')[1], 'base64'));
     console.log(mood, shots.length, 'in', Date.now() - t0, 'ms');
   }

@@ -70,6 +70,7 @@ text{font-family:var(--sans)}
 .word{fill:#29221F;font-size:30px;font-weight:700;letter-spacing:14px}
 .floor{fill:var(--muted)}
 .stone{fill:var(--stonec);stroke:var(--fg);stroke-width:4}
+.stonep{fill:var(--stonec);stroke:var(--fg);stroke-width:4}
 .body{fill:var(--bodyc)}
 .inner{fill:var(--innerc)}
 .sw{fill:#29221F;stroke:var(--fg);stroke-width:2}
@@ -234,6 +235,8 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-v="top" aria-pressed="false">From above</button>
         <button type="button" data-m="night" aria-pressed="false">Warm white</button>
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
+        <button type="button" data-f="round" aria-pressed="true">Rounded</button>
+        <button type="button" data-f="rect" aria-pressed="false">Rectangular</button>
         <button type="button" data-s="open" aria-pressed="true">With shelves</button>
         <button type="button" data-s="closed" aria-pressed="false">Without shelves</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
@@ -296,10 +299,31 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     </div>
   </section>
 
+  <section aria-labelledby="rect">
+    <div class="head">
+      <span class="eyebrow">Option</span>
+      <h2 id="rect">Rectangular, with the marble to 3/8</h2>
+    </div>
+    <p class="lede">Square in plan instead of rounded, and no gold top. The marble now takes the top 3/8 of the 850 height, a 319 mm block, with the switches and the Halo dimmer set into its front face at about 690 mm. Below it, the 531 mm wood body has room for one shelf in each open bay. The trailing plants move up to that shelf and the catalogues go down to the bay floor. The locks and the ball light stand straight on the marble, where they were. Switch to it in the 3D model with <b>Rectangular</b>; it also comes without shelves.</p>
+    <figure class="shot"><img src="renders/rect-day-hero.jpg" alt="The rectangular counter: a deep white marble block with square corners making up the top 3/8, the switches and Halo dimmer on its face, six staggered locks and the ball light on top, and a light wood body below with LUSANO and trailing plants in the open bays" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular.</b> A 319 mm marble block on a light wood body, no gold.</figcaption></figure>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/rect-day-top.jpg" alt="Looking straight down on the rectangular counter: a plain white marble rectangle with square corners, the six locks staggered in two rows and the ball light at the front left" width="1600" height="1000" loading="lazy"><figcaption><b>From above.</b> A clean rectangle of marble.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-front.jpg" alt="Straight-on front view of the rectangular counter: the marble band with seven switches across it, LUSANO below, plants in both bays" width="1600" height="1000" loading="lazy"><figcaption><b>Front.</b> The switches sit in the marble at hand height.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-end.jpg" alt="Three-quarter view of the right end of the rectangular counter, showing the square corner and the open bay with its one shelf" width="1600" height="1000" loading="lazy"><figcaption><b>Right end.</b> Square corners, one shelf in each bay.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-day-shelf.jpg" alt="Close view of the right bay of the rectangular counter: string of pearls and golden pothos on the shelf hanging down, catalogues on the bay floor" width="1600" height="1000" loading="lazy"><figcaption><b>The bay.</b> Plants on the shelf, catalogues below.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-night-hero.jpg" alt="The rectangular counter with the show lights low: warm light under the marble block and the base, LUSANO glowing" width="1600" height="1000" loading="lazy"><figcaption><b>Warm white.</b> The LED line now runs under the marble block.</figcaption></figure>
+      <figure class="shot"><img src="renders/rect-closed-day-hero.jpg" alt="The rectangular counter without shelves: closed wood body under the marble block, trailing plants at the back corners of the top" width="1600" height="1000" loading="lazy"><figcaption><b>Rectangular, without shelves.</b> Closed body, plants at the back corners.</figcaption></figure>
+    </div>
+    <div class="drw">
+      <figure class="sheet"><div class="sheet-h"><b>Rectangular · front</b><span>mm</span></div><div class="scroll">{{RFRONT}}</div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll">{{RPLAN}}</div></figure>
+    </div>
+  </section>
+
   <section aria-labelledby="dwg">
     <div class="head">
       <span class="eyebrow">Drawings</span>
-      <h2 id="dwg">To scale, in millimetres</h2>
+      <h2 id="dwg">To scale, in millimetres: the rounded counter</h2>
     </div>
     <div class="drw">
       <figure class="sheet"><div class="sheet-h"><b>Front</b><span>mm</span></div><div class="scroll">{{FRONT}}</div></figure>
@@ -379,9 +403,9 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
 
   /* ---------- the saved arrangements, one per version: the page's database, else this browser ---------- */
-  let shelves = true;
+  let shelves = true, rect = false;
   const say = t => { $('saveState').textContent = t; };
-  const cur = () => stores[shelves ? 'open' : 'closed'];
+  const cur = () => stores[(rect ? 'rect-' : '') + (shelves ? 'open' : 'closed')];
   function store(lsKey, docPath) {
     const st = { layout: null, ref: null, lastSaved: null, writing: false, again: false, timer: 0, local: false };
     const mine = () => cur() === st;
@@ -420,18 +444,21 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     st.status = () => say(st.local ? 'Saved in this browser only' : st.ref ? (st.lastSaved ? 'Saved' : '') : '');
     return st;
   }
-  const stores = { open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed') };
+  const stores = {
+    open: store('maxsen-counter-layout-v1', 'layout/current'), closed: store('maxsen-counter-layout-closed-v1', 'layout/closed'),
+    'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
+  };
   (async () => {
     let db = null;
     try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
-    stores.open.connect(db); stores.closed.connect(db);
+    Object.values(stores).forEach(st => st.connect(db));
   })();
 
   /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
-    viewer = await MaxsenTable.mount(THREE, stage, {
+    viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
       view: current, mood, shelves, layout: st.layout || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
@@ -451,6 +478,10 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
   });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
+    if (b.dataset.f) {
+      rect = b.dataset.f === 'rect'; selected = null; renderSel();
+      bar.querySelectorAll('button[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
+    }
     if (b.dataset.s) {
       shelves = b.dataset.s === 'open'; selected = null; renderSel();
       bar.querySelectorAll('button[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); start(); return;
@@ -519,16 +550,16 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     $('selSWrap').hidden = s.type !== 'plant';
     if (s.type === 'plant') { if (document.activeElement !== $('selS')) $('selS').value = Math.round((s.s || 1) * 100); $('selSOut').textContent = Math.round((s.s || 1) * 100) + '%'; }
   }
-  const SURF_NAME = { top: 'gold top', L2: 'left, top shelf', L1: 'left, middle shelf', L0: 'left, bottom shelf', R2: 'right, top shelf', R1: 'right, middle shelf', R0: 'right, bottom shelf' };
   function renderList() {
     if (!viewer) return;
     const list = viewer.editor.layout(), ul = $('items');
     $('listSum').textContent = `Everything on the counter (${list.length})`;
-    const names = viewer.editor.names();
+    const names = viewer.editor.names(), labels = viewer.editor.labels();
+    const where = k => (labels[k] || '').toLowerCase().replace(' bay · ', ', ');
     ul.replaceChildren(...list.map(d => {
       const li = document.createElement('li');
       const a = document.createElement('button'); a.type = 'button'; a.className = 'it';
-      a.append(names[d.id] + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + SURF_NAME[d.on] }));
+      a.append(names[d.id] + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + where(d.on) }));
       a.setAttribute('aria-current', String(!!selected && selected.id === d.id));
       a.addEventListener('click', () => { if (!arranging) $('arrToggle').click(); viewer.editor.select(d.id); });
       const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = 'Take off';

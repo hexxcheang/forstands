@@ -1,16 +1,22 @@
 /* The Maxsen switch counter, after the reference image, in the Maxsen colourway.
    1,400 long, 500 deep, 850 high to the top of the gold. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
-window.MaxsenTable = (function () {
-  const L = 1.4, D = 0.5, H = 0.84;       // H: top of the marble; the 10 mm gold top brings the counter to 850
-  const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
+// Two forms from the one model: the rounded counter with its gold top (the default), and
+// { rect: true }: square in plan, no gold, the marble the top 3/8 of the 850 height.
+function MaxsenModel(cfg = {}) {
+  const RECT = !!cfg.rect, GOLD = !RECT;
+  const L = 1.4, D = 0.5;
+  const H = RECT ? 0.85 : 0.84;            // H: top of the marble; on the rounded form the 10 mm gold top brings it to 850
+  const TOP = RECT ? H * 3 / 8 : 0.12;     // the marble: 120 mm, or 3/8 of the height (about 319 mm) on the rectangular form
+  const R = RECT ? 0.006 : 0.15;           // corner radius of the marble in plan; switches sit on its front face
   const OV = 0.015;                        // the top overhangs the body by 15 mm
-  const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
+  const BL = L - 2 * OV, BD = D - 2 * OV, BR = RECT ? 0.022 : R - OV;
   const BASE = 0.06, T = 0.02;             // floating base; panel thickness
-  const GS = 1.1, GT = 0.01, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick, sitting on the marble
+  const GS = GOLD ? 1.1 : 1, GT = GOLD ? 0.01 : 0, HG = H + GT; // the gold top: the marble's plan scaled 1.1x, 10 mm thick
   const Y0 = BASE, Y1 = H - TOP;           // body from the base to the underside of the top
   const DIV = 0.33;                        // dividers either side of the centre niche, 660 apart
-  const SHELVES = [0.307, 0.513];          // shelf heights in both end bays, evenly spaced in the lower body
+  // shelf heights in both end bays, evenly spaced in the body below the marble: two shelves, or one on the shorter rectangular body
+  const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
@@ -27,16 +33,16 @@ window.MaxsenTable = (function () {
   const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid', pothos: 'Golden pothos (trailing)', ivy: 'English ivy (trailing)', pearls: 'String of pearls (trailing)' };
   const KIND_VARIANTS = { lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
   // each surface: its height, its plan outline (corner radii back-left, back-right, front-right, front-left) and the clear height above it
-  const shelfY = [Y0 + .04, SHELVES[0] + .0125, SHELVES[1] + .0125];
-  const shelfH = [SHELVES[0] - .0185 - shelfY[0], SHELVES[1] - .0185 - shelfY[1], Y1 - .012 - shelfY[2]];
+  const shelfY = [Y0 + .04, ...SHELVES.map(y => y + .0125)];
+  const shelfH = shelfY.map((y, i) => (i < SHELVES.length ? SHELVES[i] - .0185 : Y1 - .012) - y);
   const SURF = {
-    top: { label: 'Gold top', y: HG, x0: -L * GS / 2, x1: L * GS / 2, z0: -D * GS / 2, z1: D * GS / 2, rc: [R * GS, R * GS, R * GS, R * GS], h: 1.8 - HG }
+    top: { label: GOLD ? 'Gold top' : 'Marble top', y: HG, x0: -L * GS / 2, x1: L * GS / 2, z0: -D * GS / 2, z1: D * GS / 2, rc: [R * GS, R * GS, R * GS, R * GS], h: 1.8 - HG }
   };
-  ['bottom', 'middle', 'top'].forEach((nm, i) => {
+  (shelfY.length === 2 ? ['lower', 'upper'] : ['bottom', 'middle', 'top']).forEach((nm, i) => {
     SURF['L' + i] = { label: 'Left bay · ' + nm + ' shelf', y: shelfY[i], x0: -BL / 2 + .004, x1: -DIV - .015, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [BR - T, 0, 0, BR], h: shelfH[i] };
     SURF['R' + i] = { label: 'Right bay · ' + nm + ' shelf', y: shelfY[i], x0: DIV + .015, x1: BL / 2 - .004, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [0, BR - T, BR, 0], h: shelfH[i] };
   });
-  const SURF_ORDER = ['top', 'L2', 'L1', 'L0', 'R2', 'R1', 'R0'];
+  const SURF_ORDER = ['top', ...shelfY.map((y, i) => 'L' + i).reverse(), ...shelfY.map((y, i) => 'R' + i).reverse()];
   // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
   // and trailing plants on the middle shelves, their vines hanging over the front edges
   const DEFAULT_LAYOUT = [
@@ -54,6 +60,7 @@ window.MaxsenTable = (function () {
     { id: 'pearls1', type: 'plant', v: 'pearls', on: 'R1', x: .43, z: .16, r: 0, s: 1 },
     { id: 'pothos2', type: 'plant', v: 'pothos', on: 'R1', x: .6, z: .15, r: 2, s: 1 }
   ];
+  if (RECT) DEFAULT_LAYOUT.forEach(d => { if (d.on === 'L2' || d.on === 'R2') d.on = d.on[0] + '0'; });
   // without shelves: the ends are closed, only the top is free; plants sit at the back corners and hang down the ends
   const DEFAULT_CLOSED = [
     ...DEFAULT_LAYOUT.filter(d => d.type === 'lock' || d.type === 'ball'),
@@ -267,10 +274,10 @@ window.MaxsenTable = (function () {
     const byX = p => (p.x + L / 2) / L * .9;
 
     // the top: 100 mm thick, rounded corners and softened edges
-    add(slab(THREE, rr(THREE, L - .012, D - .012, R - .006), TOP, .006), stoneMat, 0, Y1, 0);
+    add(slab(THREE, rr(THREE, L - .012, D - .012, Math.max(.003, R - .006)), TOP, RECT ? .003 : .006), stoneMat, 0, Y1, 0);
     // a thin, flat gold top on the marble, following its outline at 1.1x
     const gold = new THREE.MeshPhysicalMaterial({ color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: night ? .5 : 1.05 });
-    add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
+    if (GOLD) add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
 
@@ -428,8 +435,8 @@ window.MaxsenTable = (function () {
     }
 
     // floating base with an LED line that lights the floor
-    add(slab(THREE, rr(THREE, BL - .1, BD - .1, BR - .04), BASE - .004), bronze, 0, .002, 0);
-    pixels(perimeter(BL - .09, BD - .09, BR - .035, .016), BASE - .012);
+    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), bronze, 0, .002, 0);
+    pixels(perimeter(BL - .09, BD - .09, Math.max(.013, BR - .035), .016), BASE - .012);
     const gl = new THREE.Mesh(new THREE.PlaneGeometry(BL + .7, BD + .55), new THREE.MeshBasicMaterial({ map: floorGlow(THREE, colour), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .9 : .4 }));
     gl.rotation.x = -Math.PI / 2; gl.position.y = .002; scene.add(gl);
 
@@ -439,7 +446,7 @@ window.MaxsenTable = (function () {
     const lc0 = c => colour ? c : new THREE.Color(0xffc98f);
     [[BD / 2 + .015, 1, .15], [-BD / 2 - .015, -1, .65]].forEach(([z, s, t]) => { const a = new THREE.RectAreaLight(lc0(pix(t)), wash, BL - .3, .02); a.position.set(0, Y1 - .01, z); a.lookAt(0, 0, z + s * .06); scene.add(a); });
     const low = new THREE.RectAreaLight(lc0(pix(.4)), night ? 5 : 1.6, BL - .1, BD - .1); low.position.set(0, BASE - .015, 0); low.lookAt(0, -1, 0); scene.add(low);
-    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [SHELVES[0], SHELVES[1], Y1 + .0125].forEach(y => {
+    if (shelves) [(lx0 + lx1) / 2, (rx0 + rx1) / 2 - .03].forEach(x => [...SHELVES, Y1 + .0125].forEach(y => {
       const p = new THREE.PointLight(lc0(pix(byX({ x }))), night ? .5 : .16, .5, 2); p.position.set(x, y - .04, .12); scene.add(p);
     }));
 
@@ -699,10 +706,10 @@ window.MaxsenTable = (function () {
     locks:  { pos: [.05, 1.36, 1.25], at: [.03, 1.2, -.04], fov: 46 },
     ball:   { pos: [-.15, 1.38, 1.15], at: [-.42, 1.13, -.04], fov: 44 },
     shelf:  { pos: [1.3, .95, 1.3], at: [.5, .5, .08], fov: 38 },
-    top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
+    top:    { pos: [0, 3.01, .3], at: [0, 1.01, .02], fov: 34 }
   };
   // the cameras were framed for a 1,000 counter: move them down with it
-  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += H - 1; v.at[1] += H - 1; });
+  Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += HG - 1.01; v.at[1] += HG - 1.01; });
 
   function loadImage(src) { return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; }); }
 
@@ -797,6 +804,7 @@ window.MaxsenTable = (function () {
     const editor = {
       layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(START)),
       names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
+      labels: () => Object.fromEntries(ORDER.map(k => [k, SURF[k].label])),
       selected: () => info(sel),
       add(type, v) {
         if (!(type in KIND_VARIANTS)) return null;
@@ -890,4 +898,6 @@ window.MaxsenTable = (function () {
     };
   }
   return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
-})();
+}
+window.MaxsenTable = MaxsenModel();
+window.MaxsenTable.rect = MaxsenModel({ rect: true });
