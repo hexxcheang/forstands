@@ -104,6 +104,32 @@ text{font-family:var(--sans)}
 .views button{border:1px solid var(--rule);background:transparent;color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
 .views button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .views span{font-size:13px;color:var(--muted);margin-left:6px}
+.arrange{border:1px solid var(--rule);border-radius:4px;background:var(--surface);padding:14px 16px;display:grid;gap:14px}
+.arrange[hidden],.arr-body[hidden],.sel[hidden],.arrange [hidden]{display:none}
+.arr-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.arr-head p{margin:0;font-size:14px;color:var(--ink-2);flex:1 1 260px}
+.status{font-size:13px;color:var(--muted)}
+.pill{border:1px solid var(--rule);background:var(--bg);color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.pill[aria-pressed="true"],.pill.dark{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pill:disabled{opacity:.45;cursor:not-allowed}
+.arr-body{display:grid;gap:14px}
+.arr-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.arr-row>b{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.sel{border-top:1px solid var(--rule);padding-top:12px;display:grid;gap:10px}
+.sel h3{font-size:22px}
+.sel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px}
+.sel label{display:grid;gap:4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sel select{font:400 15px/1.3 var(--sans);color:var(--fg);background:var(--bg);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;min-height:40px;max-width:100%}
+.sel input[type=range]{width:100%;accent-color:var(--rose-text);min-height:32px}
+.sel output{font-weight:400;letter-spacing:0;text-transform:none;color:var(--fg)}
+.hint{font-size:13.5px;color:var(--muted);margin:0}
+.items{margin:0;padding:0;list-style:none;display:grid;gap:2px;max-height:260px;overflow:auto;border-top:1px solid var(--rule)}
+.items li{display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--rule)}
+.items button.it{flex:1;text-align:left;background:none;border:0;color:var(--fg);font:400 14.5px/1.3 var(--sans);padding:9px 4px;cursor:pointer;min-height:40px}
+.items button.it span{color:var(--muted);font-size:13px}
+.items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
+.items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
+details.list summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:4px 0}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px}
 ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
 ul.plain li::marker{color:var(--rose)}
@@ -209,6 +235,43 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
         <button type="button" data-m="colour" aria-pressed="false">Colour</button>
         <span>Drag to turn, pinch or scroll to zoom</span>
       </div>
+      <div class="arrange" id="arrange" hidden>
+        <div class="arr-head">
+          <button type="button" class="pill" id="arrToggle" aria-pressed="false">Arrange the pieces</button>
+          <p id="arrIntro">Move the locks, take catalogues out, add plants. Your arrangement is saved as you go.</p>
+          <span class="status" id="saveState" role="status" aria-live="polite"></span>
+        </div>
+        <div class="arr-body" id="arrBody" hidden>
+          <p class="hint">Press on a piece and drag it across its surface. Drag anywhere else to turn the view. With a piece picked: arrow keys nudge it 1 cm, R turns it, Delete takes it off.</p>
+          <div class="arr-row" id="addRow">
+            <b>Add</b>
+            <button type="button" class="pill" data-add="plant" data-v="olive">Olive tree</button>
+            <button type="button" class="pill" data-add="plant" data-v="monstera">Monstera</button>
+            <button type="button" class="pill" data-add="plant" data-v="succulent">Succulent bowl</button>
+            <button type="button" class="pill" data-add="plant" data-v="orchid">White orchid</button>
+            <button type="button" class="pill" data-add="lock" data-v="0">Lenovo lock</button>
+            <button type="button" class="pill" data-add="catalogues" data-v="maxsen">Catalogues</button>
+            <button type="button" class="pill" data-add="brochures" data-v="lenovo">Brochure stand</button>
+            <button type="button" class="pill" data-add="ball">Ball light</button>
+          </div>
+          <div class="sel" id="sel" hidden>
+            <h3 id="selName"></h3>
+            <div class="sel-grid">
+              <label>Place on<select id="selOn"></select></label>
+              <label id="selVWrap">Style<select id="selV"></select></label>
+              <label>Turn <output id="selROut"></output><input type="range" id="selR" min="-180" max="180" step="5"></label>
+              <label id="selSWrap">Size <output id="selSOut"></output><input type="range" id="selS" min="60" max="140" step="5"></label>
+            </div>
+            <div class="arr-row">
+              <button type="button" class="pill" id="selDup">Duplicate</button>
+              <button type="button" class="pill" id="selDel">Take it off</button>
+              <button type="button" class="pill" id="selNone">Done</button>
+            </div>
+          </div>
+          <details class="list"><summary id="listSum">Everything on the counter</summary><ul class="items" id="items"></ul></details>
+          <div class="arr-row"><button type="button" class="pill" id="arrReset">Back to the original layout</button><span class="hint">The photos on this page show the original layout.</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -287,13 +350,62 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
 <script>
 {{SCENE}}
 (() => {
-  const btn = document.getElementById('open3d'), stage = document.getElementById('stage'), bar = document.getElementById('views');
-  let viewer = null, mood = 'day', current = 'hero';
+  const $ = id => document.getElementById(id);
+  const btn = $('open3d'), stage = $('stage'), bar = $('views');
+  let viewer = null, mood = 'day', current = 'hero', arranging = false, selected = null;
   const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
   const CDN = 'https://cdn.jsdelivr.net/npm/three@0.128.0/';
+
+  /* ---------- the saved arrangement: the page's database, else this browser ---------- */
+  const LS = 'maxsen-counter-layout-v1';
+  let layout = null, ref = null, lastSaved = null, writing = false, again = false, timer = 0, local = false;
+  const say = t => { $('saveState').textContent = t; };
+  try { const t = localStorage.getItem(LS); if (t) layout = MaxsenTable.sanitize(JSON.parse(t)); } catch (e) {}
+  async function connect() {
+    let db = null;
+    try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
+    if (!db) { local = true; say('Saved in this browser only'); return; }
+    ref = db.doc('layout/current');
+    const slow = setTimeout(() => say('Cannot reach the saved layout yet; changes are kept in this browser'), 10000);
+    ref.onSnapshot(snap => {
+      if (!snap.fromCache) clearTimeout(slow);
+      if (!snap.exists) { lastSaved = null; if (!snap.fromCache) say(''); return; }
+      const items = MaxsenTable.sanitize((snap.data() || {}).items);
+      if (!items) return;
+      const json = JSON.stringify(items); lastSaved = json;
+      if (json !== JSON.stringify(layout)) { layout = items; if (viewer) viewer.editor.setLayout(items); renderList(); }
+      if (!snap.fromCache && !writing) say('Saved');
+    }, () => { clearTimeout(slow); ref = null; local = true; say('Saved in this browser only'); });
+  }
+  connect();
+  function keep() {
+    try { localStorage.setItem(LS, JSON.stringify(layout)); } catch (e) {}
+    if (!ref) { say(local ? 'Saved in this browser only' : ''); return; }
+    say('Saving…'); clearTimeout(timer); timer = setTimeout(flush, 700);
+  }
+  async function flush(retried) {
+    if (!ref) return;
+    if (writing) { again = true; return; }
+    const json = JSON.stringify(layout);
+    if (json === lastSaved) { say('Saved'); return; }
+    writing = true;
+    try { await ref.set({ items: layout, updatedAt: Date.now() }); lastSaved = json; say('Saved'); }
+    catch (e) {
+      if (e && e.code === 'unavailable' && !retried) { writing = false; setTimeout(() => flush(true), 600 + Math.random() * 900); return; }
+      ref = null; local = true; say('Saved in this browser only: you can look, but only editors of this page save to it');
+    } finally { writing = false; if (again) { again = false; flush(); } }
+  }
+
+  /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
-    viewer = await MaxsenTable.mount(THREE, stage, { view: current, mood });
+    viewer = await MaxsenTable.mount(THREE, stage, {
+      view: current, mood, layout: layout || undefined,
+      onChange: l => { layout = l; keep(); renderList(); },
+      onSelect: info => { selected = info; renderSel(); renderList(); }
+    });
+    viewer.editor.setEnabled(arranging);
+    renderList();
   }
   btn.addEventListener('click', async () => {
     btn.disabled = true; btn.textContent = 'Loading the model';
@@ -302,8 +414,8 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       for (const f of ['examples/js/controls/OrbitControls.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/lights/RectAreaLightUniformsLib.js']) await load(CDN + f);
       try { await document.fonts.ready; } catch (e) {}
       stage.querySelector('img').hidden = true; btn.hidden = true;
-      start(); bar.hidden = false;
-    } catch (e) { btn.disabled = false; btn.textContent = 'The model did not load. Try again'; }
+      await start(); bar.hidden = false; $('arrange').hidden = false;
+    } catch (e) { btn.disabled = false; btn.hidden = false; btn.textContent = 'The model did not load. Try again'; }
   });
   bar.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || !viewer) return;
@@ -314,5 +426,80 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     current = b.dataset.v; viewer.view(current);
     bar.querySelectorAll('button[data-v]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
   });
+
+  /* ---------- arranging ---------- */
+  $('arrToggle').addEventListener('click', () => {
+    arranging = !arranging;
+    $('arrToggle').setAttribute('aria-pressed', String(arranging));
+    $('arrToggle').textContent = arranging ? 'Stop arranging' : 'Arrange the pieces';
+    $('arrBody').hidden = !arranging; $('arrIntro').hidden = arranging;
+    if (viewer) viewer.editor.setEnabled(arranging);
+    if (!arranging) { selected = null; renderSel(); }
+  });
+  $('addRow').addEventListener('click', e => {
+    const b = e.target.closest('button[data-add]'); if (!b || !viewer) return;
+    const id = viewer.editor.add(b.dataset.add, b.dataset.v);
+    if (!id && b.dataset.add === 'ball') say('Three ball lights at most');
+  });
+  const ed = () => viewer && viewer.editor;
+  $('selOn').addEventListener('change', e => ed() && ed().update(null, { on: e.target.value }));
+  $('selV').addEventListener('change', e => ed() && ed().update(null, { v: e.target.value }));
+  $('selR').addEventListener('input', e => { $('selROut').textContent = e.target.value + '°'; ed() && ed().update(null, { r: -e.target.value * Math.PI / 180 }); });
+  $('selS').addEventListener('input', e => { ed() && ed().update(null, { s: e.target.value / 100 }); });
+  $('selDup').addEventListener('click', () => ed() && ed().duplicate());
+  $('selDel').addEventListener('click', () => ed() && ed().remove());
+  $('selNone').addEventListener('click', () => ed() && ed().select(null));
+  let resetArmed = 0;
+  $('arrReset').addEventListener('click', () => {
+    const r = $('arrReset'); if (!ed()) return;
+    if (!resetArmed) { r.textContent = 'Press again to clear your changes'; r.classList.add('dark'); resetArmed = setTimeout(() => { resetArmed = 0; r.textContent = 'Back to the original layout'; r.classList.remove('dark'); }, 4000); return; }
+    clearTimeout(resetArmed); resetArmed = 0; r.textContent = 'Back to the original layout'; r.classList.remove('dark');
+    ed().setLayout(ed().defaults()); layout = ed().layout(); keep(); renderList();
+  });
+  document.addEventListener('keydown', e => {
+    if (!arranging || !selected || !ed() || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.target.closest('input,select,textarea,summary')) return;
+    const step = .01, k = e.key;
+    const nudge = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[k];
+    if (nudge) { ed().update(null, { x: selected.x + nudge[0], z: selected.z + nudge[1] }); e.preventDefault(); }
+    else if (k === 'r' || k === 'R') { ed().update(null, { r: (selected.r || 0) + (e.shiftKey ? 1 : -1) * Math.PI / 12 }); e.preventDefault(); }
+    else if (k === 'Delete' || k === 'Backspace') { ed().remove(); e.preventDefault(); }
+    else if (k === 'Escape') ed().select(null);
+  });
+
+  function opt(sel, list, value) {
+    sel.replaceChildren(...list.map(([v, label, off]) => { const o = document.createElement('option'); o.value = v; o.textContent = label; o.disabled = !!off; o.selected = v === value; return o; }));
+  }
+  function renderSel() {
+    const s = selected, box = $('sel');
+    box.hidden = !s; if (!s) return;
+    $('selName').textContent = s.name;
+    if (document.activeElement !== $('selOn')) opt($('selOn'), s.surfaces.map(x => [x.key, x.label + (x.fits ? '' : ' (too tall)'), !x.fits]), s.on);
+    $('selVWrap').hidden = !s.variants.length;
+    if (s.variants.length && document.activeElement !== $('selV')) opt($('selV'), s.variants, s.v);
+    let deg = Math.round(-(s.r || 0) * 180 / Math.PI) % 360; if (deg > 180) deg -= 360; if (deg < -180) deg += 360;
+    if (document.activeElement !== $('selR')) $('selR').value = deg;
+    $('selROut').textContent = deg + '°';
+    $('selSWrap').hidden = s.type !== 'plant';
+    if (s.type === 'plant') { if (document.activeElement !== $('selS')) $('selS').value = Math.round((s.s || 1) * 100); $('selSOut').textContent = Math.round((s.s || 1) * 100) + '%'; }
+  }
+  const SURF_NAME = { top: 'gold top', L2: 'left, top shelf', L1: 'left, middle shelf', L0: 'left, bottom shelf', R2: 'right, top shelf', R1: 'right, middle shelf', R0: 'right, bottom shelf' };
+  function renderList() {
+    if (!viewer) return;
+    const list = viewer.editor.layout(), ul = $('items');
+    $('listSum').textContent = `Everything on the counter (${list.length})`;
+    const names = viewer.editor.names();
+    ul.replaceChildren(...list.map(d => {
+      const li = document.createElement('li');
+      const a = document.createElement('button'); a.type = 'button'; a.className = 'it';
+      a.append(names[d.id] + ' ', Object.assign(document.createElement('span'), { textContent: '· ' + SURF_NAME[d.on] }));
+      a.setAttribute('aria-current', String(!!selected && selected.id === d.id));
+      a.addEventListener('click', () => { if (!arranging) $('arrToggle').click(); viewer.editor.select(d.id); });
+      const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = 'Take off';
+      x.setAttribute('aria-label', 'Take off ' + names[d.id]);
+      x.addEventListener('click', () => viewer.editor.remove(d.id));
+      li.append(a, x); return li;
+    }));
+  }
 })();
 </script>

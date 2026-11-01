@@ -2,6 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const npm = path.join(__dirname, '..', '..', 'npm3', 'package');
 const out = process.argv[2], W = +(process.argv[4] || 2400), Hh = Math.round(W * .625);
+const LAYOUT = process.env.LAYOUT ? JSON.parse(fs.readFileSync(process.env.LAYOUT, 'utf8')) : undefined;
 const jobs = (process.argv[3] || 'day:hero').split(',').map(s => s.split(':'));
 (async () => {
   const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--allow-file-access-from-files'] });
@@ -18,11 +19,12 @@ const jobs = (process.argv[3] || 'day:hero').split(',').map(s => s.split(':'));
   const moods = [...new Set(jobs.map(j => j[0]))];
   for (const mood of moods) {
     const t0 = Date.now();
-    const shots = await p.evaluate(async ({ mood, views, W, H }) => {
+    const shots = await p.evaluate(async ({ mood, views, W, H, layout, dbg }) => {
+      if (dbg) MaxsenTable.VIEWS.dbg = dbg;
       const el = document.createElement('div'); el.style.cssText = `width:${W}px;height:${H}px`; document.body.appendChild(el);
-      const v = await MaxsenTable.mount(THREE, el, { capture: true, ratio: 1, w: W, h: H, mood });
+      const v = await MaxsenTable.mount(THREE, el, { capture: true, ratio: 1, w: W, h: H, mood, layout });
       const r = views.map(k => [k, v.capture(k)]); el.remove(); return r;
-    }, { mood, views: jobs.filter(j => j[0] === mood).map(j => j[1]), W, H: Hh });
+    }, { mood, views: jobs.filter(j => j[0] === mood).map(j => j[1]), W, H: Hh, layout: LAYOUT, dbg: process.env.DBG ? JSON.parse(process.env.DBG) : null });
     for (const [k, d] of shots) fs.writeFileSync(path.join(out, `${mood}-${k}.png`), Buffer.from(d.split(',')[1], 'base64'));
     console.log(mood, shots.length, 'in', Date.now() - t0, 'ms');
   }

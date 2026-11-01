@@ -13,6 +13,94 @@ window.MaxsenTable = (function () {
   const SHELVES = [0.33, 0.6];             // shelf heights in both end bays
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
+  /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
+  const LOCK_VARIANTS = [
+    { name: 'F3 Ultra Air View · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
+    { name: 'F3 Ultra Air View · Gold Aurora Marble', frame: 0x161616, trim: '#C9A46A', lower: 'marble', cam: false },
+    { name: 'F3 Ultra camera · Shooting Stars', frame: 0x34373c, trim: '#B8BCC2', lower: 'stars', cam: true },
+    { name: 'F3 Ultra camera · Frosted Onyx Marble', frame: 0x1a1a1b, trim: '#B8BCC2', lower: 'onyx', cam: true },
+    { name: 'The Sun Air View · solar', frame: 0xA27E4E, trim: '#D8B27A', lower: 'solar', cam: false },
+    { name: 'The Sun camera · solar', frame: 0xB8955F, trim: '#E0C08A', lower: 'solar', cam: true }
+  ];
+  const CATALOGUES = { maxsen: 'Maxsen catalogues', lusano: 'Lusano catalogues', lenovo: 'Lenovo lock catalogues', halo: 'Halo catalogues' };
+  const BROCHURES = { lenovo: 'Lenovo brochure stand', lusano: 'Lusano brochure stand', maxsen: 'Maxsen brochure stand' };
+  const PLANTS = { olive: 'Olive tree', monstera: 'Monstera', succulent: 'Succulent bowl', orchid: 'White orchid' };
+  const KIND_VARIANTS = { lock: LOCK_VARIANTS.map((v, i) => [String(i), v.name]), catalogues: Object.entries(CATALOGUES), brochures: Object.entries(BROCHURES), plant: Object.entries(PLANTS), ball: [] };
+  // each surface: its height, its plan outline (corner radii back-left, back-right, front-right, front-left) and the clear height above it
+  const shelfY = [Y0 + .04, SHELVES[0] + .0125, SHELVES[1] + .0125];
+  const shelfH = [SHELVES[0] - .0185 - shelfY[0], SHELVES[1] - .0185 - shelfY[1], Y1 - .012 - shelfY[2]];
+  const SURF = {
+    top: { label: 'Gold top', y: HG, x0: -L * GS / 2, x1: L * GS / 2, z0: -D * GS / 2, z1: D * GS / 2, rc: [R * GS, R * GS, R * GS, R * GS], h: 1.8 - HG }
+  };
+  ['bottom', 'middle', 'top'].forEach((nm, i) => {
+    SURF['L' + i] = { label: 'Left bay · ' + nm + ' shelf', y: shelfY[i], x0: -BL / 2 + .004, x1: -DIV - .015, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [BR - T, 0, 0, BR], h: shelfH[i] };
+    SURF['R' + i] = { label: 'Right bay · ' + nm + ' shelf', y: shelfY[i], x0: DIV + .015, x1: BL / 2 - .004, z0: -BD / 2 + T + .004, z1: BD / 2 - .004, rc: [0, BR - T, BR, 0], h: shelfH[i] };
+  });
+  const SURF_ORDER = ['top', 'L2', 'L1', 'L0', 'R2', 'R1', 'R0'];
+  const DEFAULT_LAYOUT = [
+    ...[-.38, -.19, 0, .19, .38, .57].map((x, i) => ({ id: 'lock' + (i + 1), type: 'lock', v: String(i), on: 'top', x, z: -.05, r: 0 })),
+    { id: 'ball1', type: 'ball', on: 'top', x: -.6, z: -.03, r: 0 },
+    { id: 'cat1', type: 'catalogues', v: 'lusano', on: 'L1', x: -.495, z: .03, r: .05 },
+    { id: 'cat2', type: 'catalogues', v: 'lenovo', on: 'R1', x: .495, z: .03, r: -.05 },
+    { id: 'cat3', type: 'catalogues', v: 'maxsen', on: 'L0', x: -.495, z: .03, r: .05 },
+    { id: 'cat4', type: 'catalogues', v: 'halo', on: 'R0', x: .495, z: .03, r: -.05 },
+    { id: 'cat5', type: 'catalogues', v: 'maxsen', on: 'L2', x: -.475, z: .02, r: 0, n: 3 },
+    { id: 'cat6', type: 'catalogues', v: 'maxsen', on: 'R2', x: .475, z: .02, r: 0, n: 3 },
+    { id: 'bro1', type: 'brochures', v: 'lusano', on: 'L2', x: -.555, z: -.15, r: 0 },
+    { id: 'bro2', type: 'brochures', v: 'lenovo', on: 'R2', x: .555, z: -.15, r: 0 }
+  ];
+  function itemName(d) {
+    if (d.type === 'lock') return 'Lenovo ' + (LOCK_VARIANTS[+d.v] || LOCK_VARIANTS[0]).name;
+    if (d.type === 'ball') return 'Ball light';
+    if (d.type === 'catalogues') return CATALOGUES[d.v] || 'Catalogues';
+    if (d.type === 'brochures') return BROCHURES[d.v] || 'Brochure stand';
+    return PLANTS[d.v] || 'Plant';
+  }
+  // keep untrusted saved layouts to known kinds, surfaces and sane numbers
+  function sanitize(list) {
+    if (!Array.isArray(list)) return null;
+    const num = (v, lo, hi, dflt) => (typeof v === 'number' && isFinite(v)) ? Math.min(hi, Math.max(lo, v)) : dflt;
+    const out = [], seen = new Set();
+    for (const d of list.slice(0, 80)) {
+      if (!d || typeof d !== 'object' || !(d.type in KIND_VARIANTS) || !(d.on in SURF)) continue;
+      const id = typeof d.id === 'string' && /^[a-z0-9_-]{1,40}$/i.test(d.id) && !seen.has(d.id) ? d.id : d.type + Math.random().toString(36).slice(2, 8);
+      seen.add(id);
+      const vs = KIND_VARIANTS[d.type].map(v => v[0]);
+      const v = vs.length ? (vs.includes(String(d.v)) ? String(d.v) : vs[0]) : undefined;
+      const e = { id, type: d.type, on: d.on, x: num(d.x, -1, 1, 0), z: num(d.z, -1, 1, 0), r: num(d.r, -7, 7, 0) };
+      if (v !== undefined) e.v = v;
+      if (d.type === 'plant') e.s = num(d.s, .6, 1.4, 1);
+      if (d.type === 'catalogues') e.n = Math.round(num(d.n, 1, 8, 4));
+      out.push(e);
+    }
+    return out;
+  }
+  // the footprint of an item turned by r, as offsets from its origin
+  function footprint(box, r, sc) {
+    const c = Math.cos(r), s = Math.sin(r), e = { x0: 1e9, x1: -1e9, z0: 1e9, z1: -1e9 };
+    [[box.min.x, box.min.z], [box.max.x, box.min.z], [box.max.x, box.max.z], [box.min.x, box.max.z]].forEach(([x, z]) => {
+      const X = (x * c + z * s) * sc, Z = (-x * s + z * c) * sc;
+      e.x0 = Math.min(e.x0, X); e.x1 = Math.max(e.x1, X); e.z0 = Math.min(e.z0, Z); e.z1 = Math.max(e.z1, Z);
+    });
+    return e;
+  }
+  // keep the footprint on the surface, rounded corners included
+  function clampTo(S, x, z, e) {
+    const m = .004;
+    x = Math.max(S.x0 + m - e.x0, Math.min(x, S.x1 - m - e.x1));
+    z = Math.max(S.z0 + m - e.z0, Math.min(z, S.z1 - m - e.z1));
+    [[S.x0, S.z0, -1, -1], [S.x1, S.z0, 1, -1], [S.x1, S.z1, 1, 1], [S.x0, S.z1, -1, 1]].forEach(([cx, cz, sx, sz], i) => {
+      const r = S.rc[i]; if (!r) return;
+      const ax = cx - sx * r, az = cz - sz * r;
+      const px = x + (sx > 0 ? e.x1 : e.x0), pz = z + (sz > 0 ? e.z1 : e.z0);
+      if ((px - ax) * sx > 0 && (pz - az) * sz > 0) {
+        const dx = px - ax, dz = pz - az, d = Math.hypot(dx, dz), lim = r - m;
+        if (d > lim) { const k = (d - lim) / d; x -= dx * k; z -= dz * k; }
+      }
+    });
+    return [x, z];
+  }
+
   /* ---------- plan shapes, drawn in x / z ---------- */
   function rr(THREE, w, d, r) {
     const s = new THREE.Shape(), x = -w / 2, y = -d / 2;
@@ -125,7 +213,8 @@ window.MaxsenTable = (function () {
     const pm = new THREE.PMREMGenerator(renderer);
     scene.environment = pm.fromScene(new THREE.RoomEnvironment(), .04).texture;
     const std = o => new THREE.MeshStandardMaterial(Object.assign({ roughness: .7, metalness: 0, envMapIntensity: night ? .22 : .5 }, o));
-    const add = (geo, mat, x = 0, y = 0, z = 0, o = {}) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = o.cast !== false; m.receiveShadow = true; scene.add(m); return m; };
+    let parent = scene;   // movable pieces are built into their own group
+    const add = (geo, mat, x = 0, y = 0, z = 0, o = {}) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = o.cast !== false; m.receiveShadow = true; parent.add(m); return m; };
 
     const floor = add(new THREE.PlaneGeometry(40, 40), std({ color: night ? 0x3a322c : 0xC9BFB3, roughness: .92 }), 0, 0, 0, { cast: false });
     floor.rotation.x = -Math.PI / 2;
@@ -197,32 +286,9 @@ window.MaxsenTable = (function () {
       }
     });
 
-    // Lenovo smart locks on the top, modelled after the product photos, each on a small door panel
+    // Lenovo smart locks, modelled after the product photos, each on its own small door panel
     const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
     doorMat.map.rotation = Math.PI / 2;
-    const LOCKS = [
-      { x: -.38, name: 'F3 Ultra Air View · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
-      { x: -.19, name: 'F3 Ultra Air View · Gold Aurora Marble', frame: 0x161616, trim: '#C9A46A', lower: 'marble', cam: false },
-      { x: 0, name: 'F3 Ultra camera · Shooting Stars', frame: 0x34373c, trim: '#B8BCC2', lower: 'stars', cam: true },
-      { x: .19, name: 'F3 Ultra camera · Frosted Onyx Marble', frame: 0x1a1a1b, trim: '#B8BCC2', lower: 'onyx', cam: true },
-      { x: .38, name: 'The Sun Air View · solar', frame: 0xA27E4E, trim: '#D8B27A', lower: 'solar', cam: false },
-      { x: .57, name: 'The Sun camera · solar', frame: 0xB8955F, trim: '#E0C08A', lower: 'solar', cam: true }
-    ];
-    LOCKS.forEach(L0 => lenovoLock(L0));
-
-    {
-      const [lvl, k] = BALL;
-      const kc = new THREE.Color({ 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
-      const bx = -.6, bz = -.03, br = .1, by = HG + .022 + br;
-      add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, bx, HG + .011, bz);
-      const ballMat = new THREE.MeshPhysicalMaterial({ color: night ? 0x6e6862 : 0xe8e3dc, emissive: kc, emissiveIntensity: .05 + Math.pow(lvl, 1.3) * 1.25, roughness: .45, clearcoat: .4, envMapIntensity: night ? .15 : .4 });
-      add(new THREE.SphereGeometry(br, 48, 32), ballMat, bx, by, bz, { cast: false });
-      const [hc, hg] = canvas(128, 128); const hr = hg.createRadialGradient(64, 64, 10, 64, 64, 64);
-      hr.addColorStop(0, 'rgba(255,255,255,.9)'); hr.addColorStop(.4, 'rgba(255,255,255,.35)'); hr.addColorStop(1, 'rgba(255,255,255,0)'); hg.fillStyle = hr; hg.fillRect(0, 0, 128, 128);
-      const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(hc), color: kc, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: (night ? .95 : .45) * Math.pow(lvl, 1.2) }));
-      halo.scale.set(.3 + lvl * .45, .3 + lvl * .45, 1); halo.position.set(bx, by, bz); scene.add(halo);
-      const bl = new THREE.PointLight(kc, (night ? 2.2 : 1.1) * Math.pow(lvl, 1.3), 1.8, 2); bl.position.set(bx, by, bz); scene.add(bl);
-    }
 
     function lenovoLock({ x, frame, trim, lower, cam }) {
       // its own stand: a bronze foot and a 150 x 550 slice of a 45 mm door; the lock at true size, about 78 x 410 x 70 mm
@@ -368,27 +434,154 @@ window.MaxsenTable = (function () {
     const lusMat = cover('#1d1b1a', 'LUSANO', 'SWAROVSKI CRYSTALS', '#E8D3B4', true);
     const lockMat = cover('#2B231F', 'LENOVO', 'SMART LOCKS · MYDIGITALLOCK', '#DDB8A6', false);
     const halMat = cover('#F4EEE6', 'HALO', 'THE ROTARY DIMMER', '#7E5643', true);
-    const shelfTop = SHELVES[1] + .0125;
-    // the lower levels: a stack of each catalogue
-    [[-1, lusMat, SHELVES[0] + .0125], [1, lockMat, SHELVES[0] + .0125], [-1, catMat, Y0 + .04], [1, halMat, Y0 + .04]].forEach(([sd, mat, y]) => {
-      const cx = sd * ((rx0 + rx1) / 2 - .02);
-      for (let i = 0; i < 4; i++) { const m = add(new THREE.BoxGeometry(.21, .008, .297), [paper, paper, i === 3 ? mat : paper, paper, paper, paper], cx, y + .004 + i * .0085, .03); m.rotation.y = sd * (.03 * i - .05); }
+    const COVERS = { maxsen: catMat, lusano: lusMat, lenovo: lockMat, halo: halMat };
+    const acrylic = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: .9, transparent: true, opacity: .25, roughness: .05 });
+
+    /* ---------- the movable pieces: each a group with its origin on the surface it stands on ---------- */
+    const group = (fn, ox = 0, oy = 0, oz = 0) => {
+      const g = new THREE.Group(), prev = parent; parent = g;
+      try { fn(); } finally { parent = prev; }
+      g.children.forEach(c => { c.position.x -= ox; c.position.y -= oy; c.position.z -= oz; });
+      return g;
+    };
+    function instanced(geo, mat, list) {
+      const m = new THREE.InstancedMesh(geo, mat, list.length), o = new THREE.Object3D();
+      list.forEach((q, i) => {
+        o.position.set(...q.p); o.rotation.order = q.o || 'XYZ'; o.rotation.set(...q.r); o.scale.set(...(q.s || [1, 1, 1])); o.updateMatrix();
+        m.setMatrixAt(i, o.matrix); if (q.c) m.setColorAt(i, q.c);
+      });
+      if (m.instanceColor) m.instanceColor.needsUpdate = true;
+      m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+    }
+    const tube = (pts, r, mat) => add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p))), 20, r, 8), mat);
+
+    const makeLock = v => group(() => lenovoLock(Object.assign({}, LOCK_VARIANTS[+v] || LOCK_VARIANTS[0], { x: 0 })), 0, HG, -.05);
+
+    // the ball light: brightness and colour temperature set from Halo and the switches
+    const makeBall = () => group(() => {
+      const [lvl, k] = BALL;
+      const kc = new THREE.Color({ 2700: 0xffa95c, 3000: 0xffb46b, 4500: 0xffdbba }[k]);
+      const br = .1, by = .022 + br;
+      add(new THREE.CylinderGeometry(.06, .07, .022, 40), bronze, 0, .011, 0);
+      const ballMat = new THREE.MeshPhysicalMaterial({ color: night ? 0x6e6862 : 0xe8e3dc, emissive: kc, emissiveIntensity: .05 + Math.pow(lvl, 1.3) * 1.25, roughness: .45, clearcoat: .4, envMapIntensity: night ? .15 : .4 });
+      add(new THREE.SphereGeometry(br, 48, 32), ballMat, 0, by, 0, { cast: false });
+      const [hc, hg] = canvas(128, 128); const hr = hg.createRadialGradient(64, 64, 10, 64, 64, 64);
+      hr.addColorStop(0, 'rgba(255,255,255,.9)'); hr.addColorStop(.4, 'rgba(255,255,255,.35)'); hr.addColorStop(1, 'rgba(255,255,255,0)'); hg.fillStyle = hr; hg.fillRect(0, 0, 128, 128);
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(hc), color: kc, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: (night ? .95 : .45) * Math.pow(lvl, 1.2) }));
+      halo.scale.set(.3 + lvl * .45, .3 + lvl * .45, 1); halo.position.set(0, by, 0); parent.add(halo);
+      const bl = new THREE.PointLight(kc, (night ? 2.2 : 1.1) * Math.pow(lvl, 1.3), 1.8, 2); bl.position.set(0, by, 0); parent.add(bl);
     });
-    [[-1, catMat, lusMat], [1, catMat, lockMat]].forEach(([sd, a, b]) => {
-      const cx = sd * ((rx0 + rx1) / 2 - .02);
-      for (let i = 0; i < 3; i++) {   // a stack of A4 catalogues
-        const m = add(new THREE.BoxGeometry(.21, .008, .297), [paper, paper, i === 2 ? a : paper, paper, paper, paper], cx - sd * .02, shelfTop + .004 + i * .0085, .02);
-        m.rotation.y = sd * .06 * i;
+
+    // a stack of A4 catalogues, the chosen cover on top
+    const makeCatalogues = (v, n = 4) => group(() => {
+      for (let i = 0; i < n; i++) {
+        const m = add(new THREE.BoxGeometry(.21, .008, .297), [paper, paper, i === n - 1 ? (COVERS[v] || catMat) : paper, paper, paper, paper], 0, .004 + i * .0085, 0);
+        m.rotation.y = .03 * i - .04;
       }
-      // a clear stand of DL brochures, leaning back
-      add(new THREE.BoxGeometry(.11, .11, .05), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: .9, transparent: true, opacity: .25, roughness: .05 }), cx + sd * .06, shelfTop + .055, -.15, { cast: false });
-      [b, halMat].forEach((mat, i) => {
-        const br2 = add(new THREE.BoxGeometry(.099, .21, .003), [paper, paper, paper, paper, mat, paper], cx + sd * .06 + (i - .5) * .004, shelfTop + .105, -.16 + i * .02);
-        br2.rotation.x = -.12;
+    });
+    // a clear stand of DL brochures, leaning back
+    const makeBrochures = v => group(() => {
+      add(new THREE.BoxGeometry(.11, .11, .05), acrylic, 0, .055, 0, { cast: false });
+      [COVERS[v] || lockMat, v === 'halo' ? catMat : halMat].forEach((mat, i) => {
+        const b = add(new THREE.BoxGeometry(.099, .21, .003), [paper, paper, paper, paper, mat, paper], (i - .5) * .004, .105, -.01 + i * .02);
+        b.rotation.x = -.12;
       });
     });
-    return scene;
+
+    // plants, in stone and bronze pots
+    const potStone = std({ color: 0xE6DED3, roughness: .85 });
+    const soil = std({ color: 0x3b2c22, roughness: 1 });
+    const bark = std({ color: 0x6b5a48, roughness: .9 });
+    const pot = (rt, rb, h, mat) => {
+      add(new THREE.CylinderGeometry(rt, rb, h, 40), mat, 0, h / 2, 0);
+      add(new THREE.CylinderGeometry(rt - .006, rt - .006, .004, 32), soil, 0, h - .01, 0, { cast: false });
+    };
+    const white = () => std({ color: 0xffffff, roughness: .6, side: THREE.DoubleSide });
+
+    const makeOlive = () => group(() => {
+      pot(.075, .06, .15, bronze);
+      tube([[0, .14, 0], [.01, .25, 0], [-.01, .36, .005], [.004, .44, 0]], .009, bark);
+      tube([[0, .32, 0], [.04, .4, .01], [.075, .48, 0]], .005, bark);
+      tube([[-.005, .36, 0], [-.05, .43, -.01], [-.075, .51, .01]], .005, bark);
+      const list = [];
+      [[0, .5, 0, .1], [.075, .51, .01, .075], [-.075, .54, 0, .075], [0, .6, -.01, .07], [.03, .45, .05, .06]].forEach(([cx, cy, cz, cr]) => {
+        for (let i = 0; i < 120; i++) {
+          const u = rnd() * 2 - 1, a = rnd() * Math.PI * 2, q = cr * Math.cbrt(.25 + .75 * rnd()), w = Math.sqrt(1 - u * u);
+          list.push({ p: [cx + q * w * Math.cos(a), cy + q * u * .8, cz + q * w * Math.sin(a)], r: [rnd() * 3, rnd() * 3, rnd() * 3], c: new THREE.Color().setHSL(.2 + rnd() * .06, .14 + rnd() * .12, .3 + rnd() * .16) });
+        }
+      });
+      const leaf = new THREE.SphereGeometry(1, 6, 4); leaf.scale(.021, .0025, .0065);
+      instanced(leaf, white(), list);
+    });
+
+    function monsteraLeaf(w) {
+      const s = new THREE.Shape();
+      s.moveTo(0, 0); s.bezierCurveTo(-w * .25, -w * .12, -w * .62, -w * .02, -w * .55, w * .38); s.bezierCurveTo(-w * .5, w * .72, -w * .15, w * .95, 0, w * 1.05);
+      s.bezierCurveTo(w * .15, w * .95, w * .5, w * .72, w * .55, w * .38); s.bezierCurveTo(w * .62, -w * .02, w * .25, -w * .12, 0, 0);
+      [[.26, .28], [.3, .52], [.22, .75]].forEach(([hx, hy]) => [-1, 1].forEach(sd => {
+        const h = new THREE.Path(); h.absellipse(sd * hx * w, hy * w, .1 * w, .032 * w, 0, Math.PI * 2, false, sd * .5); s.holes.push(h);
+      }));
+      return new THREE.ShapeGeometry(s, 14);
+    }
+    const makeMonstera = () => group(() => {
+      pot(.085, .07, .16, potStone);
+      const stem = std({ color: 0x4f7a45, roughness: .6 });
+      const n = 7;
+      for (let k = 0; k < n; k++) {
+        const a = k / n * Math.PI * 2 + rnd() * .5, d = .06 + rnd() * .05, h = .3 + rnd() * .16, tilt = .5 + rnd() * .5, w = .15 + rnd() * .06;
+        const E = [Math.cos(a) * d, h, Math.sin(a) * d];
+        tube([[0, .15, 0], [Math.cos(a) * d * .3, h * .85, Math.sin(a) * d * .3], E], .004, stem);
+        const m = new THREE.Mesh(monsteraLeaf(w), std({ color: new THREE.Color().setHSL(.34 + rnd() * .03, .55, .13 + rnd() * .05), roughness: .5, side: THREE.DoubleSide }));
+        m.position.set(...E); m.rotation.order = 'YXZ'; m.rotation.set(Math.PI / 2 - tilt, Math.PI / 2 - a, 0);
+        m.castShadow = true; m.receiveShadow = true; parent.add(m);
+      }
+    });
+
+    const makeSucculent = () => group(() => {
+      add(new THREE.CylinderGeometry(.1, .07, .06, 48), potStone, 0, .03, 0);
+      add(new THREE.CylinderGeometry(.094, .094, .004, 40), soil, 0, .054, 0, { cast: false });
+      const leaf = new THREE.SphereGeometry(1, 8, 6); leaf.scale(.0065, .0045, .02); leaf.translate(0, 0, .018);
+      const list = [];
+      [[0, 0, 1.2], [.05, .03, .9], [-.05, .025, 1], [.02, -.05, .85], [-.035, -.045, .75]].forEach(([cx, cz, sz]) => {
+        [[5, 1.2], [8, .75], [11, .3]].forEach(([nk, t], j) => {
+          for (let k = 0; k < nk; k++) list.push({ p: [cx, .056, cz], o: 'YXZ', r: [-t, k / nk * Math.PI * 2 + j * .4, 0], s: [sz * (.6 + j * .25), sz * (.6 + j * .25), sz * (.6 + j * .25)], c: new THREE.Color().setHSL(.36 + rnd() * .1, .2 + rnd() * .1, .5 + j * .04 + rnd() * .08) });
+        });
+      });
+      instanced(leaf, white(), list);
+    });
+
+    const makeOrchid = () => group(() => {
+      pot(.045, .038, .08, potStone);
+      const leaf = new THREE.SphereGeometry(1, 12, 8); leaf.scale(.024, .003, .065); leaf.translate(0, 0, .055);
+      instanced(leaf, std({ color: 0x2f5a35, roughness: .45 }), [0, 2.1, 4.2].map(a => ({ p: [0, .078, 0], o: 'YXZ', r: [-.25, a, 0] })));
+      const stem = std({ color: 0x5b6b3c, roughness: .6 });
+      const pts = [[0, .08, 0], [.005, .14, 0], [.02, .18, .01], [.05, .195, .02], [.08, .185, .03]];
+      tube(pts, .0018, stem);
+      const curve = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)));
+      const petal = new THREE.SphereGeometry(1, 10, 6); petal.scale(.0075, .011, .0015); petal.translate(0, .009, 0);
+      const list = [], centres = [];
+      [.55, .68, .8, .91, 1].forEach((t, i) => {
+        const P = curve.getPoint(t), sc = 1 - i * .1;
+        for (let k = 0; k < 5; k++) list.push({ p: [P.x, P.y - .006, P.z + .006], r: [0, 0, k / 5 * Math.PI * 2], s: [sc, sc, sc] });
+        centres.push(P);
+      });
+      instanced(petal, std({ color: 0xFBF7F4, roughness: .5, side: THREE.DoubleSide }), list);
+      centres.forEach(P => add(new THREE.SphereGeometry(.0035, 10, 8), std({ color: 0xC2557A, roughness: .5 }), P.x, P.y - .006, P.z + .008, { cast: false }));
+    });
+
+    const KINDS = {
+      lock: d => makeLock(d.v), ball: () => makeBall(),
+      catalogues: d => makeCatalogues(d.v, d.n || 4), brochures: d => makeBrochures(d.v),
+      plant: d => ({ olive: makeOlive, monstera: makeMonstera, succulent: makeSucculent, orchid: makeOrchid }[d.v] || makeOlive)()
+    };
+    function make(d) {
+      // the same item always comes out the same, whatever else is on the counter
+      const keep = seed; seed = [...d.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 233280, 7);
+      try { return KINDS[d.type](d); } finally { seed = keep; }
+    }
+    return { scene, make };
   }
+
 
   const VIEWS = {
     hero:   { pos: [-1.6, 1.95, 2.35], at: [.02, .68, 0], fov: 34 },
@@ -416,17 +609,174 @@ window.MaxsenTable = (function () {
     renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = opts.mood && opts.mood !== 'day' ? 1.0 : .88;
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     el.appendChild(renderer.domElement);
-    const scene = build(THREE, renderer, opts.mood, imgs);
+    const { scene, make } = build(THREE, renderer, opts.mood, imgs);
     const cam = new THREE.PerspectiveCamera(32, 1, .02, 60);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) { controls = new THREE.OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .5; controls.maxDistance = 7; }
     function size() { const w = el.clientWidth || opts.w, h = el.clientHeight || opts.h; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
     function view(k) { const v = VIEWS[k]; cam.fov = v.fov; cam.position.set(...v.pos); cam.lookAt(...v.at); if (controls) { controls.target.set(...v.at); controls.update(); } cam.updateProjectionMatrix(); }
+
+    /* ---------- the arrangement editor ---------- */
+    const statics = []; scene.traverse(o => { if (o.isMesh && !o.isInstancedMesh && !(o.material && o.material.transparent)) statics.push(o); });
+    const items = new Map();
+    const tmp = new THREE.Vector3(), tmpBox = new THREE.Box3(), im = new THREE.Matrix4();
+    function localBox(g) {       // the item's own extent, before it is turned or scaled
+      const b = new THREE.Box3(); g.updateMatrixWorld(true);
+      g.traverse(o => {
+        if (!o.isMesh || !o.geometry) return;
+        if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+        if (o.isInstancedMesh) for (let i = 0; i < o.count; i++) { o.getMatrixAt(i, im); im.premultiply(o.matrixWorld); b.union(tmpBox.copy(o.geometry.boundingBox).applyMatrix4(im)); }
+        else b.union(tmpBox.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld));
+      });
+      return b;
+    }
+    const fits = (it, on) => it.box.max.y * (it.d.s || 1) <= SURF[on].h + .001;
+    function place(it) {
+      const d = it.d, S = SURF[d.on], sc = d.s || 1;
+      [d.x, d.z] = clampTo(S, d.x, d.z, footprint(it.box, d.r || 0, sc));
+      it.g.position.set(d.x, S.y, d.z); it.g.rotation.y = d.r || 0; it.g.scale.setScalar(sc);
+      if (sel === it) frame();
+    }
+    function spawn(d) {
+      const g = make(d); g.userData.id = d.id;
+      const it = { d, g, box: localBox(g) };
+      if (!fits(it, d.on)) d.on = SURF_ORDER.find(k => fits(it, k)) || 'top';
+      items.set(d.id, it); scene.add(g); place(it); return it;
+    }
+    function drop(it) {
+      scene.remove(it.g); items.delete(it.d.id);
+      it.g.traverse(o => { if (o.geometry) o.geometry.dispose(); });
+      if (sel === it) select(null);
+    }
+    // the selection: a gold box drawn over everything
+    const selBox = new THREE.Box3(), helper = new THREE.Box3Helper(selBox, 0xE9C27A);
+    helper.material.depthTest = false; helper.material.transparent = true; helper.renderOrder = 999; helper.visible = false; scene.add(helper);
+    let sel = null;
+    function frame() {
+      const d = sel.d, sc = d.s || 1, e = footprint(sel.box, d.r || 0, sc), y = SURF[d.on].y;
+      selBox.min.set(d.x + e.x0 - .006, y + .001, d.z + e.z0 - .006); selBox.max.set(d.x + e.x1 + .006, y + sel.box.max.y * sc + .006, d.z + e.z1 + .006);
+    }
+    function info(it) {
+      if (!it) return null;
+      const d = it.d;
+      return Object.assign(JSON.parse(JSON.stringify(d)), { name: itemName(d), variants: KIND_VARIANTS[d.type], surfaces: SURF_ORDER.map(k => ({ key: k, label: SURF[k].label, fits: fits(it, k) })) });
+    }
+    function select(id) {
+      sel = (id && items.get(id)) || null; helper.visible = !!sel; if (sel) frame();
+      if (opts.onSelect) opts.onSelect(info(sel));
+    }
+    const changed = () => { if (opts.onChange) opts.onChange(getLayout()); if (sel && opts.onSelect) opts.onSelect(info(sel)); };
+    const getLayout = () => [...items.values()].map(it => JSON.parse(JSON.stringify(it.d)));
+    function setLayout(list) {
+      const clean = sanitize(list); if (!clean) return;
+      const keep = sel && sel.d.id;
+      [...items.values()].forEach(drop); clean.forEach(spawn);
+      if (keep && items.has(keep)) select(keep); else select(null);
+    }
+    function freeSpot(it, on) {     // the place on a surface furthest from what is already there
+      const S = SURF[on], others = [...items.values()].filter(o => o !== it && o.d.on === on);
+      let best = [(S.x0 + S.x1) / 2, 0], bestScore = -1;
+      for (let x = S.x0 + .06; x <= S.x1 - .06; x += .02) for (const z of [.08, 0, -.08, .14]) {
+        const score = others.length ? Math.min(...others.map(o => Math.hypot(o.d.x - x, (o.d.z - z) * 1.5))) : 1 - Math.abs(x) * .1 - Math.abs(z);
+        if (score > bestScore + 1e-6) { bestScore = score; best = [x, z]; }
+      }
+      return best;
+    }
+    const uid = t => t + Date.now().toString(36).slice(-5) + Math.random().toString(36).slice(2, 5);
+    const editor = {
+      layout: getLayout, setLayout, select, defaults: () => JSON.parse(JSON.stringify(DEFAULT_LAYOUT)),
+      names: () => Object.fromEntries([...items.values()].map(it => [it.d.id, itemName(it.d)])),
+      selected: () => info(sel),
+      add(type, v) {
+        if (!(type in KIND_VARIANTS)) return null;
+        if (type === 'ball' && [...items.values()].filter(i => i.d.type === 'ball').length >= 3) return null;
+        const vs = KIND_VARIANTS[type];
+        const d = { id: uid(type), type, on: 'top', x: 0, z: 0, r: 0 };
+        if (vs.length) d.v = vs.some(x => x[0] === String(v)) ? String(v) : vs[0][0];
+        if (type === 'plant') d.s = 1;
+        const it = spawn(d); [d.x, d.z] = freeSpot(it, d.on); place(it);
+        select(d.id); changed(); return d.id;
+      },
+      remove(id) { const it = items.get(id || (sel && sel.d.id)); if (it) { drop(it); changed(); } },
+      duplicate(id) {
+        const it = items.get(id || (sel && sel.d.id)); if (!it) return null;
+        const d = JSON.parse(JSON.stringify(it.d)); d.id = uid(d.type);
+        const n = spawn(d); [d.x, d.z] = freeSpot(n, d.on); place(n); select(d.id); changed(); return d.id;
+      },
+      update(id, patch) {
+        const it = items.get(id || (sel && sel.d.id)); if (!it) return;
+        const d = it.d;
+        if (patch.v !== undefined && String(patch.v) !== d.v) {   // a different finish or kind: build it again in place
+          const nd = Object.assign({}, d, { v: String(patch.v) }); const wasSel = sel === it;
+          drop(it); const n = spawn(nd); if (wasSel) select(nd.id); changed(); return;
+        }
+        if (patch.on && patch.on !== d.on && SURF[patch.on] && fits(it, patch.on)) { d.on = patch.on; [d.x, d.z] = freeSpot(it, d.on); }
+        if (typeof patch.r === 'number' && isFinite(patch.r)) d.r = patch.r;
+        if (typeof patch.x === 'number' && isFinite(patch.x)) d.x = patch.x;
+        if (typeof patch.z === 'number' && isFinite(patch.z)) d.z = patch.z;
+        if (typeof patch.s === 'number' && isFinite(patch.s) && d.type === 'plant') {
+          const s0 = d.s; d.s = Math.min(1.4, Math.max(.6, patch.s));
+          if (!fits(it, d.on)) d.s = s0;
+        }
+        place(it); changed();
+      },
+      setEnabled(on) { editing = !!on; if (!editing) { select(null); renderer.domElement.style.cursor = ''; } }
+    };
+    let editing = false;
+    // pointer: in arrange mode, press on a piece to pick it up and slide it across its surface; anywhere else still turns the view
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    function aim(ev) { const r = renderer.domElement.getBoundingClientRect(); ndc.set((ev.clientX - r.left) / r.width * 2 - 1, -(ev.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, cam); }
+    function pick(ev) {
+      aim(ev);
+      const hits = ray.intersectObjects([...[...items.values()].map(i => i.g), ...statics], true);
+      for (const h of hits) {
+        if (h.object.isSprite || (h.object.material && h.object.material.transparent && h.object.material.opacity < .3)) continue;
+        let o = h.object; while (o && !(o.userData && o.userData.id)) o = o.parent;
+        return o ? items.get(o.userData.id) : null;   // the first solid thing under the pointer, piece or counter
+      }
+      return null;
+    }
+    function onPlane(ev, y) { aim(ev); plane.constant = -y; return ray.ray.intersectPlane(plane, tmp) ? tmp.clone() : null; }
+    let drag = null, down = null;
+    const onDown = ev => {
+      if (!editing || ev.button !== 0) return;
+      down = [ev.clientX, ev.clientY];
+      const it = pick(ev); if (!it) return;
+      ev.stopImmediatePropagation(); ev.preventDefault();
+      select(it.d.id);
+      const p = onPlane(ev, SURF[it.d.on].y);
+      drag = { it, off: p ? [it.d.x - p.x, it.d.z - p.z] : [0, 0], moved: false };
+      renderer.domElement.style.cursor = 'grabbing';
+      try { el.setPointerCapture(ev.pointerId); } catch (e) {}
+    };
+    const onMove = ev => {
+      if (!editing) return;
+      if (drag) {
+        const p = onPlane(ev, SURF[drag.it.d.on].y); if (!p) return;
+        drag.it.d.x = p.x + drag.off[0]; drag.it.d.z = p.z + drag.off[1]; drag.moved = true; place(drag.it);
+        ev.stopImmediatePropagation(); return;
+      }
+      if (ev.buttons === 0 && !hoverBusy) { hoverBusy = true; requestAnimationFrame(() => { hoverBusy = false; renderer.domElement.style.cursor = editing && pick(ev) ? 'grab' : ''; }); }
+    };
+    let hoverBusy = false;
+    const end = ev => {
+      if (drag) { const moved = drag.moved; drag = null; renderer.domElement.style.cursor = 'grab'; try { el.releasePointerCapture(ev.pointerId); } catch (e) {} if (moved) changed(); ev.stopImmediatePropagation(); return; }
+      if (editing && down && ev.type === 'pointerup' && Math.hypot(ev.clientX - down[0], ev.clientY - down[1]) < 5) select(null);   // a click on empty space lets go
+      down = null;
+    };
+    const LISTEN = [['pointerdown', onDown], ['pointermove', onMove], ['pointerup', end], ['pointercancel', end]];
+    LISTEN.forEach(([t, f]) => el.addEventListener(t, f, true));
+
+    setLayout(opts.layout || DEFAULT_LAYOUT);
     size(); view(opts.view || 'hero');
     let raf = 0; const loop = () => { raf = requestAnimationFrame(loop); if (controls) controls.update(); renderer.render(scene, cam); };
     if (!opts.capture) loop();
     window.addEventListener('resize', size);
-    return { view, size, capture(k) { view(k); renderer.render(scene, cam); return renderer.domElement.toDataURL('image/png'); }, stop() { cancelAnimationFrame(raf); } };
+    return {
+      view, size, editor,
+      capture(k) { const hv = helper.visible; helper.visible = false; view(k); renderer.render(scene, cam); const u = renderer.domElement.toDataURL('image/png'); helper.visible = hv; return u; },
+      stop() { editing = false; cancelAnimationFrame(raf); window.removeEventListener('resize', size); LISTEN.forEach(([t, f]) => el.removeEventListener(t, f, true)); if (controls) controls.dispose(); renderer.dispose(); }
+    };
   }
-  return { mount, VIEWS };
+  return { mount, VIEWS, DEFAULT_LAYOUT, sanitize };
 })();
