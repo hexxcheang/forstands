@@ -2,7 +2,7 @@
    1,400 long, 600 deep (assumed), 1,000 high. Units are metres: x along the length,
    z from the back (-) to the front (+), y up. */
 window.MaxsenTable = (function () {
-  const L = 1.4, D = 0.6, H = 1.0;
+  const L = 1.4, D = 0.5, H = 1.0;
   const TOP = 0.12, R = 0.15;              // a 120 mm stone top with 150 mm corners; switches sit on its front edge
   const OV = 0.015;                        // the top overhangs the body by 15 mm
   const BL = L - 2 * OV, BD = D - 2 * OV, BR = R - OV;
@@ -226,13 +226,13 @@ window.MaxsenTable = (function () {
     // the closed centre: a light wood panel with LUSANO in bronze letters, lit from behind
     add(new THREE.BoxGeometry(2 * DIV - .03, wallH, T), bodyMat, 0, Y0 + .04 + wallH / 2, BD / 2 - T / 2);
     {
-      const word = 'LUSANO', fs = 250, ls = 64;
+      const word = 'LUSANO', fs = 300, ls = 34;
       const [mc, mg] = canvas(1700, 300); mg.font = `500 ${fs}px "EB Garamond", Garamond, Georgia, serif`;
       if (mg.letterSpacing !== undefined) mg.letterSpacing = ls + 'px';
       mg.textAlign = 'center'; mg.textBaseline = 'middle'; mg.fillStyle = '#fff'; mg.fillText(word, 850 + ls / 2, 160);
       const [gc, gg] = canvas(1700, 300); gg.shadowColor = 'rgba(255,205,140,1)'; gg.shadowBlur = 40;
       for (let k = 0; k < 3; k++) gg.drawImage(mc, 0, 0);
-      const w = .6, h = w * 300 / 1700, y = .58, zf = BD / 2 + .002;
+      const tw = mg.measureText(word).width + ls * word.length, w = .56 * 1700 / tw, h = w * 300 / 1700, y = .58, zf = BD / 2 + .002; // letters span 560 of the 630 mm panel
       const glow = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(gc), transparent: true, depthWrite: false, opacity: night ? .95 : .6, color: night ? 0xffcf96 : 0xf2b46a, blending: night ? THREE.AdditiveBlending : THREE.NormalBlending }));
       glow.position.set(0, y, zf); scene.add(glow);
       const face = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(mc), transparent: true, color: 0x3A2C24, roughness: .35, metalness: .55, envMapIntensity: night ? .2 : .5 }));
