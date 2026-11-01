@@ -130,6 +130,15 @@ text{font-family:var(--sans)}
 .items button.it span{color:var(--muted);font-size:13px}
 .items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
 .items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
+.fin-rows{display:grid;gap:12px}
+.fin-row{display:grid;grid-template-columns:minmax(150px,200px) minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+@media (max-width:640px){.fin-row{grid-template-columns:minmax(0,1fr)}}
+.fin-l{display:grid;gap:2px}
+.fin-l b{font:400 19px/1.2 var(--serif)}
+.fin-l span{font-size:13px;color:var(--muted)}
+.fin-sw{display:flex;flex-wrap:wrap;gap:8px}
+.fsw{width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);padding:0;cursor:pointer;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)}
+.fsw[aria-checked="true"]{outline:2px solid var(--fg);outline-offset:3px}
 details.list summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:4px 0}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px}
 ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
@@ -281,6 +290,24 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
           <div class="arr-row"><button type="button" class="pill" id="arrReset">Back to the original layout</button><span class="hint">The photos on this page show the original layout.</span></div>
         </div>
       </div>
+      <div class="arrange" id="finishes" hidden>
+        <div class="arr-head">
+          <button type="button" class="pill" id="finToggle" aria-pressed="false">Change the finishes</button>
+          <p id="finIntro">White, gloss white, blush, gold, rose gold, champagne, marble, woods and gradient fades from the Maxsen palette, surface by surface.</p>
+          <span class="status" id="finState" role="status" aria-live="polite"></span>
+        </div>
+        <div class="arr-body" id="finBody" hidden>
+          <div class="arr-row" id="presetRow">
+            <b>Looks</b>
+            <button type="button" class="pill" data-p="original">As designed</button>
+            <button type="button" class="pill" data-p="porcelain">Porcelain and rose gold</button>
+            <button type="button" class="pill" data-p="rosefade">Rose gold fade</button>
+            <button type="button" class="pill" data-p="midnight">Midnight</button>
+          </div>
+          <div class="fin-rows" id="finRows"></div>
+          <p class="hint">Gradients run from the bottom of each surface to the top: on the gold layer, from left to right. One set of finishes applies to every form.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -317,6 +344,20 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     <div class="drw">
       <figure class="sheet"><div class="sheet-h"><b>Rectangular · front</b><span>mm</span></div><div class="scroll"><svg viewBox="-260 -460 2160 1880" class="dwg" role="img" aria-label="Rectangular form, front elevation: 1,400 long, 850 high, the marble the top 319 mm with the switches on its face, a 531 mm wood body with one shelf in each open bay"><rect x="-60" y="1000" width="1520" height="10" class="floor"/><rect x="65" y="940" width="1270" height="58" rx="6" class="bronze"/><rect x="75" y="952" width="1250" height="5" class="led"/><rect x="15" y="469" width="1370" height="471" class="body"/><rect x="35" y="489" width="1330" height="411" class="inner"/><rect x="355" y="469" width="30" height="471" class="body"/><rect x="1015" y="469" width="30" height="471" class="body"/><rect x="15" y="900" width="1370" height="40" class="body"/><rect x="385" y="469" width="630" height="471" class="body"/><text x="420" y="654" class="lus" textLength="560" lengthAdjust="spacing">LUSANO</text><rect x="35" y="672" width="320" height="25" class="shelf"/><rect x="1045" y="672" width="320" height="25" class="shelf"/><rect x="0" y="150" width="1400" height="319" rx="3" class="stone"/><rect x="25" y="471" width="1350" height="5" class="led"/><rect x="282" y="266.5" width="86" height="86" rx="3" fill="#E3D5C7" stroke="#29221F" stroke-width="2"/><rect x="282" y="298.5" width="86" height="22" fill="#B88A4E"/><rect x="282" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="407" y="266.5" width="86" height="86" rx="3" fill="#E4E6E7" stroke="#29221F" stroke-width="2"/><rect x="407" y="298.5" width="86" height="22" fill="#4a4a4a"/><rect x="407" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="532" y="266.5" width="86" height="86" rx="3" fill="#151515" stroke="#29221F" stroke-width="2"/><rect x="532" y="298.5" width="86" height="22" fill="#555555"/><rect x="532" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="657" y="266.5" width="86" height="86" rx="4" class="halop"/><circle cx="700" cy="309.5" r="30" class="halok"/><rect x="782" y="266.5" width="86" height="86" rx="3" fill="#3a3a3a" stroke="#29221F" stroke-width="2"/><rect x="782" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="782" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="907" y="266.5" width="86" height="86" rx="3" fill="#A08A74" stroke="#29221F" stroke-width="2"/><rect x="907" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="907" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="1032" y="266.5" width="86" height="86" rx="3" fill="#4A4F5C" stroke="#29221F" stroke-width="2"/><rect x="1032" y="298.5" width="86" height="22" fill="#1a0f0d"/><rect x="1032" y="304.5" width="86" height="10" fill="#1a0f0d"/><rect x="585" y="138" width="170" height="12" class="bronze"/><rect x="595" y="-412" width="150" height="550" class="door"/><rect x="626" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="170" y="138" width="170" height="12" class="bronze"/><rect x="180" y="-412" width="150" height="550" class="door"/><rect x="211" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1006" y="138" width="170" height="12" class="bronze"/><rect x="1016" y="-412" width="150" height="550" class="door"/><rect x="1047" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="803" y="138" width="170" height="12" class="bronze"/><rect x="813" y="-412" width="150" height="550" class="door"/><rect x="844" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="1216" y="138" width="170" height="12" class="bronze"/><rect x="1226" y="-412" width="150" height="550" class="door"/><rect x="1257" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="390" y="138" width="170" height="12" class="bronze"/><rect x="400" y="-412" width="150" height="550" class="door"/><rect x="431" y="-352" width="78" height="410" rx="8" class="lockb"/><rect x="32" y="128" width="120" height="22" rx="6" class="bronze"/><circle cx="100" cy="28" r="100" class="ballc"/><g class="dim"><line x1="0" y1="1300" x2="1400" y2="1300"/><line x1="0" y1="1275" x2="0" y2="1325"/><line x1="1400" y1="1275" x2="1400" y2="1325"/></g><text x="700.0" y="1360" class="td" text-anchor="middle">1,400 marble and body</text><g class="dim"><line x1="15" y1="1090" x2="370" y2="1090"/><line x1="15" y1="1065" x2="15" y2="1115"/><line x1="370" y1="1065" x2="370" y2="1115"/></g><text x="192.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="370" y1="1090" x2="1030" y2="1090"/><line x1="370" y1="1065" x2="370" y2="1115"/><line x1="1030" y1="1065" x2="1030" y2="1115"/></g><text x="700.0" y="1150" class="td" text-anchor="middle">660 closed, lit logo</text><g class="dim"><line x1="1030" y1="1090" x2="1385" y2="1090"/><line x1="1030" y1="1065" x2="1030" y2="1115"/><line x1="1385" y1="1065" x2="1385" y2="1115"/></g><text x="1207.5" y="1150" class="td" text-anchor="middle">355 open bay</text><g class="dim"><line x1="-60" y1="150" x2="-60" y2="1000"/><line x1="-85" y1="150" x2="-35" y2="150"/><line x1="-85" y1="1000" x2="-35" y2="1000"/></g><text x="-88" y="589.0" class="td" text-anchor="end">850</text><g class="dim"><line x1="1460" y1="150" x2="1460" y2="469"/><line x1="1435" y1="150" x2="1485" y2="150"/><line x1="1435" y1="469" x2="1485" y2="469"/></g><text x="1490" y="323.5" class="td" text-anchor="start">319 marble, 3/8</text><g class="dim"><line x1="1460" y1="469" x2="1460" y2="1000"/><line x1="1435" y1="469" x2="1485" y2="469"/><line x1="1435" y1="1000" x2="1485" y2="1000"/></g><text x="1490" y="748.5" class="td" text-anchor="start">531 body</text><text x="1205" y="759" class="td" text-anchor="middle">shelf 316</text></svg></div></figure>
       <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll"><svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="Rectangular form from above: a 1,400 by 500 marble rectangle with square corners, the six staggered locks and the ball light"><rect x="0" y="0" width="1400" height="500" rx="6" class="stonep"/><rect x="170" y="98" width="170" height="150" class="bronze"/><rect x="180" y="151" width="150" height="45" class="door"/><rect x="211" y="196" width="78" height="70" class="lockb"/><rect x="390" y="279" width="170" height="150" class="bronze"/><rect x="400" y="332" width="150" height="45" class="door"/><rect x="431" y="377" width="78" height="70" class="lockb"/><rect x="585" y="96" width="170" height="150" class="bronze"/><rect x="595" y="149" width="150" height="45" class="door"/><rect x="626" y="194" width="78" height="70" class="lockb"/><rect x="803" y="267" width="170" height="150" class="bronze"/><rect x="813" y="320" width="150" height="45" class="door"/><rect x="844" y="365" width="78" height="70" class="lockb"/><rect x="1006" y="106" width="170" height="150" class="bronze"/><rect x="1016" y="159" width="150" height="45" class="door"/><rect x="1047" y="204" width="78" height="70" class="lockb"/><rect x="1216" y="274" width="170" height="150" class="bronze"/><rect x="1226" y="327" width="150" height="45" class="door"/><rect x="1257" y="372" width="78" height="70" class="lockb"/><circle cx="100" cy="366" r="100" class="ballc"/><rect x="282" y="500" width="86" height="8" class="sw"/><rect x="407" y="500" width="86" height="8" class="sw"/><rect x="532" y="500" width="86" height="8" class="sw"/><rect x="657" y="500" width="86" height="8" class="halop"/><rect x="782" y="500" width="86" height="8" class="sw"/><rect x="907" y="500" width="86" height="8" class="sw"/><rect x="1032" y="500" width="86" height="8" class="sw"/><g class="dim"><line x1="0" y1="-60" x2="1400" y2="-60"/><line x1="0" y1="-85" x2="0" y2="-35"/><line x1="1400" y1="-85" x2="1400" y2="-35"/></g><text x="700.0" y="-82" class="td" text-anchor="middle">1,400 marble, square corners</text><g class="dim"><line x1="-60" y1="0" x2="-60" y2="500"/><line x1="-85" y1="0" x2="-35" y2="0"/><line x1="-85" y1="500" x2="-35" y2="500"/></g><text x="-88" y="264.0" class="td" text-anchor="end">500</text><text x="700" y="580" class="tz" text-anchor="middle">FRONT FACE · NOBLE · HALO · PRESTIGE</text></svg></div></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="fin">
+    <div class="head">
+      <span class="eyebrow">Finishes</span>
+      <h2 id="fin">The same counter in other Maxsen finishes</h2>
+    </div>
+    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from white, gloss white, blush, white or black marble, light or pale oak, walnut, brushed gold, rose gold, champagne and midnight bronze, or a gradient fade. Try them in the 3D model with <b>Change the finishes</b>. Four looks to start from:</p>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/finish-porcelain.jpg" alt="The rounded counter in gloss white with a rose gold top layer and base, blush shelves and white lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Porcelain and rose gold.</b> Gloss white body, rose gold layer and base, blush bays.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-rosefade.jpg" alt="The rectangular counter with its body fading from white at the floor to rose gold under the marble block" width="1600" height="1000" loading="lazy"><figcaption><b>Rose gold fade.</b> The rectangular form, its body fading from white up to rose gold.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-midnight.jpg" alt="The rounded counter in midnight bronze with a black marble top, gold layer and walnut bays and lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Midnight.</b> Black marble, bronze body, walnut bays and stands, gold layer.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-dusk.jpg" alt="The rounded counter with its body fading from bronze at the floor to rose gold at the top, a champagne top layer and blush bays" width="1600" height="1000" loading="lazy"><figcaption><b>Dusk.</b> Bronze fading up to rose gold, champagne layer, blush bays.</figcaption></figure>
     </div>
   </section>
 
@@ -414,6 +455,35 @@ function MaxsenModel(cfg = {}) {
   // shelf heights in both end bays, evenly spaced in the body below the marble: two shelves, or one on the shorter rectangular body
   const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
+
+  /* ---------- finishes: the Maxsen palette, for every surface ---------- */
+  const FINISHES = {
+    marble:    { name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: 'linear-gradient(135deg,#f4f1ec 0 38%,#cfcac3 40%,#f4f1ec 43% 68%,#c9ad84 70%,#f4f1ec 72%)' },
+    nero:      { name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: 'linear-gradient(135deg,#171615 0 38%,#a9a6a2 40%,#171615 43% 68%,#c9a46a 70%,#171615 72%)' },
+    white:     { name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
+    gloss:     { name: 'Gloss white', color: 0xF6F4F1, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
+    blush:     { name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
+    oak:       { name: 'Light oak', tex: 'oak', roughness: .55, css: 'repeating-linear-gradient(0deg,#d2b994 0 3px,#c3a67d 3px 4px)' },
+    paleoak:   { name: 'Pale oak', tex: 'paleoak', roughness: .55, css: 'repeating-linear-gradient(0deg,#e2d0b4 0 3px,#d3bd9b 3px 4px)' },
+    walnut:    { name: 'Walnut', tex: 'walnut', roughness: .5, css: 'repeating-linear-gradient(0deg,#5a3d2b 0 3px,#3f2a1d 3px 4px)' },
+    gold:      { name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#8f6526,#e0bf7a,#b98a3e)' },
+    rosegold:  { name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#9a6555,#efc8b8,#c08a78)' },
+    champagne: { name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#a8916a,#efe0c2,#cdb58e)' },
+    bronze:    { name: 'Midnight bronze', color: 0x1E1815, metalness: .35, roughness: .42, css: '#29221F' },
+    fadeRose:  { name: 'White to rose gold', grad: [0xF4F1EC, 0xA25844], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#c08a78)' },
+    fadeGold:  { name: 'White to gold', grad: [0xF4F1EC, 0xA47430], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#b98a3e)' },
+    blushGold: { name: 'Blush to gold', grad: [0xE0BFB0, 0xA47430], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#e6c9bc,#b98a3e)' },
+    dusk:      { name: 'Bronze to rose gold', grad: [0x1E1815, 0xA25844], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#29221f,#c08a78)' }
+  };
+  const SLOTS = [['top', 'Top'], ...(GOLD ? [['gold', 'Gold layer']] : []), ['body', 'Body'], ['inner', 'Shelves and bays'], ['base', 'Base'], ['stands', 'Lock stands']];
+  const FINISH_DEFAULT = { top: 'marble', gold: 'gold', body: 'oak', inner: 'paleoak', base: 'bronze', stands: 'oak' };
+  const PRESETS = {
+    original: { name: 'As designed', f: FINISH_DEFAULT },
+    porcelain: { name: 'Porcelain and rose gold', f: { top: 'marble', gold: 'rosegold', body: 'gloss', inner: 'blush', base: 'rosegold', stands: 'gloss' } },
+    rosefade: { name: 'Rose gold fade', f: { top: 'marble', gold: 'rosegold', body: 'fadeRose', inner: 'white', base: 'rosegold', stands: 'white' } },
+    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } }
+  };
+  const cleanFinishes = f => { const o = Object.assign({}, FINISH_DEFAULT); if (f && typeof f === 'object') for (const [k, v] of Object.entries(f)) if (k in FINISH_DEFAULT && typeof v === 'string' && v in FINISHES) o[k] = v; return o; };
 
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
   const LOCK_VARIANTS = [
@@ -558,18 +628,19 @@ function MaxsenModel(cfg = {}) {
   let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
   function tex(THREE, c, rx = 1, ry = 1) { const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; }
-  function stone(THREE) { // white marble with bold grey and soft gold veining
+  function stone(THREE, dark) { // white marble with bold grey and soft gold veining; or black with white and gold
     const [c, g] = canvas(2048, 1024);
-    g.fillStyle = '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
-    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
+    g.fillStyle = dark ? '#161514' : '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, dark ? `rgba(${rnd() > .6 ? '40,38,36' : '12,12,11'},.7)` : `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, dark ? 'rgba(22,21,20,0)' : 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
     const vein = (w, a, col, wob) => {
       g.strokeStyle = `rgba(${col},${a})`; g.lineWidth = w; g.lineCap = 'round';
       g.beginPath(); let x = -40, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 70;
       while (x < 2100) { const nx = x + 30 + rnd() * 60, ny = y + drift + (rnd() - .5) * wob; g.quadraticCurveTo(x + (nx - x) / 2, y + (rnd() - .5) * wob, nx, ny); x = nx; y = ny; }
       g.stroke();
     };
-    for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, '120,118,116', 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, '96,94,92', 30); }
-    for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, '110,108,106', 50);
+    const vc = dark ? ['150,148,145', '214,212,208', '190,188,184'] : ['120,118,116', '96,94,92', '110,108,106'];
+    for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, vc[0], 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, vc[1], 30); }
+    for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, vc[2], 50);
     for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, '176,142,92', 30);
     return c;
   }
@@ -639,12 +710,53 @@ function MaxsenModel(cfg = {}) {
     const rim = new THREE.DirectionalLight(0xffe6cc, night ? .05 : .22); rim.position.set(3, 2.5, -3); scene.add(rim);
 
     // Maxsen colourway: porcelain stone, Midnight Bronze body, champagne-lit interiors
-    const stoneMat = new THREE.MeshPhysicalMaterial({ map: tex(THREE, stone(THREE), 1 / L, 1 / D), roughness: .38, clearcoat: .25, clearcoatRoughness: .35, envMapIntensity: night ? .3 : .45 });
-    stoneMat.map.offset.set(.5, .5);
-    const bodyWood = wood(THREE, '#D2B994', '150,116,78', '238,220,192');
-    const bodyMat = std({ map: tex(THREE, bodyWood, 1.2, 1), roughness: .55 });
-    const bodyMatV = std({ map: tex(THREE, bodyWood, 1, 1), roughness: .55 }); bodyMatV.map.rotation = Math.PI / 2;
-    const inner = std({ map: tex(THREE, wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'), 1.5, 1), roughness: .55 });
+    // every surface that takes a finish has its own material, refinished in place when the finish changes
+    const canv = {};
+    const texCanvas = k => canv[k] || (canv[k] = {
+      marble: () => stone(THREE), nero: () => stone(THREE, true),
+      oak: () => wood(THREE, '#D2B994', '150,116,78', '238,220,192'), paleoak: () => wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'),
+      walnut: () => wood(THREE, '#5A3D2B', '30,18,10', '122,86,60')
+    }[k]());
+    const slotMats = {}, finishNow = Object.assign({}, FINISH_DEFAULT);
+    // where each surface's gradient runs: up its height, or along the length for the thin gold layer
+    const GRAD = { top: [0, Y1, H], gold: [1, -L * GS / 2, L * GS / 2], body: [0, Y0, Y1], inner: [0, Y0, Y1], base: [0, 0, BASE], stands: [0, HG, HG + .55] };
+    function slotMat(slot, o = {}) {
+      const m = new THREE.MeshPhysicalMaterial({ roughness: .5 });
+      const g = { on: false, a: { value: new THREE.Color() }, b: { value: new THREE.Color() }, r: { value: new THREE.Vector3(...GRAD[slot]) } };
+      m.userData = { o, g };
+      m.onBeforeCompile = sh => {
+        if (!g.on) return;
+        sh.uniforms.gA = g.a; sh.uniforms.gB = g.b; sh.uniforms.gR = g.r;
+        sh.vertexShader = 'varying vec3 vGW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vGW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+        sh.fragmentShader = 'uniform vec3 gA;\nuniform vec3 gB;\nuniform vec3 gR;\nvarying vec3 vGW;\n' + sh.fragmentShader.replace('#include <map_fragment>',
+          '#include <map_fragment>\n  float gT = clamp(((gR.x > .5 ? vGW.x : vGW.y) - gR.y) / (gR.z - gR.y), 0., 1.);\n  diffuseColor.rgb *= mix(gA, gB, smoothstep(0., 1., gT));');
+      };
+      m.customProgramCacheKey = () => g.on ? 'grad' : 'flat';
+      (slotMats[slot] = slotMats[slot] || []).push(m);
+      refinish(m, finishNow[slot]);
+      return m;
+    }
+    function refinish(m, key) {
+      const F = FINISHES[key], { o, g } = m.userData;
+      if (m.map) m.map.dispose();
+      m.map = null;
+      if (F.tex) { const t = tex(THREE, texCanvas(F.tex), ...(o.rep || [1, 1])); if (o.off) t.offset.set(...o.off); if (o.rot) t.rotation = o.rot; m.map = t; }
+      m.color.set(F.tex || F.grad ? 0xffffff : F.color);
+      m.metalness = F.metalness || 0; m.roughness = F.roughness ?? .5;
+      m.clearcoat = F.clearcoat || 0; m.clearcoatRoughness = F.clearcoatRoughness ?? .3;
+      m.envMapIntensity = F.metalness ? (night ? .5 : 1.05) : (night ? .25 : .5);
+      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]); g.b.value.set(F.grad[1]); }
+      m.needsUpdate = true;
+    }
+    function setFinish(slot, key) {
+      if (!(slot in FINISH_DEFAULT) || !(key in FINISHES)) return;
+      finishNow[slot] = key; (slotMats[slot] || []).forEach(m => refinish(m, key));
+    }
+    const stoneMat = slotMat('top', { rep: [1 / L, 1 / D], off: [.5, .5] });
+    const bodyMat = slotMat('body', { rep: [1.2, 1] });
+    const bodyMatV = slotMat('body', { rep: [1, 1], rot: Math.PI / 2 });
+    const inner = slotMat('inner', { rep: [1.5, 1] });
+    const baseMat = slotMat('base');
     const bronze = std({ color: 0x29221F, roughness: .4, metalness: .5 });
     // IC RGBCCT strips: every pixel addressable, warm white for daily use, full colour on demand
     const warm = new THREE.Color(night ? 0xffd9a8 : 0xfff0d8);
@@ -672,7 +784,7 @@ function MaxsenModel(cfg = {}) {
     // the top: 100 mm thick, rounded corners and softened edges
     add(slab(THREE, rr(THREE, L - .012, D - .012, Math.max(.003, R - .006)), TOP, RECT ? .003 : .006), stoneMat, 0, Y1, 0);
     // a thin, flat gold top on the marble, following its outline at 1.1x
-    const gold = new THREE.MeshPhysicalMaterial({ color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: night ? .5 : 1.05 });
+    const gold = slotMat('gold');
     if (GOLD) add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
@@ -701,8 +813,7 @@ function MaxsenModel(cfg = {}) {
     });
 
     // Lenovo smart locks, modelled after the product photos, each on its own small door panel
-    const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
-    doorMat.map.rotation = Math.PI / 2;
+    const doorMat = slotMat('stands', { rep: [1, 1], rot: Math.PI / 2 });
 
     function lenovoLock({ x, frame, trim, lower, cam }) {
       // its own stand: a bronze foot and a 150 x 550 slice of a 45 mm door; the lock at true size, about 78 x 410 x 70 mm
@@ -831,7 +942,7 @@ function MaxsenModel(cfg = {}) {
     }
 
     // floating base with an LED line that lights the floor
-    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), bronze, 0, .002, 0);
+    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), baseMat, 0, .002, 0);
     pixels(perimeter(BL - .09, BD - .09, Math.max(.013, BR - .035), .016), BASE - .012);
     const gl = new THREE.Mesh(new THREE.PlaneGeometry(BL + .7, BD + .55), new THREE.MeshBasicMaterial({ map: floorGlow(THREE, colour), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .9 : .4 }));
     gl.rotation.x = -Math.PI / 2; gl.position.y = .002; scene.add(gl);
@@ -1088,7 +1199,7 @@ function MaxsenModel(cfg = {}) {
       const keep = seed; seed = [...d.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 233280, 7);
       try { return KINDS[d.type](d); } finally { seed = keep; }
     }
-    return { scene, make };
+    return { scene, make, setFinish, finishes: () => Object.assign({}, finishNow) };
   }
 
 
@@ -1102,7 +1213,7 @@ function MaxsenModel(cfg = {}) {
     locks:  { pos: [.05, 1.36, 1.25], at: [.03, 1.2, -.04], fov: 46 },
     ball:   { pos: [-.15, 1.38, 1.15], at: [-.42, 1.13, -.04], fov: 44 },
     shelf:  { pos: [1.3, .95, 1.3], at: [.5, .5, .08], fov: 38 },
-    top:    { pos: [0, 3.1, .35], at: [0, .9, 0], fov: 30 }
+    top:    { pos: [0, 3.01, .3], at: [0, 1.01, .02], fov: 34 }
   };
   // the cameras were framed for a 1,000 counter: move them down with it
   Object.values(VIEWS).forEach(v => { if (v.pos[1] < 3) v.pos[1] += HG - 1.01; v.at[1] += HG - 1.01; });
@@ -1121,7 +1232,8 @@ function MaxsenModel(cfg = {}) {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     el.appendChild(renderer.domElement);
     const shelves = opts.shelves !== false, ORDER = shelves ? SURF_ORDER : ['top'], START = shelves ? DEFAULT_LAYOUT : DEFAULT_CLOSED;
-    const { scene, make } = build(THREE, renderer, opts.mood, imgs, shelves);
+    const { scene, make, setFinish, finishes } = build(THREE, renderer, opts.mood, imgs, shelves);
+    Object.entries(cleanFinishes(opts.finishes)).forEach(([k, v]) => setFinish(k, v));
     const cam = new THREE.PerspectiveCamera(32, 1, .02, 60);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) { controls = new THREE.OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .5; controls.maxDistance = 7; }
@@ -1289,11 +1401,12 @@ function MaxsenModel(cfg = {}) {
     window.addEventListener('resize', size);
     return {
       view, size, editor,
+      finish: { set: setFinish, get: finishes, setAll: f => Object.entries(cleanFinishes(f)).forEach(([k, v]) => setFinish(k, v)) },
       capture(k) { const hv = helper.visible; helper.visible = false; view(k); renderer.render(scene, cam); const u = renderer.domElement.toDataURL('image/png'); helper.visible = hv; return u; },
       stop() { editing = false; cancelAnimationFrame(raf); window.removeEventListener('resize', size); LISTEN.forEach(([t, f]) => el.removeEventListener(t, f, true)); if (controls) controls.dispose(); renderer.dispose(); }
     };
   }
-  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
+  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize, FINISHES, SLOTS, PRESETS, cleanFinishes };
 }
 window.MaxsenTable = MaxsenModel();
 window.MaxsenTable.rect = MaxsenModel({ rect: true });
@@ -1352,22 +1465,80 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
     'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
   };
   (async () => {
+    await null;   // let the rest of this script set up first
     let db = null;
     try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
     Object.values(stores).forEach(st => st.connect(db));
+    finConnect(db);
   })();
+
+  /* ---------- finishes: one choice per surface, shared by every form, saved like the arrangement ---------- */
+  const FLS = 'maxsen-counter-finish-v1';
+  let fin = null, fref = null, fLast = null, fWriting = false, fAgain = false, fTimer = 0;
+  const fsay = t => { $('finState').textContent = t; };
+  try { const t = localStorage.getItem(FLS); if (t) fin = MaxsenTable.cleanFinishes(JSON.parse(t)); } catch (e) {}
+  function finConnect(db) {
+    if (!db) { fsay('Saved in this browser only'); return; }
+    fref = db.doc('finish/current');
+    fref.onSnapshot(snap => {
+      if (!snap.exists) return;
+      const f = MaxsenTable.cleanFinishes((snap.data() || {}).finishes), j = JSON.stringify(f); fLast = j;
+      if (j !== JSON.stringify(fin)) { fin = f; if (viewer) viewer.finish.setAll(f); renderFin(); }
+      if (!snap.fromCache && !fWriting) fsay('Saved');
+    }, () => { fref = null; fsay('Saved in this browser only'); });
+  }
+  function finKeep() {
+    try { localStorage.setItem(FLS, JSON.stringify(fin)); } catch (e) {}
+    if (!fref) { fsay('Saved in this browser only'); return; }
+    fsay('Saving…'); clearTimeout(fTimer); fTimer = setTimeout(finFlush, 600);
+  }
+  async function finFlush() {
+    if (!fref) return;
+    if (fWriting) { fAgain = true; return; }
+    const j = JSON.stringify(fin); if (j === fLast) { fsay('Saved'); return; }
+    fWriting = true;
+    try { await fref.set({ finishes: fin, updatedAt: Date.now() }); fLast = j; fsay('Saved'); }
+    catch (e) { fref = null; fsay('Saved in this browser only: only editors of this page save to it'); }
+    finally { fWriting = false; if (fAgain) { fAgain = false; finFlush(); } }
+  }
+  const model = () => rect ? MaxsenTable.rect : MaxsenTable;
+  function renderFin() {
+    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES;
+    $('finRows').replaceChildren(...model().SLOTS.map(([slot, label]) => {
+      const row = document.createElement('div'); row.className = 'fin-row';
+      const h = document.createElement('div'); h.className = 'fin-l';
+      h.append(Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
+      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' finish');
+      Object.entries(F).forEach(([key, f]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'fsw'; b.style.background = f.css;
+        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[slot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
+        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [slot]: key }); if (viewer) viewer.finish.set(slot, key); finKeep(); renderFin(); });
+        g.append(b);
+      });
+      row.append(h, g); return row;
+    }));
+  }
+  $('presetRow').addEventListener('click', e => {
+    const b = e.target.closest('button[data-p]'); if (!b) return;
+    fin = MaxsenTable.cleanFinishes(MaxsenTable.PRESETS[b.dataset.p].f); if (viewer) viewer.finish.setAll(fin); finKeep(); renderFin();
+  });
+  $('finToggle').addEventListener('click', () => {
+    const on = $('finBody').hidden; $('finBody').hidden = !on; $('finIntro').hidden = on;
+    $('finToggle').setAttribute('aria-pressed', String(on)); $('finToggle').textContent = on ? 'Close the finishes' : 'Change the finishes';
+    if (on) renderFin();
+  });
 
   /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
     viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
-      view: current, mood, shelves, layout: st.layout || undefined,
+      view: current, mood, shelves, layout: st.layout || undefined, finishes: fin || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
     });
     viewer.editor.setEnabled(arranging);
-    st.status(); renderList();
+    st.status(); renderList(); renderFin();
   }
   btn.addEventListener('click', async () => {
     btn.disabled = true; btn.textContent = 'Loading the model';
@@ -1376,7 +1547,7 @@ window.MaxsenTable.rect = MaxsenModel({ rect: true });
       for (const f of ['examples/js/controls/OrbitControls.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/lights/RectAreaLightUniformsLib.js']) await load(CDN + f);
       try { await document.fonts.ready; } catch (e) {}
       stage.querySelector('img').hidden = true; btn.hidden = true;
-      await start(); bar.hidden = false; $('arrange').hidden = false;
+      await start(); bar.hidden = false; $('arrange').hidden = false; $('finishes').hidden = false;
     } catch (e) { btn.disabled = false; btn.hidden = false; btn.textContent = 'The model did not load. Try again'; }
   });
   bar.addEventListener('click', e => {

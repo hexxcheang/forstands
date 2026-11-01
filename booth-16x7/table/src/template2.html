@@ -130,6 +130,15 @@ text{font-family:var(--sans)}
 .items button.it span{color:var(--muted);font-size:13px}
 .items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
 .items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
+.fin-rows{display:grid;gap:12px}
+.fin-row{display:grid;grid-template-columns:minmax(150px,200px) minmax(0,1fr);gap:8px 16px;align-items:center;border-top:1px solid var(--rule);padding-top:10px}
+@media (max-width:640px){.fin-row{grid-template-columns:minmax(0,1fr)}}
+.fin-l{display:grid;gap:2px}
+.fin-l b{font:400 19px/1.2 var(--serif)}
+.fin-l span{font-size:13px;color:var(--muted)}
+.fin-sw{display:flex;flex-wrap:wrap;gap:8px}
+.fsw{width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);padding:0;cursor:pointer;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)}
+.fsw[aria-checked="true"]{outline:2px solid var(--fg);outline-offset:3px}
 details.list summary{cursor:pointer;font-size:14px;color:var(--ink-2);padding:4px 0}
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px}
 ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
@@ -281,6 +290,24 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
           <div class="arr-row"><button type="button" class="pill" id="arrReset">Back to the original layout</button><span class="hint">The photos on this page show the original layout.</span></div>
         </div>
       </div>
+      <div class="arrange" id="finishes" hidden>
+        <div class="arr-head">
+          <button type="button" class="pill" id="finToggle" aria-pressed="false">Change the finishes</button>
+          <p id="finIntro">White, gloss white, blush, gold, rose gold, champagne, marble, woods and gradient fades from the Maxsen palette, surface by surface.</p>
+          <span class="status" id="finState" role="status" aria-live="polite"></span>
+        </div>
+        <div class="arr-body" id="finBody" hidden>
+          <div class="arr-row" id="presetRow">
+            <b>Looks</b>
+            <button type="button" class="pill" data-p="original">As designed</button>
+            <button type="button" class="pill" data-p="porcelain">Porcelain and rose gold</button>
+            <button type="button" class="pill" data-p="rosefade">Rose gold fade</button>
+            <button type="button" class="pill" data-p="midnight">Midnight</button>
+          </div>
+          <div class="fin-rows" id="finRows"></div>
+          <p class="hint">Gradients run from the bottom of each surface to the top: on the gold layer, from left to right. One set of finishes applies to every form.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -317,6 +344,20 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     <div class="drw">
       <figure class="sheet"><div class="sheet-h"><b>Rectangular · front</b><span>mm</span></div><div class="scroll">{{RFRONT}}</div></figure>
       <figure class="sheet"><div class="sheet-h"><b>Rectangular · from above</b><span>front at the bottom</span></div><div class="scroll">{{RPLAN}}</div></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="fin">
+    <div class="head">
+      <span class="eyebrow">Finishes</span>
+      <h2 id="fin">The same counter in other Maxsen finishes</h2>
+    </div>
+    <p class="lede">Every surface takes its own finish: the top, the gold layer, the body, the shelves and bays, the base and the lock stands. Choose from white, gloss white, blush, white or black marble, light or pale oak, walnut, brushed gold, rose gold, champagne and midnight bronze, or a gradient fade. Try them in the 3D model with <b>Change the finishes</b>. Four looks to start from:</p>
+    <div class="grid2">
+      <figure class="shot"><img src="renders/finish-porcelain.jpg" alt="The rounded counter in gloss white with a rose gold top layer and base, blush shelves and white lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Porcelain and rose gold.</b> Gloss white body, rose gold layer and base, blush bays.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-rosefade.jpg" alt="The rectangular counter with its body fading from white at the floor to rose gold under the marble block" width="1600" height="1000" loading="lazy"><figcaption><b>Rose gold fade.</b> The rectangular form, its body fading from white up to rose gold.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-midnight.jpg" alt="The rounded counter in midnight bronze with a black marble top, gold layer and walnut bays and lock stands" width="1600" height="1000" loading="lazy"><figcaption><b>Midnight.</b> Black marble, bronze body, walnut bays and stands, gold layer.</figcaption></figure>
+      <figure class="shot"><img src="renders/finish-dusk.jpg" alt="The rounded counter with its body fading from bronze at the floor to rose gold at the top, a champagne top layer and blush bays" width="1600" height="1000" loading="lazy"><figcaption><b>Dusk.</b> Bronze fading up to rose gold, champagne layer, blush bays.</figcaption></figure>
     </div>
   </section>
 
@@ -449,22 +490,80 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
     'rect-open': store('maxsen-counter-layout-rect-v1', 'layout/rect'), 'rect-closed': store('maxsen-counter-layout-rect-closed-v1', 'layout/rect-closed')
   };
   (async () => {
+    await null;   // let the rest of this script set up first
     let db = null;
     try { db = (typeof claude !== 'undefined' && claude.use) ? await claude.use('db') : null; } catch (e) { db = null; }
     Object.values(stores).forEach(st => st.connect(db));
+    finConnect(db);
   })();
+
+  /* ---------- finishes: one choice per surface, shared by every form, saved like the arrangement ---------- */
+  const FLS = 'maxsen-counter-finish-v1';
+  let fin = null, fref = null, fLast = null, fWriting = false, fAgain = false, fTimer = 0;
+  const fsay = t => { $('finState').textContent = t; };
+  try { const t = localStorage.getItem(FLS); if (t) fin = MaxsenTable.cleanFinishes(JSON.parse(t)); } catch (e) {}
+  function finConnect(db) {
+    if (!db) { fsay('Saved in this browser only'); return; }
+    fref = db.doc('finish/current');
+    fref.onSnapshot(snap => {
+      if (!snap.exists) return;
+      const f = MaxsenTable.cleanFinishes((snap.data() || {}).finishes), j = JSON.stringify(f); fLast = j;
+      if (j !== JSON.stringify(fin)) { fin = f; if (viewer) viewer.finish.setAll(f); renderFin(); }
+      if (!snap.fromCache && !fWriting) fsay('Saved');
+    }, () => { fref = null; fsay('Saved in this browser only'); });
+  }
+  function finKeep() {
+    try { localStorage.setItem(FLS, JSON.stringify(fin)); } catch (e) {}
+    if (!fref) { fsay('Saved in this browser only'); return; }
+    fsay('Saving…'); clearTimeout(fTimer); fTimer = setTimeout(finFlush, 600);
+  }
+  async function finFlush() {
+    if (!fref) return;
+    if (fWriting) { fAgain = true; return; }
+    const j = JSON.stringify(fin); if (j === fLast) { fsay('Saved'); return; }
+    fWriting = true;
+    try { await fref.set({ finishes: fin, updatedAt: Date.now() }); fLast = j; fsay('Saved'); }
+    catch (e) { fref = null; fsay('Saved in this browser only: only editors of this page save to it'); }
+    finally { fWriting = false; if (fAgain) { fAgain = false; finFlush(); } }
+  }
+  const model = () => rect ? MaxsenTable.rect : MaxsenTable;
+  function renderFin() {
+    const cur = fin || MaxsenTable.cleanFinishes({}), F = MaxsenTable.FINISHES;
+    $('finRows').replaceChildren(...model().SLOTS.map(([slot, label]) => {
+      const row = document.createElement('div'); row.className = 'fin-row';
+      const h = document.createElement('div'); h.className = 'fin-l';
+      h.append(Object.assign(document.createElement('b'), { textContent: label }), Object.assign(document.createElement('span'), { textContent: F[cur[slot]].name }));
+      const g = document.createElement('div'); g.className = 'fin-sw'; g.setAttribute('role', 'radiogroup'); g.setAttribute('aria-label', label + ' finish');
+      Object.entries(F).forEach(([key, f]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'fsw'; b.style.background = f.css;
+        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(cur[slot] === key)); b.setAttribute('aria-label', f.name); b.title = f.name;
+        b.addEventListener('click', () => { fin = Object.assign({}, cur, { [slot]: key }); if (viewer) viewer.finish.set(slot, key); finKeep(); renderFin(); });
+        g.append(b);
+      });
+      row.append(h, g); return row;
+    }));
+  }
+  $('presetRow').addEventListener('click', e => {
+    const b = e.target.closest('button[data-p]'); if (!b) return;
+    fin = MaxsenTable.cleanFinishes(MaxsenTable.PRESETS[b.dataset.p].f); if (viewer) viewer.finish.setAll(fin); finKeep(); renderFin();
+  });
+  $('finToggle').addEventListener('click', () => {
+    const on = $('finBody').hidden; $('finBody').hidden = !on; $('finIntro').hidden = on;
+    $('finToggle').setAttribute('aria-pressed', String(on)); $('finToggle').textContent = on ? 'Close the finishes' : 'Change the finishes';
+    if (on) renderFin();
+  });
 
   /* ---------- the viewer ---------- */
   async function start() {
     if (viewer) { viewer.stop(); stage.querySelector('canvas')?.remove(); }
     const st = cur();
     viewer = await (rect ? MaxsenTable.rect : MaxsenTable).mount(THREE, stage, {
-      view: current, mood, shelves, layout: st.layout || undefined,
+      view: current, mood, shelves, layout: st.layout || undefined, finishes: fin || undefined,
       onChange: l => { st.layout = l; st.keep(); renderList(); },
       onSelect: info => { selected = info; renderSel(); renderList(); }
     });
     viewer.editor.setEnabled(arranging);
-    st.status(); renderList();
+    st.status(); renderList(); renderFin();
   }
   btn.addEventListener('click', async () => {
     btn.disabled = true; btn.textContent = 'Loading the model';
@@ -473,7 +572,7 @@ footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:va
       for (const f of ['examples/js/controls/OrbitControls.js', 'examples/js/environments/RoomEnvironment.js', 'examples/js/lights/RectAreaLightUniformsLib.js']) await load(CDN + f);
       try { await document.fonts.ready; } catch (e) {}
       stage.querySelector('img').hidden = true; btn.hidden = true;
-      await start(); bar.hidden = false; $('arrange').hidden = false;
+      await start(); bar.hidden = false; $('arrange').hidden = false; $('finishes').hidden = false;
     } catch (e) { btn.disabled = false; btn.hidden = false; btn.textContent = 'The model did not load. Try again'; }
   });
   bar.addEventListener('click', e => {

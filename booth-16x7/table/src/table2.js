@@ -19,6 +19,35 @@ function MaxsenModel(cfg = {}) {
   const SHELVES = RECT ? [(Y0 + .04 + Y1) / 2 - .0125] : [0.307, 0.513];
   const SANS = 'Lato, "Helvetica Neue", Arial, sans-serif';
 
+  /* ---------- finishes: the Maxsen palette, for every surface ---------- */
+  const FINISHES = {
+    marble:    { name: 'White marble', tex: 'marble', roughness: .38, clearcoat: .25, clearcoatRoughness: .35, css: 'linear-gradient(135deg,#f4f1ec 0 38%,#cfcac3 40%,#f4f1ec 43% 68%,#c9ad84 70%,#f4f1ec 72%)' },
+    nero:      { name: 'Black marble', tex: 'nero', roughness: .3, clearcoat: .45, clearcoatRoughness: .2, css: 'linear-gradient(135deg,#171615 0 38%,#a9a6a2 40%,#171615 43% 68%,#c9a46a 70%,#171615 72%)' },
+    white:     { name: 'White', color: 0xF2EFEA, roughness: .6, css: '#F2EFEA' },
+    gloss:     { name: 'Gloss white', color: 0xF6F4F1, roughness: .1, clearcoat: 1, clearcoatRoughness: .05, css: 'linear-gradient(135deg,#ffffff,#e9e6e1)' },
+    blush:     { name: 'Blush', color: 0xE6C9BC, roughness: .55, css: '#E6C9BC' },
+    oak:       { name: 'Light oak', tex: 'oak', roughness: .55, css: 'repeating-linear-gradient(0deg,#d2b994 0 3px,#c3a67d 3px 4px)' },
+    paleoak:   { name: 'Pale oak', tex: 'paleoak', roughness: .55, css: 'repeating-linear-gradient(0deg,#e2d0b4 0 3px,#d3bd9b 3px 4px)' },
+    walnut:    { name: 'Walnut', tex: 'walnut', roughness: .5, css: 'repeating-linear-gradient(0deg,#5a3d2b 0 3px,#3f2a1d 3px 4px)' },
+    gold:      { name: 'Brushed gold', color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#8f6526,#e0bf7a,#b98a3e)' },
+    rosegold:  { name: 'Rose gold', color: 0xB06A55, metalness: 1, roughness: .28, clearcoat: .25, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#9a6555,#efc8b8,#c08a78)' },
+    champagne: { name: 'Champagne', color: 0xCDB58E, metalness: 1, roughness: .32, clearcoat: .2, clearcoatRoughness: .25, css: 'linear-gradient(135deg,#a8916a,#efe0c2,#cdb58e)' },
+    bronze:    { name: 'Midnight bronze', color: 0x1E1815, metalness: .35, roughness: .42, css: '#29221F' },
+    fadeRose:  { name: 'White to rose gold', grad: [0xF4F1EC, 0xA25844], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#c08a78)' },
+    fadeGold:  { name: 'White to gold', grad: [0xF4F1EC, 0xA47430], metalness: .3, roughness: .3, clearcoat: .4, clearcoatRoughness: .2, css: 'linear-gradient(0deg,#f4f1ec,#b98a3e)' },
+    blushGold: { name: 'Blush to gold', grad: [0xE0BFB0, 0xA47430], metalness: .3, roughness: .35, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#e6c9bc,#b98a3e)' },
+    dusk:      { name: 'Bronze to rose gold', grad: [0x1E1815, 0xA25844], metalness: .45, roughness: .32, clearcoat: .3, clearcoatRoughness: .25, css: 'linear-gradient(0deg,#29221f,#c08a78)' }
+  };
+  const SLOTS = [['top', 'Top'], ...(GOLD ? [['gold', 'Gold layer']] : []), ['body', 'Body'], ['inner', 'Shelves and bays'], ['base', 'Base'], ['stands', 'Lock stands']];
+  const FINISH_DEFAULT = { top: 'marble', gold: 'gold', body: 'oak', inner: 'paleoak', base: 'bronze', stands: 'oak' };
+  const PRESETS = {
+    original: { name: 'As designed', f: FINISH_DEFAULT },
+    porcelain: { name: 'Porcelain and rose gold', f: { top: 'marble', gold: 'rosegold', body: 'gloss', inner: 'blush', base: 'rosegold', stands: 'gloss' } },
+    rosefade: { name: 'Rose gold fade', f: { top: 'marble', gold: 'rosegold', body: 'fadeRose', inner: 'white', base: 'rosegold', stands: 'white' } },
+    midnight: { name: 'Midnight', f: { top: 'nero', gold: 'gold', body: 'bronze', inner: 'walnut', base: 'bronze', stands: 'walnut' } }
+  };
+  const cleanFinishes = f => { const o = Object.assign({}, FINISH_DEFAULT); if (f && typeof f === 'object') for (const [k, v] of Object.entries(f)) if (k in FINISH_DEFAULT && typeof v === 'string' && v in FINISHES) o[k] = v; return o; };
+
   /* ---------- the arrangement: what stands where, and the surfaces it can stand on ---------- */
   const LOCK_VARIANTS = [
     { name: 'F3 Ultra Air View · Rosewood', frame: 0x1c1917, trim: '#B9876A', lower: 'rosewood', cam: false },
@@ -162,18 +191,19 @@ function MaxsenModel(cfg = {}) {
   let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
   function canvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return [c, c.getContext('2d')]; }
   function tex(THREE, c, rx = 1, ry = 1) { const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); return t; }
-  function stone(THREE) { // white marble with bold grey and soft gold veining
+  function stone(THREE, dark) { // white marble with bold grey and soft gold veining; or black with white and gold
     const [c, g] = canvas(2048, 1024);
-    g.fillStyle = '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
-    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
+    g.fillStyle = dark ? '#161514' : '#F4F1EC'; g.fillRect(0, 0, 2048, 1024);
+    for (let k = 0; k < 26; k++) { const x = rnd() * 2048, y = rnd() * 1024, r = 120 + rnd() * 320; const f = g.createRadialGradient(x, y, 0, x, y, r); f.addColorStop(0, dark ? `rgba(${rnd() > .6 ? '40,38,36' : '12,12,11'},.7)` : `rgba(${rnd() > .6 ? '228,222,214' : '250,248,245'},.7)`); f.addColorStop(1, dark ? 'rgba(22,21,20,0)' : 'rgba(244,241,236,0)'); g.fillStyle = f; g.fillRect(0, 0, 2048, 1024); }
     const vein = (w, a, col, wob) => {
       g.strokeStyle = `rgba(${col},${a})`; g.lineWidth = w; g.lineCap = 'round';
       g.beginPath(); let x = -40, y = rnd() * 1024; g.moveTo(x, y); const drift = (rnd() - .5) * 70;
       while (x < 2100) { const nx = x + 30 + rnd() * 60, ny = y + drift + (rnd() - .5) * wob; g.quadraticCurveTo(x + (nx - x) / 2, y + (rnd() - .5) * wob, nx, ny); x = nx; y = ny; }
       g.stroke();
     };
-    for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, '120,118,116', 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, '96,94,92', 30); }
-    for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, '110,108,106', 50);
+    const vc = dark ? ['150,148,145', '214,212,208', '190,188,184'] : ['120,118,116', '96,94,92', '110,108,106'];
+    for (let k = 0; k < 5; k++) { g.filter = 'blur(6px)'; vein(10 + rnd() * 12, .18, vc[0], 40); g.filter = 'none'; vein(1.6 + rnd() * 2.2, .55, vc[1], 30); }
+    for (let k = 0; k < 14; k++) vein(.6 + rnd() * 1.2, .28 + rnd() * .2, vc[2], 50);
     for (let k = 0; k < 4; k++) vein(1 + rnd() * 1.4, .35, '176,142,92', 30);
     return c;
   }
@@ -243,12 +273,53 @@ function MaxsenModel(cfg = {}) {
     const rim = new THREE.DirectionalLight(0xffe6cc, night ? .05 : .22); rim.position.set(3, 2.5, -3); scene.add(rim);
 
     // Maxsen colourway: porcelain stone, Midnight Bronze body, champagne-lit interiors
-    const stoneMat = new THREE.MeshPhysicalMaterial({ map: tex(THREE, stone(THREE), 1 / L, 1 / D), roughness: .38, clearcoat: .25, clearcoatRoughness: .35, envMapIntensity: night ? .3 : .45 });
-    stoneMat.map.offset.set(.5, .5);
-    const bodyWood = wood(THREE, '#D2B994', '150,116,78', '238,220,192');
-    const bodyMat = std({ map: tex(THREE, bodyWood, 1.2, 1), roughness: .55 });
-    const bodyMatV = std({ map: tex(THREE, bodyWood, 1, 1), roughness: .55 }); bodyMatV.map.rotation = Math.PI / 2;
-    const inner = std({ map: tex(THREE, wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'), 1.5, 1), roughness: .55 });
+    // every surface that takes a finish has its own material, refinished in place when the finish changes
+    const canv = {};
+    const texCanvas = k => canv[k] || (canv[k] = {
+      marble: () => stone(THREE), nero: () => stone(THREE, true),
+      oak: () => wood(THREE, '#D2B994', '150,116,78', '238,220,192'), paleoak: () => wood(THREE, '#E2D0B4', '160,128,92', '246,234,214'),
+      walnut: () => wood(THREE, '#5A3D2B', '30,18,10', '122,86,60')
+    }[k]());
+    const slotMats = {}, finishNow = Object.assign({}, FINISH_DEFAULT);
+    // where each surface's gradient runs: up its height, or along the length for the thin gold layer
+    const GRAD = { top: [0, Y1, H], gold: [1, -L * GS / 2, L * GS / 2], body: [0, Y0, Y1], inner: [0, Y0, Y1], base: [0, 0, BASE], stands: [0, HG, HG + .55] };
+    function slotMat(slot, o = {}) {
+      const m = new THREE.MeshPhysicalMaterial({ roughness: .5 });
+      const g = { on: false, a: { value: new THREE.Color() }, b: { value: new THREE.Color() }, r: { value: new THREE.Vector3(...GRAD[slot]) } };
+      m.userData = { o, g };
+      m.onBeforeCompile = sh => {
+        if (!g.on) return;
+        sh.uniforms.gA = g.a; sh.uniforms.gB = g.b; sh.uniforms.gR = g.r;
+        sh.vertexShader = 'varying vec3 vGW;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vGW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+        sh.fragmentShader = 'uniform vec3 gA;\nuniform vec3 gB;\nuniform vec3 gR;\nvarying vec3 vGW;\n' + sh.fragmentShader.replace('#include <map_fragment>',
+          '#include <map_fragment>\n  float gT = clamp(((gR.x > .5 ? vGW.x : vGW.y) - gR.y) / (gR.z - gR.y), 0., 1.);\n  diffuseColor.rgb *= mix(gA, gB, smoothstep(0., 1., gT));');
+      };
+      m.customProgramCacheKey = () => g.on ? 'grad' : 'flat';
+      (slotMats[slot] = slotMats[slot] || []).push(m);
+      refinish(m, finishNow[slot]);
+      return m;
+    }
+    function refinish(m, key) {
+      const F = FINISHES[key], { o, g } = m.userData;
+      if (m.map) m.map.dispose();
+      m.map = null;
+      if (F.tex) { const t = tex(THREE, texCanvas(F.tex), ...(o.rep || [1, 1])); if (o.off) t.offset.set(...o.off); if (o.rot) t.rotation = o.rot; m.map = t; }
+      m.color.set(F.tex || F.grad ? 0xffffff : F.color);
+      m.metalness = F.metalness || 0; m.roughness = F.roughness ?? .5;
+      m.clearcoat = F.clearcoat || 0; m.clearcoatRoughness = F.clearcoatRoughness ?? .3;
+      m.envMapIntensity = F.metalness ? (night ? .5 : 1.05) : (night ? .25 : .5);
+      g.on = !!F.grad; if (F.grad) { g.a.value.set(F.grad[0]); g.b.value.set(F.grad[1]); }
+      m.needsUpdate = true;
+    }
+    function setFinish(slot, key) {
+      if (!(slot in FINISH_DEFAULT) || !(key in FINISHES)) return;
+      finishNow[slot] = key; (slotMats[slot] || []).forEach(m => refinish(m, key));
+    }
+    const stoneMat = slotMat('top', { rep: [1 / L, 1 / D], off: [.5, .5] });
+    const bodyMat = slotMat('body', { rep: [1.2, 1] });
+    const bodyMatV = slotMat('body', { rep: [1, 1], rot: Math.PI / 2 });
+    const inner = slotMat('inner', { rep: [1.5, 1] });
+    const baseMat = slotMat('base');
     const bronze = std({ color: 0x29221F, roughness: .4, metalness: .5 });
     // IC RGBCCT strips: every pixel addressable, warm white for daily use, full colour on demand
     const warm = new THREE.Color(night ? 0xffd9a8 : 0xfff0d8);
@@ -276,7 +347,7 @@ function MaxsenModel(cfg = {}) {
     // the top: 100 mm thick, rounded corners and softened edges
     add(slab(THREE, rr(THREE, L - .012, D - .012, Math.max(.003, R - .006)), TOP, RECT ? .003 : .006), stoneMat, 0, Y1, 0);
     // a thin, flat gold top on the marble, following its outline at 1.1x
-    const gold = new THREE.MeshPhysicalMaterial({ color: 0xB98A3E, metalness: 1, roughness: .3, clearcoat: .25, clearcoatRoughness: .25, envMapIntensity: night ? .5 : 1.05 });
+    const gold = slotMat('gold');
     if (GOLD) add(slab(THREE, rr(THREE, L * GS - .004, D * GS - .004, R * GS - .002), GT, .002), gold, 0, H, 0);
     // the LED line along the underside edge of the top
     pixels(perimeter(BL + .006, BD + .006, BR + .003, .016), Y1 - .006);
@@ -305,8 +376,7 @@ function MaxsenModel(cfg = {}) {
     });
 
     // Lenovo smart locks, modelled after the product photos, each on its own small door panel
-    const doorMat = std({ map: tex(THREE, wood(THREE, '#CDB59A', '150,120,90', '240,226,206'), 1, 1), roughness: .5 });
-    doorMat.map.rotation = Math.PI / 2;
+    const doorMat = slotMat('stands', { rep: [1, 1], rot: Math.PI / 2 });
 
     function lenovoLock({ x, frame, trim, lower, cam }) {
       // its own stand: a bronze foot and a 150 x 550 slice of a 45 mm door; the lock at true size, about 78 x 410 x 70 mm
@@ -435,7 +505,7 @@ function MaxsenModel(cfg = {}) {
     }
 
     // floating base with an LED line that lights the floor
-    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), bronze, 0, .002, 0);
+    add(slab(THREE, rr(THREE, BL - .1, BD - .1, Math.max(.008, BR - .04)), BASE - .004), baseMat, 0, .002, 0);
     pixels(perimeter(BL - .09, BD - .09, Math.max(.013, BR - .035), .016), BASE - .012);
     const gl = new THREE.Mesh(new THREE.PlaneGeometry(BL + .7, BD + .55), new THREE.MeshBasicMaterial({ map: floorGlow(THREE, colour), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: night ? .9 : .4 }));
     gl.rotation.x = -Math.PI / 2; gl.position.y = .002; scene.add(gl);
@@ -692,7 +762,7 @@ function MaxsenModel(cfg = {}) {
       const keep = seed; seed = [...d.id].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 233280, 7);
       try { return KINDS[d.type](d); } finally { seed = keep; }
     }
-    return { scene, make };
+    return { scene, make, setFinish, finishes: () => Object.assign({}, finishNow) };
   }
 
 
@@ -725,7 +795,8 @@ function MaxsenModel(cfg = {}) {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     el.appendChild(renderer.domElement);
     const shelves = opts.shelves !== false, ORDER = shelves ? SURF_ORDER : ['top'], START = shelves ? DEFAULT_LAYOUT : DEFAULT_CLOSED;
-    const { scene, make } = build(THREE, renderer, opts.mood, imgs, shelves);
+    const { scene, make, setFinish, finishes } = build(THREE, renderer, opts.mood, imgs, shelves);
+    Object.entries(cleanFinishes(opts.finishes)).forEach(([k, v]) => setFinish(k, v));
     const cam = new THREE.PerspectiveCamera(32, 1, .02, 60);
     let controls = null;
     if (THREE.OrbitControls && !opts.capture) { controls = new THREE.OrbitControls(cam, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * .49; controls.minDistance = .5; controls.maxDistance = 7; }
@@ -893,11 +964,12 @@ function MaxsenModel(cfg = {}) {
     window.addEventListener('resize', size);
     return {
       view, size, editor,
+      finish: { set: setFinish, get: finishes, setAll: f => Object.entries(cleanFinishes(f)).forEach(([k, v]) => setFinish(k, v)) },
       capture(k) { const hv = helper.visible; helper.visible = false; view(k); renderer.render(scene, cam); const u = renderer.domElement.toDataURL('image/png'); helper.visible = hv; return u; },
       stop() { editing = false; cancelAnimationFrame(raf); window.removeEventListener('resize', size); LISTEN.forEach(([t, f]) => el.removeEventListener(t, f, true)); if (controls) controls.dispose(); renderer.dispose(); }
     };
   }
-  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize };
+  return { mount, VIEWS, DEFAULT_LAYOUT, DEFAULT_CLOSED, sanitize, FINISHES, SLOTS, PRESETS, cleanFinishes };
 }
 window.MaxsenTable = MaxsenModel();
 window.MaxsenTable.rect = MaxsenModel({ rect: true });

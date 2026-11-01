@@ -1,0 +1,27 @@
+const { chromium } = require('playwright');
+const fs = require('fs'), path = require('path');
+const npm = path.join(__dirname, '..', '..', 'npm3', 'package');
+(async () => {
+  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--allow-file-access-from-files'] });
+  const ctx = await b.newContext({ viewport: { width: 1100, height: 900 } }); const p = await ctx.newPage();
+  const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); });
+  await p.route('https://cdn.jsdelivr.net/npm/three@0.128.0/**', r => { const u = new URL(r.request().url()).pathname.replace('/npm/three@0.128.0/', ''); r.fulfill({ body: fs.readFileSync(path.join(npm, u)), contentType: 'text/javascript' }); });
+  await p.route('https://fonts.googleapis.com/**', r => r.fulfill({ body: '', contentType: 'text/css' }));
+  const open = async () => { await p.goto('file:///home/user/forstands/booth-16x7/table/index.html', { waitUntil: 'domcontentloaded', timeout: 120000 }); await p.click('#open3d'); await p.waitForSelector('#stage canvas', { timeout: 120000 }); await p.waitForTimeout(2000); };
+  await open();
+  await p.click('#finToggle');
+  const labels = async () => (await p.$$eval('.fin-row', rs => rs.map(r => r.querySelector('.fin-l').textContent))).join(' | ');
+  console.log('rows:', await labels());
+  await p.click('.fin-row:nth-child(3) .fsw[aria-label="Rose gold"]'); await p.waitForTimeout(1500);
+  await p.click('.fin-row:nth-child(1) .fsw[aria-label="Black marble"]'); await p.waitForTimeout(1500);
+  console.log('after picks:', await labels());
+  await p.click('button[data-f="rect"]'); await p.waitForTimeout(6000);
+  console.log('rect rows:', await labels());
+  await p.evaluate(() => document.getElementById('stage').scrollIntoView({ block: 'start' })); await p.waitForTimeout(1500);
+  const sb = await p.locator('#stage').boundingBox(); await p.screenshot({ path: path.join(__dirname, 'out-ed', 'fin-live.png'), clip: sb, timeout: 120000 });
+  await p.screenshot({ path: path.join(__dirname, 'out-ed', 'fin-panel.png'), clip: await p.locator('#finishes').boundingBox(), timeout: 120000 });
+  console.log('stored', await p.evaluate(() => localStorage.getItem('maxsen-counter-finish-v1')));
+  await open(); await p.click('#finToggle'); console.log('after reload:', await labels());
+  await p.click('#presetRow button[data-p="porcelain"]'); await p.waitForTimeout(1500); console.log('preset:', await labels());
+  console.log('errors', errs); await b.close();
+})();
