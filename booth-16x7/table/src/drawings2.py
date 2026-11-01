@@ -8,8 +8,8 @@ def vdim(x, y1, y2, label, side="left"):
     tx = x - 28 if side == "left" else x + 30
     return (f'<g class="dim"><line x1="{x}" y1="{y1}" x2="{x}" y2="{y2}"/><line x1="{x-25}" y1="{y1}" x2="{x+25}" y2="{y1}"/><line x1="{x-25}" y1="{y2}" x2="{x+25}" y2="{y2}"/></g>' + t(tx, (y1+y2)/2 + 14, label, "td", "end" if side == "left" else "start"))
 
-# the switch row along the front face, in drawing x (700 = the centre): Noble, Halo, the S8 panel at the centre, Prestige
-SWROW = [(211, 'noble-champagne'), (317, 'noble-ivory'), (423, 'noble-onyx'), (529, 'halo'), (700, 's8'), (871, 'prestige-onyx'), (977, 'prestige-champagne'), (1083, 'prestige-midnight')]
+# the switch row along the front face, in drawing x (700 = the centre): three Noble, the S8 panel at the centre, three Prestige
+SWROW = [(317, 'noble-champagne'), (423, 'noble-ivory'), (529, 'noble-onyx'), (700, 's8'), (871, 'prestige-onyx'), (977, 'prestige-champagne'), (1083, 'prestige-midnight')]
 SWCOL = {'noble-champagne': ('#E3D5C7', '#B88A4E'), 'noble-ivory': ('#E4E6E7', '#4a4a4a'), 'noble-onyx': ('#151515', '#555555'),
          'prestige-onyx': ('#3a3a3a', '#1a0f0d'), 'prestige-champagne': ('#A08A74', '#1a0f0d'), 'prestige-midnight': ('#4A4F5C', '#1a0f0d')}
 def switch_svg(x, y, k):
@@ -60,7 +60,7 @@ f.append(f'<rect x="{bx-60}" y="{sv(Z+44)}" width="120" height="22" rx="6" class
 f.append(f'<rect x="25" y="{sv(U)+2}" width="1350" height="5" class="led"/>')
 f.append(hdim(-70, 1470, sv(Z + 610), "1,540 gold top"))
 f.append(hdim(0, 1400, H + 300, "1,400 marble and body", ty=H + 360))
-f.append(t(700, H + 230, "front edge: Lusano Noble · Halo · S8 panel · Lusano Prestige", "td"))
+f.append(t(700, H + 230, "front edge: 3 Lusano Noble · S8 panel · 3 Lusano Prestige", "td"))
 f.append(hdim(15, 370, H + 90, "355 curved shelves", ty=H + 150))
 f.append(hdim(370, 1030, H + 90, "660 closed, lit logo", ty=H + 150))
 f.append(hdim(1030, 1385, H + 90, "355 curved shelves", ty=H + 150))
@@ -104,7 +104,7 @@ for x, k in SWROW:
     p.append(f'<rect x="{x - (108 if k == "s8" else 43)}" y="500" width="{216 if k == "s8" else 86}" height="{14 if k == "s8" else 8}" class="{"halop" if k == "halo" else "sw"}"/>')
 p.append(t(800, -60, "6 Lenovo locks, staggered in two rows", "td"))
 p.append(t(700 + BALL[0], 250 + BALL[1] + 14, "ball light", "td"))
-p.append(t(700, 580, "FRONT EDGE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
+p.append(t(700, 580, "FRONT EDGE · NOBLE · S8 · PRESTIGE", "tz"))
 p.append(hdim(-70, 1470, -110, "1,540 gold top (marble 1,400, dashed)"))
 p.append(vdim(-110, -25, 525, "550"))
 p.append('<path d="M1470 140 A165 165 0 0 0 1305 -25" class="radius"/>')
@@ -168,7 +168,7 @@ def form_dwg(frac, rounded, share, name):
         q.append(f'<rect x="{x - (108 if k == "s8" else 43)}" y="500" width="{216 if k == "s8" else 86}" height="{14 if k == "s8" else 8}" class="{"halop" if k == "halo" else "sw"}"/>')
     q.append(hdim(0, 1400, -60, "1,400 marble, " + ("150 mm corner radius" if rounded else "square corners")))
     q.append(vdim(-60, 0, 500, "500"))
-    q.append(t(700, 580, "FRONT FACE · NOBLE · HALO · S8 · PRESTIGE", "tz"))
+    q.append(t(700, 580, "FRONT FACE · NOBLE · S8 · PRESTIGE", "tz"))
     rplan = f'<svg viewBox="-260 -150 1960 780" class="dwg" role="img" aria-label="{name} from above: a 1,400 by 500 marble top with {'rounded' if rounded else 'square'} corners, the six staggered locks and the ball light">{"".join(q)}</svg>'
     return rfront, rplan
 

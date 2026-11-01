@@ -130,9 +130,15 @@ function MaxsenModel(cfg = {}) {
   // the arrangement from the page, saved 1 November 2026: locks staggered front and back, catalogues on the top shelves,
   // and trailing plants on the middle shelves, their vines hanging over the front edges
   // the switches along the front face: Noble on the left, the Halo dimmer, the S8 panel in the centre, Prestige on the right
-  // the S8 is 216 mm wide, the switches 86, with 20 mm between them
-  const DEFAULT_SWITCHES = [['noble-champagne', -.489], ['noble-ivory', -.383], ['noble-onyx', -.277], ['halo', -.171], ['s8', 0], ['prestige-onyx', .171], ['prestige-champagne', .277], ['prestige-midnight', .383]]
+  // three Lusano Noble, the S8 panel in the middle, three Lusano Prestige; the S8 is 216 mm wide, the switches 86, 20 mm between them
+  const DEFAULT_SWITCHES = [['noble-champagne', -.383], ['noble-ivory', -.277], ['noble-onyx', -.171], ['s8', 0], ['prestige-onyx', .171], ['prestige-champagne', .277], ['prestige-midnight', .383]]
     .map(([v, x], i) => ({ id: 'sw' + (i + 1), type: 'switch', v, on: 'front', x, z: 0, r: 0 }));
+  // the earlier standard rows, so a saved copy of one (never moved) is replaced by the row above
+  const OLD_ROWS = [
+    [['noble-champagne', -.489], ['noble-ivory', -.383], ['noble-onyx', -.277], ['halo', -.171], ['s8', 0], ['prestige-onyx', .171], ['prestige-champagne', .277], ['prestige-midnight', .383]],
+    [['noble-champagne', -.5], ['noble-ivory', -.375], ['noble-onyx', -.25], ['halo', -.125], ['s8', 0], ['prestige-onyx', .125], ['prestige-champagne', .25], ['prestige-midnight', .375]]
+  ];
+  const isOldRow = sw => OLD_ROWS.some(row => row.length === sw.length && row.every(([v, x], i) => sw[i] && sw[i].v === v && Math.abs(sw[i].x - x) < .0015 && Math.abs(sw[i].z) < .0015));
   const DEFAULT_LAYOUT = [
     { id: 'lock1', type: 'lock', v: '0', on: 'top', x: -.445, z: -.077, r: 0 },
     { id: 'lock2', type: 'lock', v: '1', on: 'top', x: -.225, z: .104, r: 0 },
@@ -1012,7 +1018,8 @@ function MaxsenModel(cfg = {}) {
     const getLayout = () => [...items.values()].map(it => JSON.parse(JSON.stringify(it.d)));
     function setLayout(list) {
       const clean = sanitize(list); if (!clean) return;
-      if (!clean.some(d => d.type === 'switch')) clean.push(...JSON.parse(JSON.stringify(DEFAULT_SWITCHES)));
+      const sw = clean.filter(d => d.type === 'switch');
+      if (!sw.length || isOldRow(sw)) { clean.splice(0, clean.length, ...clean.filter(d => d.type !== 'switch'), ...JSON.parse(JSON.stringify(DEFAULT_SWITCHES))); }
       const keep = sel && sel.d.id;
       [...items.values()].forEach(drop); clean.forEach(spawn);
       if (keep && items.has(keep)) select(keep); else select(null);
