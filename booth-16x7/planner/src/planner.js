@@ -15,7 +15,7 @@ window.BoothPlanner = (function () {
   const BOARD_FINISHES = { whitegold: 'White and gold', whiterose: 'White and rose gold', oakbronze: 'Light oak and bronze', blackgold: 'Black and gold' };
   const BOARD_WIDTHS = [.6, .8, 1.0, 1.2];
   const KINDS = {
-    board:   { name: 'Sample board', size: d => [d.w || .6, .45], h: 1.2 },
+    board:   { name: 'Sample board', size: d => [d.w || 1, .45], h: 1.2 },
     counter: { name: 'Switch counter', size: d => COUNTER_FORMS[d.form || 'round'].gold ? [1.54, .55] : [1.4, .5], h: 1.41 },
     table:   { name: 'Round table', size: () => [.6, .6], h: .76 },
     chair:   { name: 'Chair', size: () => [.46, .48], h: .83 },
@@ -23,13 +23,14 @@ window.BoothPlanner = (function () {
   };
   const DEFAULT_LAYOUT = [
     { id: 'counter1', type: 'counter', form: 'round', x: 0, z: -.7, r: 0 },
-    { id: 'board1', type: 'board', w: .6, face: 'switches', finish: 'whitegold', x: -2.05, z: .3, r: Math.PI / 2 },
-    { id: 'board2', type: 'board', w: .6, face: 'locks', finish: 'whitegold', x: -1.3, z: .3, r: Math.PI / 2 },
-    { id: 'board3', type: 'board', w: .6, face: 'smart', finish: 'whitegold', x: 1.3, z: .3, r: Math.PI / 2 },
-    { id: 'board4', type: 'board', w: .6, face: 'switches', finish: 'whitegold', x: 2.05, z: .3, r: Math.PI / 2 }
+    // the four sample boards, 1,000 wide, square to the aisle so both faces are seen, 600 between their bases
+    { id: 'board1', type: 'board', w: 1, face: 'switches', finish: 'whitegold', x: -2.2, z: .3, r: Math.PI / 2 },
+    { id: 'board2', type: 'board', w: 1, face: 'locks', finish: 'whitegold', x: -1.15, z: .3, r: Math.PI / 2 },
+    { id: 'board3', type: 'board', w: 1, face: 'smart', finish: 'whitegold', x: 1.15, z: .3, r: Math.PI / 2 },
+    { id: 'board4', type: 'board', w: 1, face: 'switches', finish: 'whitegold', x: 2.2, z: .3, r: Math.PI / 2 }
   ];
   function itemName(d) {
-    if (d.type === 'board') return 'Sample board · ' + Math.round((d.w || .6) * 1000) + ' wide';
+    if (d.type === 'board') return 'Sample board · ' + Math.round((d.w || 1) * 1000) + ' wide';
     if (d.type === 'counter') return 'Switch counter · ' + COUNTER_FORMS[d.form || 'round'].name.toLowerCase();
     return KINDS[d.type].name;
   }
@@ -43,7 +44,7 @@ window.BoothPlanner = (function () {
       seen.add(id);
       const e = { id, type: d.type, x: num(d.x, -3, 3, 0), z: num(d.z, -2, 2, 0), r: num(d.r, -7, 7, 0) };
       if (d.type === 'board') {
-        e.w = BOARD_WIDTHS.includes(d.w) ? d.w : .6;
+        e.w = BOARD_WIDTHS.includes(d.w) ? d.w : 1;
         e.face = d.face in BOARD_FACES ? d.face : 'switches';
         e.finish = d.finish in BOARD_FINISHES ? d.finish : 'whitegold';
       }
@@ -172,7 +173,7 @@ window.BoothPlanner = (function () {
 
     /* the sample board: a two-sided panel on a triangular base that braces it in front and behind */
     function makeBoard(d) {
-      const w = d.w || .6, F = { whitegold: [white, gold, false], whiterose: [white, rose, false], oakbronze: [oak, bronze, false], blackgold: [black, gold, true] }[d.finish || 'whitegold'];
+      const w = d.w || 1, F = { whitegold: [white, gold, false], whiterose: [white, rose, false], oakbronze: [oak, bronze, false], blackgold: [black, gold, true] }[d.finish || 'whitegold'];
       const [panelMat, baseMat, dark] = F, H = 1.2, BH = .22, BDp = .45, T = .03;
       return group(() => {
         // the base: a triangular prism, 450 deep and 220 high, running the width of the board
