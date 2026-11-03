@@ -1,0 +1,180 @@
+<title>Maxsen Booth Planner</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400;700&display=swap">
+<style>
+/* Layout: a working tool first. The 3D booth leads, with its controls right under it; the sample
+   board's drawing and the notes follow. Maxsen palette: porcelain, ink, rose. */
+:root{
+  --bg:#FBF8F4; --surface:#F4EEE6; --fg:#29221F; --ink-2:#5B4E47; --muted:#6B5E56; --rule:#E6DACC;
+  --rose:#CFA594; --rose-text:#7E5643; --warn:#A8322A; --gold:#B98A3E; --dimc:#6B5E56; --panel:#F2EFEA; --base:#C9A46A;
+  --serif:"EB Garamond",Garamond,Georgia,serif;
+  --sans:"Lato","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6; --warn:#F08A7E; --gold:#D9B26A; --dimc:#B3A69C; --panel:#3A332E; --base:#9C7C46;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14100E; --surface:#1D1714; --fg:#F4EEE6; --ink-2:#CDBFB4; --muted:#B3A69C; --rule:#3A2F29;
+  --rose:#CFA594; --rose-text:#DDB8A6; --warn:#F08A7E; --gold:#D9B26A; --dimc:#B3A69C; --panel:#3A332E; --base:#9C7C46;
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:40px 72px;display:grid;gap:48px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;line-height:1.08}
+h1{font-size:clamp(34px,5vw,54px)} h1 em{font-style:italic;color:var(--rose-text)}
+h2{font-size:clamp(26px,3.2vw,34px)} h3{font-size:22px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--rose-text)}
+.head{display:grid;gap:10px}
+.lede{font-size:18px;font-weight:300;color:var(--ink-2);margin:0;max-width:70ch}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule)}
+.facts div{padding:14px 14px 0 0;display:grid;gap:4px;border-right:1px solid var(--rule);padding-left:14px}
+.facts div:first-child{padding-left:0} .facts div:last-child{border-right:0}
+.facts b{font:400 26px/1 var(--serif);font-variant-numeric:lining-nums tabular-nums}
+.facts span{font-size:13px;color:var(--muted);line-height:1.4}
+@media (max-width:700px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(2){border-right:0}.facts div:nth-child(3){padding-left:0}}
+.tool{display:grid;gap:12px}
+.stage{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:6px;overflow:hidden;border:1px solid var(--rule);background:#E9E4DD}
+.stage canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block;touch-action:none}
+.loading{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;color:#5B4E47;letter-spacing:.06em}
+.loading[hidden]{display:none}
+.bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.bar>b{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.pill{border:1px solid var(--rule);background:var(--bg);color:var(--fg);border-radius:999px;padding:10px 14px;min-height:40px;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.pill[aria-pressed="true"],.pill.dark{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pill.add::before{content:"+ "}
+.status{font-size:13px;color:var(--muted);margin-left:auto}
+.warn{font-size:14px;color:var(--warn);font-weight:700}
+.warn[hidden]{display:none}
+.panel{border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:14px 16px;display:grid;gap:12px}
+.panel[hidden]{display:none}
+.panel h3{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.panel h3 span{font:400 14px/1.3 var(--sans);color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 16px}
+.grid label{display:grid;gap:4px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.grid label[hidden]{display:none}
+select{font:400 15px/1.3 var(--sans);color:var(--fg);background:var(--bg);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;min-height:40px;max-width:100%}
+input[type=range]{width:100%;accent-color:var(--rose-text);min-height:32px}
+output{font-weight:400;letter-spacing:0;text-transform:none;color:var(--fg)}
+.hint{font-size:13.5px;color:var(--muted);margin:0}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:800px){.two{grid-template-columns:minmax(0,1fr)}}
+.items{margin:0;padding:0;list-style:none;display:grid;max-height:300px;overflow:auto;border-top:1px solid var(--rule)}
+.items li{display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--rule)}
+.items button.it{flex:1;text-align:left;background:none;border:0;color:var(--fg);font:400 14.5px/1.3 var(--sans);padding:9px 4px;cursor:pointer;min-height:40px}
+.items button.it span{color:var(--muted);font-size:13px}
+.items button.it[aria-current="true"]{color:var(--rose-text);font-weight:700}
+.items button.it.clash{color:var(--warn)}
+.items button.x{background:none;border:0;color:var(--muted);font:700 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:9px 6px;cursor:pointer;min-height:40px}
+.sheet{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px;margin:0;display:grid;gap:10px;min-width:0}
+.sheet-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.sheet-h b{font:400 20px/1.2 var(--serif)} .sheet-h span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.scroll{overflow-x:auto}
+.dwg{display:block;width:100%;height:auto;min-width:300px}
+.dwg text{font-family:var(--sans);fill:var(--dimc);font-size:34px}
+.dwg .dim line{stroke:var(--dimc);stroke-width:2.5}
+.dwg .pnl{fill:var(--panel);stroke:var(--fg);stroke-width:3}
+.dwg .bas{fill:var(--base);stroke:var(--fg);stroke-width:3}
+.dwg .cap{fill:var(--gold)}
+.dwg .smp{fill:#3a3a40}
+.dwg .flr{fill:var(--muted)}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2)}
+ul.plain li::marker{color:var(--rose)}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+kbd{font:700 12px/1 var(--sans);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:2px 5px;background:var(--bg)}
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="eyebrow">Maxsen · booth planner</span>
+    <h1>Plan the <em>16 × 7 ft</em> booth</h1>
+    <p class="lede">The booth floor at its real size, 4,877 by 2,134 mm, with the aisle along the front. Add as many sample boards, counters, tables, chairs and plants as you like. Drag them into place, turn them, and swap their samples and finishes. Your layout is saved as you go.</p>
+    <div class="facts" aria-label="Key figures">
+      <div><b>4,877 × 2,134</b><span>booth in mm, 16 by 7 ft</span></div>
+      <div><b>1,200</b><span>mm, the sample board, two-sided</span></div>
+      <div><b>450</b><span>mm, its triangular base, front to back</span></div>
+      <div><b id="countFact">5</b><span id="countSub">pieces in the booth</span></div>
+    </div>
+  </header>
+
+  <section class="tool" aria-label="The booth planner">
+    <div class="stage" id="stage"><div class="loading" id="loading">Loading the booth…</div></div>
+    <div class="bar" role="toolbar" aria-label="Views">
+      <b>View</b>
+      <button type="button" class="pill" data-v="three" aria-pressed="true">Three-quarter</button>
+      <button type="button" class="pill" data-v="plan" aria-pressed="false">From above</button>
+      <button type="button" class="pill" data-v="front" aria-pressed="false">From the aisle</button>
+      <button type="button" class="pill" data-v="side" aria-pressed="false">From the side</button>
+      <button type="button" class="pill" id="snap" aria-pressed="true">Snap 50 mm · 15°</button>
+      <span class="status" id="saveState" role="status" aria-live="polite"></span>
+    </div>
+    <div class="bar" id="addRow">
+      <b>Add</b>
+      <button type="button" class="pill add" data-add="board">Sample board</button>
+      <button type="button" class="pill add" data-add="counter">Switch counter</button>
+      <button type="button" class="pill add" data-add="table">Round table</button>
+      <button type="button" class="pill add" data-add="chair">Chair</button>
+      <button type="button" class="pill add" data-add="plant">Olive tree</button>
+    </div>
+    <p class="warn" id="warn" role="status" aria-live="polite" hidden></p>
+    <p class="hint">Press on a piece and drag it across the floor. Drag anywhere else to turn the view; scroll or pinch to zoom. With a piece picked: arrow keys move it, <kbd>R</kbd> turns it 15°, <kbd>Delete</kbd> removes it. Pieces stay inside the booth, and overlapping pieces are outlined in red.</p>
+
+    <div class="panel" id="sel" hidden>
+      <h3><span id="selName"></span><span id="selSize"></span></h3>
+      <div class="grid">
+        <label>Turn <output id="selROut"></output><input type="range" id="selR" min="-180" max="180" step="5"></label>
+        <label id="wWrap">Board width<select id="selW"></select></label>
+        <label id="faceWrap">Samples on both faces<select id="selFace"></select></label>
+        <label id="finWrap">Finish<select id="selFin"></select></label>
+        <label id="formWrap">Counter form<select id="selForm"></select></label>
+      </div>
+      <div class="bar">
+        <button type="button" class="pill" id="turn90">Turn 90°</button>
+        <button type="button" class="pill" id="selDup">Duplicate</button>
+        <button type="button" class="pill" id="selDel">Remove</button>
+        <button type="button" class="pill" id="selNone">Done</button>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="panel">
+        <h3>In the booth <span id="listSum"></span></h3>
+        <ul class="items" id="items"></ul>
+      </div>
+      <div class="panel">
+        <h3>Floor space</h3>
+        <p class="hint" id="floorUse"></p>
+        <div class="bar"><button type="button" class="pill" id="reset">Back to the starting layout</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="board">
+    <div class="head">
+      <span class="eyebrow">The sample board</span>
+      <h2 id="board">Two-sided, on a triangular base</h2>
+      <p class="lede">A 30 mm board, 1,200 mm tall overall, slotted into a triangular base that braces it in front and behind. The base is 450 mm front to back and 220 mm high, as long as the board is wide. Samples are fixed to both faces, so the board works from either side of the booth. In the planner it comes 600, 800, 1,000 or 1,200 mm wide, with Lusano switches, Lenovo locks, or Maxsen smart home and the S8 panel on its faces.</p>
+    </div>
+    <div class="two" style="margin-top:16px">
+      <figure class="sheet"><div class="sheet-h"><b>Side</b><span>mm</span></div><div class="scroll">{{SIDE}}</div></figure>
+      <figure class="sheet"><div class="sheet-h"><b>Face, 600 wide</b><span>mm</span></div><div class="scroll">{{FACE}}</div></figure>
+    </div>
+    <ul class="plain" style="margin-top:16px">
+      <li>Board: 30 mm MDF or ply, laminated both faces, with a brand header printed or routed at the top and a capping strip along the top edge.</li>
+      <li>Base: a hollow triangular prism in metal or veneered ply, the board seated in a slot at its apex. Weight it inside, for example with a steel plate, so a 1.2 m board can't be tipped by a visitor.</li>
+      <li>Samples: real switch plates or locks screwed through from behind, with the wiring for any live samples run down inside the board to the base.</li>
+      <li>Four boards at 600 wide each take about 0.27 m² of floor; set them square to the aisle so both faces are seen, or turn them to guide visitors in.</li>
+    </ul>
+  </section>
+
+  <footer>Sizes for the board are a proposal: 600 to 1,200 mm wide and a 450 × 220 mm base. Tell me the board's real width and I'll set it as the default. The counter is drawn at its real size in each of its four forms; tables are 600 mm round, as in the booth plan.</footer>
+</div>
+
+<script>
+{{PLANNER}}
+{{PAGE}}
+</script>
